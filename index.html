@@ -1,19 +1,10 @@
----
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
-layout: home
-title: "Langlink 简繁体转换工具"
-permalink: /index.html
----
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
+    <meta content="text/html" ; charset="UTF-8" />
     <title>Langlink 简繁转换</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" content="text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/style.css?v=1.1"/>
 </head>
 
@@ -24,25 +15,16 @@ permalink: /index.html
                 Langlink 简繁转换
             </h1>
         </div>
-        <div id="main-tabs" class="main-tabs">
-            <div>
-                <form id="main-tabs-upload">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td><label for="uploadFile">请上传文件</label><input id="uploadFile" type="file" /></td>
-                            </tr>
-                            <tr>
-                                <td><label for="fileSize">文件大小：</label> <output id="fileSize">N/A</output>;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
+        <div id="main-content" class="main">
+            <div id="upload">
+                <label for="upload-input" id="upload-filename">请将文件拖到此处或者点击上传文件
+                <input id="upload-input" name="upload-input" type="file" multiple>
+                </label>
             </div>
-            <div id="main-tabs-conversion-option" class="main-tabs">
+            <div id="conversion-option" class="main">
                 <div id="orig-type.option">
                     原文
-                    <div class="options">
+                    <div class="option">
                         <input id="orig-type-cn" type="radio" name="orig-type" checked="checked" value="cn">
                         <label for="orig-type-cn">CN</label>
                         <input id="orig-type-hk" type="radio" name="orig-type" value="hk">
@@ -55,7 +37,7 @@ permalink: /index.html
                 </div>
                 <div id="tar-type.option">
                     目标
-                    <div class="options">
+                    <div class="option">
                         <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn">
                         <label for="tar-type-cn">CN</label>
                         <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" checked="checked" value="hk">
@@ -66,31 +48,30 @@ permalink: /index.html
                         <label for="tar-type-twp">TW+TW_Phrases</label>
                     </div>
                 </div>
-                <div class="center-button-wrapper">
+                <div class="button-wrapper">
                     <input type="button" id="convert-button" class="button" value="转换">
                 </div>
             </div>
-            <div id="main-tabs-result" class="main-tabs">
-                <div id="editor1">原文</div>
-                <div id="editor2">译文</div>
+            <div id="convert-result" class="main">
+                <div id="editor1" class="xml-editor">原文</div>
+                <div id="editor2" class="xml-editor">译文</div>
             </div>
-            <div id="main-tabs-download" class="main-tabs">
+            <div id="download" class="main">
                 <div>
-                <label for="fileName">文件名：</label>
-                <input type="text" id="fileName">
+                <label for="download-filename">文件名：</label>
+                <input type="text" id="download-filename">
                 </div>
-                <div class="center-button-wrapper">
+                <div class="button-wrapper">
                 <input type="button" id="download-button" class="button" value="下载">
                 </div>
             </div>
-            <div id="main-tabs-diff" class="main-tabs">
-                <div class="center-button-wrapper">
+            <div id="mark=diff" class="main">
+                <div class="button-wrapper">
                 <input type="button" id="convert-table-button" class="button" value="转换成表格">
-
                 <input type="button" id="mark-diff-button" class="button" value="标记不同">
                 </div>
             </div>
-            <div class="main-tabs">
+            <div id="diff-result" class="main">
                 <table id="diff-result-table"></table>
             </div>
             <div id="credit">

@@ -2,7 +2,7 @@ import * as OpenCC from './modules/opencc-js/full.js';
 import xliff from './modules/xliff/xliff.js';
 import diff_match_patch from './modules/diff_match_patch/diff_match_patch.js';
 
-const uploadFile = document.getElementById("uploadFile");
+const uploadFile = document.querySelector('input[type="file"]');
 const convertButton = document.getElementById("convert-button");
 const downloadButton = document.getElementById("download-button");
 const convertTableButton = document.getElementById("convert-table-button");
@@ -32,7 +32,8 @@ const tarTWP = document.getElementById('tar-type-twp');
 uploadFile.addEventListener(
     "change",
     () => {
-        writeFileNameAndSize()
+        document.getElementById("upload-filename").innerHTML = uploadFile.files[0].name;
+        document.getElementById("download-filename").value = uploadFile.files[0].name;
         placeFileContent(oldTextArea, uploadFile.files[0])
     },
     false
@@ -87,7 +88,7 @@ downloadButton.addEventListener("click", () => {
     let filename, text;
     if (!uploadFile.files[0]) {
         text = newTextArea.getValue();
-        filename = document.getElementById("fileName").value;
+        filename = document.getElementById("download-filename").value;
     } else {
         text = newTextArea.getValue();
         filename = uploadFile.files[0].name;
@@ -118,14 +119,17 @@ convertTableButton.addEventListener("click", async () => {
         // Run code for xliff version 1.2
         let result = await xliff.xliff12ToJs(xliff1);
         // console.log(JSON.stringify(result));
+        // makeTable(result);
     } else if (version === '2.0') {
         // Run code for xliff version 2.0
         let result = await xliff.xliff2js(xliff1);
         // console.log(JSON.stringify(result));
+        // makeTable(result);
     } else {
         // Run code for other xliff versions
         let result = await xliff.xliff12ToJs(xliff1);
         // console.log(JSON.stringify(result));
+        // makeTable(result);
     }
 
 }, false);
@@ -147,25 +151,6 @@ function readFileContent(file) {
         reader.onerror = error => reject(error);
         reader.readAsText(file);
     })
-}
-
-function writeFileNameAndSize() {
-    let numberOfBytes = uploadFile.files[0].size;
-
-    // Approximate to the closest prefixed unit
-    const units = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
-    const exponent = Math.min(
-        Math.floor(Math.log(numberOfBytes) / Math.log(1024)), units.length - 1);
-    const approx = numberOfBytes / 1024 ** exponent;
-
-    // Format the output string
-    const output = exponent === 0
-        ? `${numberOfBytes} bytes`
-        : `${approx.toFixed(3)} ${units[exponent]} (${numberOfBytes} bytes)`
-    
-    // Set the values of the file size and file name input fields
-    document.getElementById("fileSize").value = output;
-    document.getElementById("fileName").value = uploadFile.files[0].name;
 }
 
 function download(filename, text) {
@@ -236,7 +221,6 @@ function makeTable(json) {
     });
 }
 
-
 function markDiff() {
     let dmp = new diff_match_patch();
     // Iterate over the rows in the table
@@ -264,5 +248,51 @@ function markDiff() {
             }
         }
     }
+}
+
+function parseXliff(content) {
+    const original = /<file [^>]*?original="([^"]+?)"/.exec(content)[1];
+    let parsedTransId = [];
+    let parsedSource = [];
+    let parsedTarget = [];
+    let parsedPercent = [];
+    const trimmedContent = content.replace(/<mq:historical-unit[^]+?<\/mq:historical-unit>/g, '').replace(/<alt-trans[^]+?<\/alt-trans>/g, '');
+    const regexTransUnit = new RegExp('<trans-unit[^>]*? id="([^"]+?)"([^>]*?)>([^]+?)</trans-unit>', 'g');
+    const regexPercent = new RegExp('(mq:percent|xmatch)="(\\d+)"');
+    const regexSource = new RegExp('<source[^>]*?>([^]*?)</source>');
+    const regexTarget = new RegExp('<target[^>]*?>([^]*?)</target>');
+    let match;
+    while (match = regexTransUnit.exec(trimmedContent)) {
+        let transId = match[1];
+        let matchPercent = regexPercent.exec(match[2]);
+        let sourceMatch = regexSource.exec(match[3]);
+        let targetMatch = regexTarget.exec(match[3]);
+        parsedTransId.push(transId);
+        parsedSource.push(sourceMatch ? sourceMatch[1] : '');
+        parsedTarget.push(targetMatch ? targetMatch[1] : '');
+        parsedPercent.push(matchPercent ? matchPercent[2] : 0);
+
+    }
+    return [original, parsedTransId, parsedSource, parsedTarget, parsedPercent];
+}
+
+function convertXMLEntities(string) {
+    return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function tagAndWordAsOneChar(string) {
+    let stringArray = [];
+    let match;
+    while (match = /(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g.exec(string)) {
+      stringArray.push(...string.substring(0, match.index).split(''));
+      stringArray.push(`<span class="tag" title="${match[0].startsWith('<ph')? convertXMLEntities(match[0]): match[0]}">⬣</span>`);
+      string = string.substring(match.index + match[0].length);
+    }
+    stringArray.push(...string.split(/((?<=[^A-Za-zÀ-ȕ])|(?=[^A-Za-zÀ-ȕ]))/g).filter(string => string.length >= 1));
+    return stringArray;
+}
+
+function tagToPlaceholder(string) {
+    return string.replace(/(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g, $0 => `<span class="tag" title="${$0.startsWith('<ph')? convertXMLEntities($0): $0}">⬣</span>`);
 }
 

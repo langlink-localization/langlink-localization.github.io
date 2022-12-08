@@ -1,0 +1,80 @@
+#header {
+    text-align: center;
+}
+
+#upload-input {
+    display: none;
+}
+
+#upload-filename {
+    padding: 1em;
+}
+
+.main {
+    display: grid;
+    border: 0.1em solid white;
+    padding-bottom: 0.5em;
+    gap: 0.5em;
+}
+
+.button {
+    height: 3rem;
+    width: 5rem;
+}
+
+.button-wrapper {
+    text-align: center;
+}
+
+.option {
+    padding-bottom: 0.2em;
+    border-bottom: 0.15em solid;
+}
+
+#upload {
+    display: grid;
+    background: #eee;
+    border-color: #ddd;
+    border-style: dashed;
+    height: 90%;
+    overflow-y: auto;
+    position: relative;
+    text-align: center;
+}
+
+#convert-result {
+    display: flex;
+}
+
+.xml-editor {
+    flex: 1;
+}
+
+#download-filename {
+    width: 99%;
+    border: 0em;
+    border-bottom: 0.2em solid;
+}
+
+#credit {
+    text-align: center;
+}
+
+/* #result-table {
+    border: 1px solid;
+} */
+
+#diff-result-table tr, #diff-result-table td {
+    border: 0.1em solid;
+    min-width: 3em;
+    max-width: 20em;
+    word-wrap: break-word;
+}
+
+.deletion {
+    color: blue;
+}
+
+.insertion {
+    color: red;
+}
