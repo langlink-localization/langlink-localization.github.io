@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Langlink 简繁转换</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" content="text/html">
+    <link rel="stylesheet" href="./css/style.css?v=1.1"/>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>
+                Langlink 简繁转换
+            </h1>
+        </div>
+        <div id="main-tabs" class="main-tabs">
+            <div>
+                <form id="main-tabs-upload">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><label for="uploadFile">请上传文件</label><input id="uploadFile" type="file" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="fileSize">文件大小：</label> <output id="fileSize">N/A</output>;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div id="main-tabs-conversion-option" class="main-tabs">
+                <div id="orig-type.option">
+                    原文
+                    <div class="options">
+                        <input id="orig-type-cn" type="radio" name="orig-type" checked="checked" value="cn">
+                        <label for="orig-type-cn">CN</label>
+                        <input id="orig-type-hk" type="radio" name="orig-type" value="hk">
+                        <label for="orig-type-hk">HK</label>
+                        <input id="orig-type-tw" type="radio" name="orig-type" value="tw">
+                        <label for="orig-type-tw">TW</label>
+                        <input id="orig-type-twp" type="radio" name="orig-type" value="twp">
+                        <label for="orig-type-twp">TW+TW_Phrases</label>
+                    </div>
+                </div>
+                <div id="tar-type.option">
+                    目标
+                    <div class="options">
+                        <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn">
+                        <label for="tar-type-cn">CN</label>
+                        <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" checked="checked" value="hk">
+                        <label for="tar-type-hk">HK</label>
+                        <input id="tar-type-tw" type="radio" class="radio-button" name="tar-type" value="tw">
+                        <label for="tar-type-tw">TW</label>
+                        <input id="tar-type-twp" type="radio" class="radio-button" name="tar-type" value="twp">
+                        <label for="tar-type-twp">TW+TW_Phrases</label>
+                    </div>
+                </div>
+                <div class="center-button-wrapper">
+                    <input type="button" id="convert-button" class="button" value="转换">
+                </div>
+            </div>
+            <div id="main-tabs-result" class="main-tabs">
+                <div id="editor1">原文</div>
+                <div id="editor2">译文</div>
+            </div>
+            <div id="main-tabs-download" class="main-tabs">
+                <div>
+                <label for="fileName">文件名：</label>
+                <input type="text" id="fileName">
+                </div>
+                <div class="center-button-wrapper">
+                <input type="button" id="download-button" class="button" value="下载">
+                </div>
+            </div>
+            <div id="main-tabs-diff" class="main-tabs">
+                <div class="center-button-wrapper">
+                <input type="button" id="convert-table-button" class="button" value="转换成表格">
+
+                <input type="button" id="mark-diff-button" class="button" value="标记不同">
+                </div>
+            </div>
+            <div class="main-tabs">
+                <table id="diff-result-table"></table>
+            </div>
+            <div id="credit">
+                <p>
+                    <a href="https://github.com/BYVoid/OpenCC">关于OpenCC</a>
+                    <a href="https://github.com/nk2028/opencc-js">关于opencc-js</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js?v=1.1" type="module"></script>
+    <script src="js/modules/ace/ace.js?v=1.1" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>
