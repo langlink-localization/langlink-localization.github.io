@@ -18,8 +18,8 @@
 }
 
 .button {
-    height: 3rem;
-    width: 5rem;
+    height: 2rem;
+    width: auto;
 }
 
 .button-wrapper {
@@ -56,25 +56,38 @@
     border-bottom: 0.2em solid;
 }
 
-#credit {
-    text-align: center;
+#collapse-expand-tag {
+    visibility: hidden;
 }
 
-/* #result-table {
-    border: 1px solid;
-} */
+#hide-show-unchanged {
+    visibility: hidden;
+}
+
+.delete {
+    color: blue;
+}
+
+.insert {
+    color: red;
+}
+
+.tag {
+    color: grey;
+}
+
+.ph {
+    color: grey;
+}
 
 #diff-result-table tr, #diff-result-table td {
     border: 0.1em solid;
-    min-width: 3em;
+    min-width: 2.5em;
     max-width: 20em;
     word-wrap: break-word;
 }
 
-.deletion {
-    color: blue;
+#credit {
+    text-align: center;
 }
 
-.insertion {
-    color: red;
-}

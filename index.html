@@ -16,11 +16,10 @@
             </h1>
         </div>
         <div id="main-content" class="main">
-            <div id="upload">
-                <label for="upload-input" id="upload-filename">请将文件拖到此处或者点击上传文件
-                <input id="upload-input" name="upload-input" type="file" multiple>
-                </label>
-            </div>
+            <form id="upload" enctype="multipart/form-data">
+                <label for="upload-input" id="upload-filename">请将文件拖到此处或者点击上传文件</label>
+                <input id="upload-input" name="uploadInput" type="file" multiple>
+            </form>
             <div id="conversion-option" class="main">
                 <div id="orig-type.option">
                     原文
@@ -65,11 +64,15 @@
                 <input type="button" id="download-button" class="button" value="下载">
                 </div>
             </div>
-            <div id="mark=diff" class="main">
+            <div id="mark-diff" class="main">
                 <div class="button-wrapper">
                 <input type="button" id="convert-table-button" class="button" value="转换成表格">
                 <input type="button" id="mark-diff-button" class="button" value="标记不同">
                 </div>
+            </div>
+            <div id="diff-toggle-area">
+                <input type="button" id="collapse-expand-tag" class="toggle-button" value="折叠标签">
+                <input type="button" id="hide-show-unchanged" class="toggle-button" value="隐藏未更改句段">
             </div>
             <div id="diff-result" class="main">
                 <table id="diff-result-table"></table>

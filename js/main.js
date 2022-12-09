@@ -1,5 +1,4 @@
 import * as OpenCC from './modules/opencc-js/full.js';
-import xliff from './modules/xliff/xliff.js';
 import diff_match_patch from './modules/diff_match_patch/diff_match_patch.js';
 
 const uploadFile = document.querySelector('input[type="file"]');
@@ -7,6 +6,8 @@ const convertButton = document.getElementById("convert-button");
 const downloadButton = document.getElementById("download-button");
 const convertTableButton = document.getElementById("convert-table-button");
 const markDiffButton = document.getElementById("mark-diff-button");
+const hideShowUnchangedButton = document.getElementById("hide-show-unchanged");
+const collapseExpandTagButton = document.getElementById("collapse-expand-tag");
 const diffResultTable = document.getElementById("diff-result-table");
 
 const oldTextArea = ace.edit("editor1");
@@ -34,7 +35,9 @@ uploadFile.addEventListener(
     () => {
         document.getElementById("upload-filename").innerHTML = uploadFile.files[0].name;
         document.getElementById("download-filename").value = uploadFile.files[0].name;
-        placeFileContent(oldTextArea, uploadFile.files[0])
+        placeFileContent(oldTextArea, uploadFile.files[0]);
+        hideShowUnchangedButton.style.visibility = "hidden";
+        collapseExpandTagButton.style.visibility = "hidden";
     },
     false
 )
@@ -104,39 +107,84 @@ convertTableButton.addEventListener("click", async () => {
 
     makeTable(convertXliff(xliff1, xliff2));
 
-    // Parse the xliff file using the DOMParser
-    let parser = new DOMParser();
-    let xmlDoc = parser.parseFromString(xliff1, "text/xml");
+    collapseExpandTagButton.style.visibility = "visible";
 
-    // Select the xliff tag
-    let xliffTag = xmlDoc.querySelector('xliff');
-
-    // Get the version attribute of the xliff tag
-    let version = xliffTag.getAttribute('version');
-
-    // Check the version and run code based on the result
-    if (version === '1.2') {
-        // Run code for xliff version 1.2
-        let result = await xliff.xliff12ToJs(xliff1);
-        // console.log(JSON.stringify(result));
-        // makeTable(result);
-    } else if (version === '2.0') {
-        // Run code for xliff version 2.0
-        let result = await xliff.xliff2js(xliff1);
-        // console.log(JSON.stringify(result));
-        // makeTable(result);
-    } else {
-        // Run code for other xliff versions
-        let result = await xliff.xliff12ToJs(xliff1);
-        // console.log(JSON.stringify(result));
-        // makeTable(result);
+    let cells = document.querySelectorAll('td');
+    let pattern1 = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
+    for (let cell of cells) {
+        cell.textContent = cell.textContent.replace(pattern1, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
+        cell.innerHTML = cell.textContent;
     }
-
 }, false);
 
 markDiffButton.addEventListener("click", () => {
     markDiff();
+
+    hideShowUnchangedButton.style.visibility = "visible";
 }, false);
+
+hideShowUnchangedButton.addEventListener("click", function() {
+        let rows = document.querySelectorAll('tr');
+        for (let row of rows) {
+            if (row === rows[0]) continue;
+            let cells = row.querySelectorAll('td');
+            let hasDeleteOrInsertClass = false;
+            for (let cell of cells) {
+                let spans = cell.querySelectorAll('span');
+                for (let span of spans) {
+                    if (span.classList.contains('delete') || span.classList.contains('insert')) {
+                        hasDeleteOrInsertClass = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasDeleteOrInsertClass) {
+                if (row.style.display !== 'none') {
+                    row.style.display = 'none';
+                    hideShowUnchangedButton.value = '显示所有句段';
+                } else {
+                    row.style.display = '';
+                    hideShowUnchangedButton.value = '隐藏未更改句段';
+                }
+            }
+        }
+});
+
+collapseExpandTagButton.addEventListener("click", function() {
+    const tagTds = document.querySelectorAll(".tag");
+
+    // get all td elements with the "ph" class
+    const phTds = document.querySelectorAll(".ph");
+
+    // loop through each td element with the "tag" class
+    for (const td of tagTds) {
+        // if the td element is visible
+        if (td.style.display !== "none") {
+            // hide it
+            td.style.display = "none";
+        } else {
+            // show it
+            td.style.display = "";
+        }
+    }
+
+    // loop through each td element with the "ph" class
+    for (const td of phTds) {
+        // if the td element is visible
+        if (td.style.display == "none") {
+            // hide it
+            td.style.display = "";
+        } else {
+            // show it
+            td.style.display = "none";
+        }
+    }
+    if (collapseExpandTagButton.value == "折叠标签") {
+        collapseExpandTagButton.value = "展开标签";
+    } else {
+        collapseExpandTagButton.value = "折叠标签";
+    }
+});
 
 function placeFileContent(target, file) {
     readFileContent(file).then(content => {
@@ -224,75 +272,79 @@ function makeTable(json) {
 function markDiff() {
     let dmp = new diff_match_patch();
     // Iterate over the rows in the table
-    for (var i = 1; i < diffResultTable.rows.length; i++) {
+    let rowNumber = diffResultTable.rows.length;
+    for (let i = 1; i < rowNumber; i++) {
         // Get the third and fourth cells in the row
-        var cell1 = diffResultTable.rows[i].cells[2];
-        var cell2 = diffResultTable.rows[i].cells[3];
+        let cell1 = diffResultTable.rows[i].cells[2];
+        let cell2 = diffResultTable.rows[i].cells[3];
 
         // Compare the text in the cells using the diff-match-patch library
-        var diffs = dmp.diff_main(cell1.innerText, cell2.innerText);
+        let diffs = dmp.diff_main(cell1.innerText, cell2.innerText);
 
         // Iterate over the differences
-        for (var j = 0; j < diffs.length; j++) {
-            var diff = diffs[j];
-            var operation = diff[0];
-            var text = diff[1];
+        for (let j = 0; j < diffs.length; j++) {
+            let diff = diffs[j];
+            let operation = diff[0];
+            let text = diff[1];
 
             // Check if the difference is a deletion or an insertion
             if (operation == -1) {
                 // Mark the difference as red using the style attribute
-                cell1.innerHTML = cell1.innerHTML.replace(text, "<span style='color: red;'>" + text + "</span>");
+                cell1.innerHTML = cell1.innerHTML.replace(text, "<span class='insert'>" + text + "</span>");
             } else if (operation == 1) {
                 // Mark the difference as blue using the style attribute
-                cell2.innerHTML = cell2.innerHTML.replace(text, "<span style='color: blue;'>" + text + "</span>");
+                cell2.innerHTML = cell2.innerHTML.replace(text, "<span class='delete'>" + text + "</span>");
             }
         }
     }
 }
 
-function parseXliff(content) {
-    const original = /<file [^>]*?original="([^"]+?)"/.exec(content)[1];
-    let parsedTransId = [];
-    let parsedSource = [];
-    let parsedTarget = [];
-    let parsedPercent = [];
-    const trimmedContent = content.replace(/<mq:historical-unit[^]+?<\/mq:historical-unit>/g, '').replace(/<alt-trans[^]+?<\/alt-trans>/g, '');
-    const regexTransUnit = new RegExp('<trans-unit[^>]*? id="([^"]+?)"([^>]*?)>([^]+?)</trans-unit>', 'g');
-    const regexPercent = new RegExp('(mq:percent|xmatch)="(\\d+)"');
-    const regexSource = new RegExp('<source[^>]*?>([^]*?)</source>');
-    const regexTarget = new RegExp('<target[^>]*?>([^]*?)</target>');
-    let match;
-    while (match = regexTransUnit.exec(trimmedContent)) {
-        let transId = match[1];
-        let matchPercent = regexPercent.exec(match[2]);
-        let sourceMatch = regexSource.exec(match[3]);
-        let targetMatch = regexTarget.exec(match[3]);
-        parsedTransId.push(transId);
-        parsedSource.push(sourceMatch ? sourceMatch[1] : '');
-        parsedTarget.push(targetMatch ? targetMatch[1] : '');
-        parsedPercent.push(matchPercent ? matchPercent[2] : 0);
 
-    }
-    return [original, parsedTransId, parsedSource, parsedTarget, parsedPercent];
-}
 
-function convertXMLEntities(string) {
-    return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
-function tagAndWordAsOneChar(string) {
-    let stringArray = [];
-    let match;
-    while (match = /(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g.exec(string)) {
-      stringArray.push(...string.substring(0, match.index).split(''));
-      stringArray.push(`<span class="tag" title="${match[0].startsWith('<ph')? convertXMLEntities(match[0]): match[0]}">⬣</span>`);
-      string = string.substring(match.index + match[0].length);
-    }
-    stringArray.push(...string.split(/((?<=[^A-Za-zÀ-ȕ])|(?=[^A-Za-zÀ-ȕ]))/g).filter(string => string.length >= 1));
-    return stringArray;
-}
+// function parseXliff(content) {
+//     const original = /<file [^>]*?original="([^"]+?)"/.exec(content)[1];
+//     let parsedTransId = [];
+//     let parsedSource = [];
+//     let parsedTarget = [];
+//     let parsedPercent = [];
+//     const trimmedContent = content.replace(/<mq:historical-unit[^]+?<\/mq:historical-unit>/g, '').replace(/<alt-trans[^]+?<\/alt-trans>/g, '');
+//     const regexTransUnit = new RegExp('<(trans-)?unit[^>]*? id="([^"]+?)"([^>]*?)>([^]+?)<\/(trans-)?unit>', 'g');
+//     const regexPercent = new RegExp('(mq:percent|xmatch)="(\\d+)"');
+//     const regexSource = new RegExp('<source[^>]*?>([^]*?)<\/source>');
+//     const regexTarget = new RegExp('<target[^>]*?>([^]*?)<\/target>');
+//     let match;
+//     while (match = regexTransUnit.exec(trimmedContent)) {
+//         let transId = match[1];
+//         let matchPercent = regexPercent.exec(match[2]);
+//         let sourceMatch = regexSource.exec(match[3]);
+//         let targetMatch = regexTarget.exec(match[3]);
+//         parsedTransId.push(transId);
+//         parsedSource.push(sourceMatch ? sourceMatch[1] : '');
+//         parsedTarget.push(targetMatch ? targetMatch[1] : '');
+//         parsedPercent.push(matchPercent ? matchPercent[2] : 0);
 
-function tagToPlaceholder(string) {
-    return string.replace(/(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g, $0 => `<span class="tag" title="${$0.startsWith('<ph')? convertXMLEntities($0): $0}">⬣</span>`);
-}
+//     }
+//     return [original, parsedTransId, parsedSource, parsedTarget, parsedPercent];
+// }
+
+// function convertXMLEntities(string) {
+//     return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// }
+
+// function tagAndWordAsOneChar(string) {
+//     let stringArray = [];
+//     let match;
+//     while (match = /(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g.exec(string)) {
+//       stringArray.push(...string.substring(0, match.index).split(''));
+//       stringArray.push(`<span class="tag" title="${match[0].startsWith('<ph')? convertXMLEntities(match[0]): match[0]}">⬣</span>`);
+//       string = string.substring(match.index + match[0].length);
+//     }
+//     stringArray.push(...string.split(/((?<=[^A-Za-zÀ-ȕ])|(?=[^A-Za-zÀ-ȕ]))/g).filter(string => string.length >= 1));
+//     return stringArray;
+// }
+
+// function tagToPlaceholder(string) {
+//     return string.replace(/(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g, $0 => `<span class="tag" title="${$0.startsWith('<ph')? convertXMLEntities($0): $0}">⬣</span>`);
+// }
 
