@@ -46,7 +46,14 @@ convertButton.addEventListener("click", () => {
     let oldTextChanged;
     let locale1, locale2;
 
-    const regex = /(?<=target-language\=\"zh\-)[a-zA-Z]{2}|(?<=trgLang\=\"zh\_)[a-zA-Z]{2}/gm;
+    let regex = /(?<=target-language\=\"zh\-)[a-zA-Z]{2}|(?<=trgLang\=\"zh\_)[a-zA-Z]{2}/gm;
+
+    let customDict = [
+        ['“', '「'],
+        ['”', '」'],
+        ['‘', '『'],
+        ['’', '』'],
+      ];
 
     switch (true) {
         case origCN.checked:
@@ -74,11 +81,11 @@ convertButton.addEventListener("click", () => {
             break;
         case tarTW.checked:
             locale2 = 'tw';
-            oldTextChanged = oldText.replace(regex, "TW");
+            oldTextChanged = oldText.replace(regex, "TW").replaceAll('“', '「').replaceAll('”', '」').replaceAll(['‘', '『']).replaceAll('’', '』');
             break;
         case tarTWP.checked:
             locale2 = 'twp';
-            oldTextChanged = oldText.replace(regex, "TW");
+            oldTextChanged = oldText.replace(regex, "TW").replaceAll('“', '「').replaceAll('”', '」').replaceAll(['‘', '『']).replaceAll('’', '』');
             break;
     }
 
