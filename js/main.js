@@ -34,7 +34,6 @@ uploadFile.addEventListener(
     "change",
     () => {
         document.getElementById("upload-filename").innerHTML = uploadFile.files[0].name;
-        document.getElementById("download-filename").value = uploadFile.files[0].name;
         placeFileContent(oldTextArea, uploadFile.files[0]);
         hideShowUnchangedButton.style.visibility = "hidden";
         collapseExpandTagButton.style.visibility = "hidden";
@@ -85,6 +84,13 @@ convertButton.addEventListener("click", () => {
 
     let converter = OpenCC.Converter({ from: locale1, to: locale2 });
     newTextArea.setValue(converter(oldTextChanged), -1);
+    let filename = uploadFile.files[0].name;
+    let lastDotIndex = filename.lastIndexOf(".");
+    let fileNameWithoutExtension = filename.substring(0, lastDotIndex);
+    let fileExtension = filename.substring(lastDotIndex+1);
+    let nameSuffix = '_zh_'+locale2;
+    let newFileName = `${fileNameWithoutExtension}${nameSuffix}.${fileExtension}`;
+    document.getElementById("download-filename").value = newFileName;
 })
 
 downloadButton.addEventListener("click", () => {
@@ -110,9 +116,9 @@ convertTableButton.addEventListener("click", async () => {
     collapseExpandTagButton.style.visibility = "visible";
 
     let cells = document.querySelectorAll('td');
-    let pattern1 = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
+    let pattern = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
     for (let cell of cells) {
-        cell.textContent = cell.textContent.replace(pattern1, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
+        cell.textContent = cell.textContent.replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
         cell.innerHTML = cell.textContent;
     }
 }, false);
