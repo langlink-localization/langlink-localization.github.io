@@ -1248,7 +1248,7 @@
    * @param {!Array.<!diff_match_patch.Diff>} diffs Array of diff tuples.
    * @return {string} HTML representation.
    */
-  diff_match_patch.prototype.diff_prettyHtml = function(diffs) {
+  diff_match_patch.prototype.diff_prettyHtml1 = function(diffs) {
     var html = [];
     var pattern_amp = /&/g;
     var pattern_lt = /</g;
@@ -1261,13 +1261,45 @@
           .replace(pattern_gt, '&gt;').replace(pattern_para, '&para;<br>');
       switch (op) {
         case DIFF_INSERT:
-          html[x] = '<ins style="background:#e6ffe6;">' + text + '</ins>';
+          // html[x] = '<ins style="background:#e6ffe6;">' + text + '</ins>';
+          html[x] = '<span class="insert1">' + text + '</span>';
           break;
         case DIFF_DELETE:
-          html[x] = '<del style="background:#ffe6e6;">' + text + '</del>';
+          // html[x] = '<del style="background:#ffe6e6;">' + text + '</del>';
+          html[x] = '<span class="delete1">' + text + '</span>';
           break;
         case DIFF_EQUAL:
-          html[x] = '<span>' + text + '</span>';
+          // html[x] = '<span>' + text + '</span>';
+          html[x] = data;
+          break;
+      }
+    }
+    return html.join('');
+  };
+
+  diff_match_patch.prototype.diff_prettyHtml2 = function(diffs) {
+    var html = [];
+    var pattern_amp = /&/g;
+    var pattern_lt = /</g;
+    var pattern_gt = />/g;
+    var pattern_para = /\n/g;
+    for (var x = 0; x < diffs.length; x++) {
+      var op = diffs[x][0];    // Operation (insert, delete, equal)
+      var data = diffs[x][1];  // Text of change.
+      var text = data.replace(pattern_amp, '&amp;').replace(pattern_lt, '&lt;')
+          .replace(pattern_gt, '&gt;').replace(pattern_para, '&para;<br>');
+      switch (op) {
+        case DIFF_INSERT:
+          // html[x] = '<ins style="background:#e6ffe6;">' + text + '</ins>';
+          html[x] = '<span class="insert2">' + text + '</span>';
+          break;
+        case DIFF_DELETE:
+          // html[x] = '<del style="background:#ffe6e6;">' + text + '</del>';
+          html[x] = '<span class="delete2">' + text + '</span>';
+          break;
+        case DIFF_EQUAL:
+          // html[x] = '<span>' + text + '</span>';
+          html[x] = data;
           break;
       }
     }

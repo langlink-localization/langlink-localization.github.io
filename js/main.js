@@ -107,7 +107,7 @@ downloadButton.addEventListener("click", () => {
         filename = document.getElementById("download-filename").value;
     } else {
         text = newTextArea.getValue();
-        filename = uploadFile.files[0].name;
+        filename = document.getElementById("download-filename").value;
     }
 
     // Call the download function with the text and filename
@@ -120,20 +120,22 @@ convertTableButton.addEventListener("click", async () => {
 
     makeTable(convertXliff(xliff1, xliff2));
 
-    collapseExpandTagButton.style.visibility = "visible";
+    hideShowUnchangedButton.style.visibility = "visible";
 
     let cells = document.querySelectorAll('td');
     let pattern = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
     for (let cell of cells) {
         cell.textContent = cell.textContent.replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
         cell.innerHTML = cell.textContent;
-    }
+    }  
 }, false);
 
 markDiffButton.addEventListener("click", () => {
-    markDiff();
+    if (collapseExpandTagButton.style.visibility == "hidden") {
+        markDiff();
+    }
 
-    hideShowUnchangedButton.style.visibility = "visible";
+    collapseExpandTagButton.style.visibility= "visible";
 }, false);
 
 hideShowUnchangedButton.addEventListener("click", function() {
@@ -145,7 +147,7 @@ hideShowUnchangedButton.addEventListener("click", function() {
             for (let cell of cells) {
                 let spans = cell.querySelectorAll('span');
                 for (let span of spans) {
-                    if (span.classList.contains('delete') || span.classList.contains('insert')) {
+                    if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
                         hasDeleteOrInsertClass = true;
                         break;
                     }
@@ -282,82 +284,48 @@ function makeTable(json) {
     });
 }
 
+// function markDiff() {
+//     let dmp = new diff_match_patch();
+//     // Iterate over the rows in the table
+//     let rowNumber = diffResultTable.rows.length;
+//     for (let i = 1; i < rowNumber; i++) {
+//         // Get the third and fourth cells in the row
+//         let cell1 = diffResultTable.rows[i].cells[2];
+//         let cell2 = diffResultTable.rows[i].cells[3];
+
+//         // Compare the text in the cells using the diff-match-patch library
+//         let diffs = dmp.diff_main(cell1.innerText, cell2.innerText);
+
+//         // Iterate over the differences
+//         for (let j = 0; j < diffs.length; j++) {
+//             let diff = diffs[j];
+//             let operation = diff[0];
+//             let text = diff[1];
+
+//             // Check if the difference is a deletion or an insertion
+//             if (operation == -1) {
+//                 // Mark the difference as red using the style attribute
+//                 cell1.innerHTML = cell1.innerHTML.replace(text, "<span class='delete'>" + text + "</span>");
+//                 console.log(`diff[${j}]-1: ${text}`);
+//             } else if (operation == 1) {
+//                 // Mark the difference as blue using the style attribute
+//                 cell2.innerHTML = cell2.innerHTML.replace(text, "<span class='insert'>" + text + "</span>");
+//                 console.log(`diff[${j}]1: ${text}`);
+//             }
+//         }
+//     }
+// }
+
 function markDiff() {
     let dmp = new diff_match_patch();
     // Iterate over the rows in the table
     let rowNumber = diffResultTable.rows.length;
     for (let i = 1; i < rowNumber; i++) {
-        // Get the third and fourth cells in the row
-        let cell1 = diffResultTable.rows[i].cells[2];
-        let cell2 = diffResultTable.rows[i].cells[3];
-
-        // Compare the text in the cells using the diff-match-patch library
-        let diffs = dmp.diff_main(cell1.innerText, cell2.innerText);
-
-        // Iterate over the differences
-        for (let j = 0; j < diffs.length; j++) {
-            let diff = diffs[j];
-            let operation = diff[0];
-            let text = diff[1];
-
-            // Check if the difference is a deletion or an insertion
-            if (operation == -1) {
-                // Mark the difference as red using the style attribute
-                cell1.innerHTML = cell1.innerHTML.replace(text, "<span class='insert'>" + text + "</span>");
-            } else if (operation == 1) {
-                // Mark the difference as blue using the style attribute
-                cell2.innerHTML = cell2.innerHTML.replace(text, "<span class='delete'>" + text + "</span>");
-            }
-        }
+        let row = diffResultTable.rows[i];
+        let diffs = dmp.diff_main(row.cells[2].innerHTML, row.cells[3].innerHTML);
+        let html1 = dmp.diff_prettyHtml1(diffs);
+        let html2 = dmp.diff_prettyHtml2(diffs);
+        row.cells[2].innerHTML = html1;
+        row.cells[3].innerHTML = html2;   
     }
 }
-
-
-
-
-// function parseXliff(content) {
-//     const original = /<file [^>]*?original="([^"]+?)"/.exec(content)[1];
-//     let parsedTransId = [];
-//     let parsedSource = [];
-//     let parsedTarget = [];
-//     let parsedPercent = [];
-//     const trimmedContent = content.replace(/<mq:historical-unit[^]+?<\/mq:historical-unit>/g, '').replace(/<alt-trans[^]+?<\/alt-trans>/g, '');
-//     const regexTransUnit = new RegExp('<(trans-)?unit[^>]*? id="([^"]+?)"([^>]*?)>([^]+?)<\/(trans-)?unit>', 'g');
-//     const regexPercent = new RegExp('(mq:percent|xmatch)="(\\d+)"');
-//     const regexSource = new RegExp('<source[^>]*?>([^]*?)<\/source>');
-//     const regexTarget = new RegExp('<target[^>]*?>([^]*?)<\/target>');
-//     let match;
-//     while (match = regexTransUnit.exec(trimmedContent)) {
-//         let transId = match[1];
-//         let matchPercent = regexPercent.exec(match[2]);
-//         let sourceMatch = regexSource.exec(match[3]);
-//         let targetMatch = regexTarget.exec(match[3]);
-//         parsedTransId.push(transId);
-//         parsedSource.push(sourceMatch ? sourceMatch[1] : '');
-//         parsedTarget.push(targetMatch ? targetMatch[1] : '');
-//         parsedPercent.push(matchPercent ? matchPercent[2] : 0);
-
-//     }
-//     return [original, parsedTransId, parsedSource, parsedTarget, parsedPercent];
-// }
-
-// function convertXMLEntities(string) {
-//     return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-// }
-
-// function tagAndWordAsOneChar(string) {
-//     let stringArray = [];
-//     let match;
-//     while (match = /(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g.exec(string)) {
-//       stringArray.push(...string.substring(0, match.index).split(''));
-//       stringArray.push(`<span class="tag" title="${match[0].startsWith('<ph')? convertXMLEntities(match[0]): match[0]}">⬣</span>`);
-//       string = string.substring(match.index + match[0].length);
-//     }
-//     stringArray.push(...string.split(/((?<=[^A-Za-zÀ-ȕ])|(?=[^A-Za-zÀ-ȕ]))/g).filter(string => string.length >= 1));
-//     return stringArray;
-// }
-
-// function tagToPlaceholder(string) {
-//     return string.replace(/(<ph[^>]*?>.*?<\/ph[^>]*?>|&lt;.*?&gt;)/g, $0 => `<span class="tag" title="${$0.startsWith('<ph')? convertXMLEntities($0): $0}">⬣</span>`);
-// }
-

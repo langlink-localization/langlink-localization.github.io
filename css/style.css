@@ -64,11 +64,21 @@
     visibility: hidden;
 }
 
-.delete {
+.delete1 {
     color: blue;
 }
 
-.insert {
+.insert1 {
+    color: red;
+    display: none;
+}
+
+.delete2 {
+    color: blue;
+    display: none;
+}
+
+.insert2 {
     color: red;
 }
 
