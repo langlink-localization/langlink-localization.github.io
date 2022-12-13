@@ -17,57 +17,47 @@
         </div>
         <div id="main-content" class="main">
             <form id="upload" enctype="multipart/form-data">
-                <label for="upload-input" id="upload-filename">请点击上传文件</label>
+                <label for="upload-input" id="upload-filename">点击上传文件</label>
                 <input id="upload-input" name="uploadInput" type="file" multiple>
             </form>
-            <div id="conversion-option" class="main">
-                <div id="orig-type.option">
-                    原文
-                    <div class="option">
-                        <input id="orig-type-cn" type="radio" name="orig-type" checked="checked" value="cn">
-                        <label for="orig-type-cn">CN</label>
-                        <input id="orig-type-hk" type="radio" name="orig-type" value="hk">
-                        <label for="orig-type-hk">HK</label>
-                        <input id="orig-type-tw" type="radio" name="orig-type" value="tw">
-                        <label for="orig-type-tw">TW</label>
-                        <input id="orig-type-twp" type="radio" name="orig-type" value="twp">
-                        <label for="orig-type-twp">TW+TW_Phrases</label>
+            <div id="convert-option" class="main">
+
+                    <div id="orig-type.option">
+                        原文
+                        <div class="orig-option">
+                            <input id="orig-type-cn" type="radio" name="orig-type" value="cn" checked>
+                            <label for="orig-type-cn">CN</label>
+                            <input id="orig-type-hk" type="radio" name="orig-type" value="hk" >
+                            <label for="orig-type-hk">HK</label>
+                            <input id="orig-type-tw" type="radio" name="orig-type" value="tw" >
+                            <label for="orig-type-tw">TW</label>
+                            <input id="orig-type-twp" type="radio" name="orig-type" value="twp" >
+                            <label for="orig-type-twp">TW+TW_Phrases</label>
+                        </div>
                     </div>
-                </div>
-                <div id="tar-type.option">
-                    目标
-                    <div class="option">
-                        <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn">
-                        <label for="tar-type-cn">CN</label>
-                        <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" checked="checked" value="hk">
-                        <label for="tar-type-hk">HK</label>
-                        <input id="tar-type-tw" type="radio" class="radio-button" name="tar-type" value="tw">
-                        <label for="tar-type-tw">TW</label>
-                        <input id="tar-type-twp" type="radio" class="radio-button" name="tar-type" value="twp">
-                        <label for="tar-type-twp">TW+TW_Phrases</label>
+                    <div id="tar-type.option">
+                        目标
+                        <div class="tar-option">
+                            <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn" >
+                            <label for="tar-type-cn">CN</label>
+                            <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" value="hk" checked>
+                            <label for="tar-type-hk">HK</label>
+                            <input id="tar-type-tw" type="radio" class="radio-button" name="tar-type" value="tw" >
+                            <label for="tar-type-tw">TW</label>
+                            <input id="tar-type-twp" type="radio" class="radio-button" name="tar-type" value="twp" >
+                            <label for="tar-type-twp">TW+TW_Phrases</label>
+                        </div>
                     </div>
-                </div>
-                <div class="button-wrapper">
-                    <input type="button" id="convert-button" class="button" value="转换">
-                </div>
-            </div>
-            <div id="convert-result" class="main">
-                <div id="editor1" class="xml-editor">原文</div>
-                <div id="editor2" class="xml-editor">译文</div>
             </div>
             <div id="download" class="main">
-                <div>
-                <label for="download-filename">文件名：</label>
-                <input type="text" id="download-filename">
-                </div>
                 <div class="button-wrapper">
-                <input type="button" id="download-button" class="button" value="下载">
+                    <input type="button" id="convert-table-button" class="button" value="简繁转换并展示表格">
+                    <input type="button" id="mark-diff-button" class="button" value="标记不同">
                 </div>
-            </div>
-            <div id="mark-diff" class="main">
-                <div class="button-wrapper">
-                <input type="button" id="convert-table-button" class="button" value="转换成表格">
-                <input type="button" id="mark-diff-button" class="button" value="标记不同">
+                <div id="download-filename">
+                    <p id="download-hint">点击文件名下载转换后的文件：</p>
+                    <ul id="download-list">
+                    </ul>
                 </div>
             </div>
             <div id="diff-toggle-area">
