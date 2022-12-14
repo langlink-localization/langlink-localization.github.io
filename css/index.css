@@ -15,26 +15,23 @@
     width: 100%;
 }
 
-.button {
-    height: 2rem;
-    width: auto;
-}
-
 #link-wrapper {
     display: flex;
-    background: #eee;
-    border-color: #ddd;
-    border-style: dashed;
-    text-align: center;
-    height: auto;
-    padding: 1rem;
-    position: relative;
-    top: 5rem;
 }
 
 .flex-display {
     flex: 1;
+    background: #eee;
+    border-color: #ddd;
+    border-style: dashed;
     text-align: center;
+    overflow: auto;
+    position: relative;
+    top: 5rem;
+}
+
+.tool-name {
+    display: block;
+    padding: 2rem;
     font-size: 1.5rem;
-    padding: 0.5rem;
 }
