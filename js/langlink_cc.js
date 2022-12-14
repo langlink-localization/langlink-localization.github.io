@@ -68,6 +68,7 @@ convertTableButton.addEventListener('click', async () => {
         hideShowUnchangedButton.style.visibility = 'visible';
         hideShowUnchangedButton.value = '隐藏未更改句段';
     }
+    hideShowUnchangedContent();
     condition = false;
 
 }, false);
