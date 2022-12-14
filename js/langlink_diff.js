@@ -86,7 +86,7 @@ markDiffButton.addEventListener('click', function(e) {
 }, false);
 
 openNewTab.addEventListener('click', function(e) {
-    openNewTab();
+    openNewTabWithTable();
 });
 
 hideShowUnchangedButton.addEventListener('click', function (e) {
@@ -326,7 +326,7 @@ function hideTableTitle() {
     }
 }
 
-function openNewTab() {
+function openNewTabWithTable() {
     let newPage = window.open();
     let counter = diffResultTable.rows.length;
 
