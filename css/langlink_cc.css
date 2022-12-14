@@ -76,11 +76,20 @@
     top: 4.5rem;
 }
 
-#diff-result-table tr, #diff-result-table td {
-    border: 0.1rem solid;
-    min-width: 2.5rem;
-    max-width: 30rem;
+#diff-result-table {
+    border-collapse: collapse;
+}
+
+#diff-result-table td {
+    border: solid black;
+    min-width: 2.4rem;
+    max-width: 40rem;
     word-wrap: break-word;
+    padding: 0.6rem;
+}
+
+#diff-result-table td:nth-of-type(1) {
+    text-align: center;
 }
 
 .delete1 {
