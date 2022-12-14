@@ -6,7 +6,7 @@
 
 #main-content {
     position: relative;
-    top: 3rem;
+    top: 4rem;
 }
 
 .main {
@@ -24,7 +24,7 @@
     background: #eee;
     border-color: #ddd;
     border-style: dashed;
-    text-align: left;
+    text-align: center;
     width: 100%;
 }
 
@@ -46,7 +46,7 @@
     background: #eee;
     border-color: #ddd;
     border-style: dashed;
-    text-align: left;
+    text-align: center;
     width: 100%;
 }
 
@@ -73,7 +73,7 @@
 
 #diff-result {
     position: relative;
-    top: 4rem;
+    top: 4.5rem;
 }
 
 #diff-result-table tr, #diff-result-table td {

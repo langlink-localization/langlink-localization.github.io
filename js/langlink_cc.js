@@ -58,7 +58,6 @@ convertTableButton.addEventListener('click', async () => {
     createDownloadLink(newFilenames, newFileContents);
 
     collapseExpandTagButton.style.visibility = 'visible';
-    hideShowUnchangedButton.value = '隐藏未更改句段';
     collapseExpandTagButton.value = '折叠标签';
 
     markTag();
@@ -67,73 +66,18 @@ convertTableButton.addEventListener('click', async () => {
     if (condition) {
         markDiff();
         hideShowUnchangedButton.style.visibility = 'visible';
-        collapseExpandTagButton.style.visibility = 'visible';
+        hideShowUnchangedButton.value = '隐藏未更改句段';
     }
     condition = false;
 
 }, false);
 
 hideShowUnchangedButton.addEventListener('click', function () {
-    let rows = document.querySelectorAll('tr');
-    for (let row of rows) {
-        if (row.cells[1].innerText == '原文' || row.cells[2].innerText == '') continue;
-        let cells = row.querySelectorAll('td');
-        let hasDeleteOrInsertClass = false;
-        for (let cell of cells) {
-            let spans = cell.querySelectorAll('span');
-            for (let span of spans) {
-                if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
-                    hasDeleteOrInsertClass = true;
-                    break;
-                }
-            }
-        }
-        if (!hasDeleteOrInsertClass) {
-            if (row.style.display !== 'none') {
-                row.style.display = 'none';
-                hideShowUnchangedButton.value = '显示所有句段';
-            } else {
-                row.style.display = '';
-                hideShowUnchangedButton.value = '隐藏未更改句段';
-            }
-        }
-    }
+    hideShowUnchangedContent();
 });
 
 collapseExpandTagButton.addEventListener('click', function () {
-    let tagTds = document.querySelectorAll('.tag');
-
-    // get all td elements with the 'ph' class
-    let phTds = document.querySelectorAll('.ph');
-
-    // loop through each td element with the 'tag' class
-    for (let td of tagTds) {
-        // if the td element is visible
-        if (td.style.display !== 'none') {
-            // hide it
-            td.style.display = 'none';
-        } else {
-            // show it
-            td.style.display = '';
-        }
-    }
-
-    // loop through each td element with the 'ph' class
-    for (let td of phTds) {
-        // if the td element is visible
-        if (td.style.display == 'none') {
-            // hide it
-            td.style.display = '';
-        } else {
-            // show it
-            td.style.display = 'none';
-        }
-    }
-    if (collapseExpandTagButton.value == '折叠标签') {
-        collapseExpandTagButton.value = '展开标签';
-    } else {
-        collapseExpandTagButton.value = '折叠标签';
-    }
+    hideShowTag();
 });
 
 function readFileContent() {
@@ -359,6 +303,69 @@ function markDiff() {
             row.cells[2].innerHTML = html1;
             row.cells[3].innerHTML = html2;
         }
+    }
+}
+
+function hideShowUnchangedContent() {
+    let rows = document.querySelectorAll('tr');
+    for (let row of rows) {
+        if (row.cells[1].innerText == '原文' || row.cells[2].innerText == '') continue;
+        let cells = row.querySelectorAll('td');
+        let hasDeleteOrInsertClass = false;
+        for (let cell of cells) {
+            let spans = cell.querySelectorAll('span');
+            for (let span of spans) {
+                if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
+                    hasDeleteOrInsertClass = true;
+                    break;
+                }
+            }
+        }
+        if (!hasDeleteOrInsertClass) {
+            if (row.style.display !== 'none') {
+                row.style.display = 'none';
+                hideShowUnchangedButton.value = '显示所有句段';
+            } else {
+                row.style.display = '';
+                hideShowUnchangedButton.value = '隐藏未更改句段';
+            }
+        }
+    }
+}
+
+function hideShowTag() {
+    let tagTds = document.querySelectorAll('.tag');
+
+    // get all td elements with the 'ph' class
+    let phTds = document.querySelectorAll('.ph');
+
+    // loop through each td element with the 'tag' class
+    for (let td of tagTds) {
+        // if the td element is visible
+        if (td.style.display !== 'none') {
+            // hide it
+            td.style.display = 'none';
+        } else {
+            // show it
+            td.style.display = '';
+        }
+    }
+
+    // loop through each td element with the 'ph' class
+    for (let td of phTds) {
+        // if the td element is visible
+        if (td.style.display == 'none') {
+            // hide it
+            td.style.display = '';
+        } else {
+            // show it
+            td.style.display = 'none';
+        }
+    }
+    if (collapseExpandTagButton.value == '折叠标签') {
+        collapseExpandTagButton.value = '展开标签';
+    } else {
+        collapseExpandTagButton.value = '折叠标签';
     }
 }
 

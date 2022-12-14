@@ -53,19 +53,13 @@ uploadFile2.addEventListener('change', function(e) {
 
     fileContents2.length = 0;
     readFileContent2();
-    
-    hideShowUnchangedButton.style.visibility = 'hidden';
-    collapseExpandTagButton.style.visibility = 'hidden';
-    hideShowTableTitleButton.style.visibility = 'hidden';
 })
 
 convertTableButton.addEventListener('click', async () => {
     makeTable(convertXliff(fileContents1, fileContents2));
-    // createDownloadLink(filenames2, fileContents2);
 
     collapseExpandTagButton.style.visibility = 'visible';
     hideShowTableTitleButton.style.visibility = 'visible';
-    hideShowUnchangedButton.value = '隐藏未更改句段';
     collapseExpandTagButton.value = '折叠标签';
     hideShowTableTitleButton.value = '隐藏表格标题';
 
@@ -75,15 +69,15 @@ convertTableButton.addEventListener('click', async () => {
     if (condition) {
         markDiff();
         hideShowUnchangedButton.style.visibility = 'visible';
-        collapseExpandTagButton.style.visibility = 'visible';
-        hideShowTableTitleButton.style.visibility = 'visible';
+        hideShowUnchangedButton.value = '隐藏未更改句段';
     }
+    hideShowUnchangedContent();
     condition = false;
 
 }, false);
 
 selectTableButton.addEventListener('click', function(e) {
-    showOnlyTable();
+    selectTableContent();
 });
 
 hideShowUnchangedButton.addEventListener('click', function (e) {
@@ -91,39 +85,7 @@ hideShowUnchangedButton.addEventListener('click', function (e) {
 });
 
 collapseExpandTagButton.addEventListener('click', function (e) {
-    let tagTds = document.querySelectorAll('.tag');
-
-    // get all td elements with the 'ph' class
-    let phTds = document.querySelectorAll('.ph');
-
-    // loop through each td element with the 'tag' class
-    for (let td of tagTds) {
-        // if the td element is visible
-        if (td.style.display !== 'none') {
-            // hide it
-            td.style.display = 'none';
-        } else {
-            // show it
-            td.style.display = '';
-        }
-    }
-
-    // loop through each td element with the 'ph' class
-    for (let td of phTds) {
-        // if the td element is visible
-        if (td.style.display == 'none') {
-            // hide it
-            td.style.display = '';
-        } else {
-            // show it
-            td.style.display = 'none';
-        }
-    }
-    if (collapseExpandTagButton.value == '折叠标签') {
-        collapseExpandTagButton.value = '展开标签';
-    } else {
-        collapseExpandTagButton.value = '折叠标签';
-    }
+    hideShowTag();
 });
 
 hideShowTableTitleButton.addEventListener('click', function(e) {
@@ -307,6 +269,42 @@ function hideShowUnchangedContent() {
     }
 }
 
+function hideShowTag() {
+    let tagTds = document.querySelectorAll('.tag');
+
+    // get all td elements with the 'ph' class
+    let phTds = document.querySelectorAll('.ph');
+
+    // loop through each td element with the 'tag' class
+    for (let td of tagTds) {
+        // if the td element is visible
+        if (td.style.display !== 'none') {
+            // hide it
+            td.style.display = 'none';
+        } else {
+            // show it
+            td.style.display = '';
+        }
+    }
+
+    // loop through each td element with the 'ph' class
+    for (let td of phTds) {
+        // if the td element is visible
+        if (td.style.display == 'none') {
+            // hide it
+            td.style.display = '';
+        } else {
+            // show it
+            td.style.display = 'none';
+        }
+    }
+    if (collapseExpandTagButton.value == '折叠标签') {
+        collapseExpandTagButton.value = '展开标签';
+    } else {
+        collapseExpandTagButton.value = '折叠标签';
+    }
+}
+
 function hideShowTableTitle() {
     let rows = document.querySelectorAll('tr');
 
@@ -333,13 +331,12 @@ function hideShowTableTitle() {
     }
 }
 
-function showOnlyTable() {
-    hideShowUnchangedContent();
+function selectTableContent() {
     hideShowTableTitle();
+
     if (diffVisibility == 'show') {
         hideShowUnchangedContent();
     }  
-    
     if (tagVisibility == 'show') {
         hideShowTableTitle();
     }
