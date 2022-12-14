@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta content="text/html" ; charset="UTF-8" />
+    <title>Langlink 对比报告</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/langlink_diff.css?v=2.1"/>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div id="header-wrapper">
+                <h1>对比报告</h1>
+            </div>
+            <div id="return-home-wrapper">
+                <a href="index.html" id="return-home">返回主页</a>
+            </div>
+        </div>
+        <div id="main-content" class="main"> 
+            <div id="filename-header-wrapper">
+                <h2 id="filename-header1" class="flex-display">文件 1</h2>
+                <h2 id="filename-header2" class="flex-display">文件 2</h2>
+            </div>
+            <div id="upload-wrapper" class="main">
+                <form id="upload1" enctype="multipart/form-data" class="flex-display">
+                    <label for="upload-input1" id="upload-filename1">点击上传文件</label>
+                    <input id="upload-input1" name="uploadInput1" type="file" multiple>
+                </form>
+                <form id="upload2" enctype="multipart/form-data" class="flex-display">
+                    <label for="upload-input2" id="upload-filename2">点击上传文件</label>
+                    <input id="upload-input2" name="uploadInput2" type="file" multiple>
+                </form>
+            </div>
+            <div class="button-wrapper">
+                <input type="button" id="convert-table-button" class="button" value="转换成表格">
+                <input type="button" id="mark-diff-button" class="button" value="标记不同">
+                <input type="button" id="copy-content" class="button" value="复制对比结果">
+            </div>
+            <div id="diff-toggle-area">
+                <input type="button" id="collapse-expand-tag" class="toggle-button" value="折叠标签">
+                <input type="button" id="hide-show-unchanged" class="toggle-button" value="隐藏未更改句段">
+            </div>
+        </div>
+        <div id="diff-result">
+            <table id="diff-result-table"></table>
+        </div>
+    </div>
+    <script src="js/langlink_diff.js?v=2.1" type="module"></script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ import diff_match_patch from './modules/diff_match_patch/diff_match_patch.js';
 
 (function () {
 
-const uploadfilename = document.getElementById('upload-filename');
+const uploadFilename = document.getElementById('upload-filename');
 const uploadFile = document.getElementById('upload-input');
 const downloadList = document.getElementById('download-list');
 const convertTableButton = document.getElementById('convert-table-button');
@@ -32,11 +32,14 @@ let newFileContents = [];
 
 uploadFile.addEventListener('change', function(e) {
     oldFiles = e.target.files;
+    
+    oldFilenames.length = 0;
     for (let file of oldFiles) {
         oldFilenames.push(file.name);
     }
-    uploadfilename.innerHTML = Array.from(oldFilenames).join('<br>');
+    uploadFilename.innerHTML = Array.from(oldFilenames).join('<br>');
 
+    oldFileContents.length = 0;
     readFileContent();
     
     hideShowUnchangedButton.style.visibility = 'hidden';

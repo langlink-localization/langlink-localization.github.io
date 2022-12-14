@@ -1,0 +1,99 @@
+#header {
+    text-align: center;
+    position: relative;
+    top: 2.5rem;
+}
+
+#main-content {
+    position: relative;
+    top: 3rem;
+}
+
+.main {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+#filename-header-wrapper {
+    display: flex;
+    text-align: center;
+}
+
+#filename-header1, #filename-header2 {
+    flex: 1;
+}
+
+#upload-input1, #upload-input2 {
+    display: none;
+}
+
+#upload-wrapper {
+    display: flex;
+}
+
+#upload1, #upload2 {
+    flex: 1;
+    padding: 1.5rem;
+    background: #eee;
+    border-color: #ddd;
+    border-style: dashed;
+    text-align: center;
+    width: 100%;
+}
+
+.button-wrapper {
+    text-align: left;
+}
+
+
+.button {
+    height: 2rem;
+    width: auto;
+}
+
+#collapse-expand-tag {
+    visibility: hidden;
+}
+
+#hide-show-unchanged {
+    visibility: hidden;
+}
+
+#diff-result {
+    position: relative;
+    top: 4rem;
+}
+
+#diff-result-table tr, #diff-result-table td {
+    border: 0.1rem solid;
+    min-width: 2.5rem;
+    max-width: 30rem;
+    word-wrap: break-word;
+}
+
+.delete1 {
+    color: blue;
+}
+
+.insert1 {
+    color: red;
+    display: none;
+}
+
+.delete2 {
+    color: blue;
+    display: none;
+}
+
+.insert2 {
+    color: red;
+}
+
+.tag {
+    color: grey;
+}
+
+.ph {
+    color: grey;
+}

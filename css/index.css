@@ -1,0 +1,40 @@
+#header {
+    text-align: center;
+    position: relative;
+    top: 2.5rem;
+}
+
+#main-content {
+    position: relative;
+    top: 3rem;
+}
+
+.main {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.button {
+    height: 2rem;
+    width: auto;
+}
+
+#link-wrapper {
+    display: flex;
+    background: #eee;
+    border-color: #ddd;
+    border-style: dashed;
+    text-align: center;
+    height: auto;
+    padding: 1rem;
+    position: relative;
+    top: 5rem;
+}
+
+.flex-display {
+    flex: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+}
