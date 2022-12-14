@@ -8,10 +8,10 @@ const uploadFile1 = document.getElementById('upload-input1');
 const uploadFile2 = document.getElementById('upload-input2');
 const convertTableButton = document.getElementById('convert-table-button');
 const markDiffButton = document.getElementById('mark-diff-button');
-const openNewTab = document.getElementById('open-new-tab');
+const selectTableButton = document.getElementById('select-table');
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
 const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
-const hideShowTableTitle = document.getElementById('hide-show-title');
+const hideShowTableTitleButton = document.getElementById('hide-show-title');
 const diffResultTable = document.getElementById('diff-result-table');
 
 let files1;
@@ -38,7 +38,7 @@ uploadFile1.addEventListener('change', function(e) {
     
     hideShowUnchangedButton.style.visibility = 'hidden';
     collapseExpandTagButton.style.visibility = 'hidden';
-    hideShowTableTitle.style.visibility = 'hidden';
+    hideShowTableTitleButton.style.visibility = 'hidden';
 })
 
 uploadFile2.addEventListener('change', function(e) {
@@ -55,7 +55,7 @@ uploadFile2.addEventListener('change', function(e) {
     
     hideShowUnchangedButton.style.visibility = 'hidden';
     collapseExpandTagButton.style.visibility = 'hidden';
-    hideShowTableTitle.style.visibility = 'hidden';
+    hideShowTableTitleButton.style.visibility = 'hidden';
 })
 
 convertTableButton.addEventListener('click', async () => {
@@ -63,10 +63,10 @@ convertTableButton.addEventListener('click', async () => {
     // createDownloadLink(filenames2, fileContents2);
 
     collapseExpandTagButton.style.visibility = 'visible';
-    hideShowTableTitle.style.visibility = 'visible';
+    hideShowTableTitleButton.style.visibility = 'visible';
     hideShowUnchangedButton.value = '隐藏未更改句段';
     collapseExpandTagButton.value = '折叠标签';
-    hideShowTableTitle.value = '隐藏表格标题';
+    hideShowTableTitleButton.value = '隐藏表格标题';
 
     markTag();
 
@@ -79,41 +79,18 @@ markDiffButton.addEventListener('click', function(e) {
         markDiff();
         hideShowUnchangedButton.style.visibility = 'visible';
         collapseExpandTagButton.style.visibility = 'visible';
-        hideShowTableTitle.style.visibility = 'visible';
+        hideShowTableTitleButton.style.visibility = 'visible';
     }
 
     condition = false;
 }, false);
 
-openNewTab.addEventListener('click', function(e) {
-    openNewTabWithTable();
+selectTableButton.addEventListener('click', function(e) {
+    showOnlyTable();
 });
 
 hideShowUnchangedButton.addEventListener('click', function (e) {
-    let rows = document.querySelectorAll('tr');
-    for (let row of rows) {
-        if (row.cells[1].innerText == '原文' || row.cells[1].innerText == '') continue;
-        let cells = row.querySelectorAll('td');
-        let hasDeleteOrInsertClass = false;
-        for (let cell of cells) {
-            let spans = cell.querySelectorAll('span');
-            for (let span of spans) {
-                if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
-                    hasDeleteOrInsertClass = true;
-                    break;
-                }
-            }
-        }
-        if (!hasDeleteOrInsertClass) {
-            if (row.style.display !== 'none') {
-                row.style.display = 'none';
-                hideShowUnchangedButton.value = '显示所有句段';
-            } else {
-                row.style.display = '';
-                hideShowUnchangedButton.value = '隐藏未更改句段';
-            }
-        }
-    }
+    hideShowUnchangedContent();
 });
 
 collapseExpandTagButton.addEventListener('click', function (e) {
@@ -152,8 +129,8 @@ collapseExpandTagButton.addEventListener('click', function (e) {
     }
 });
 
-hideShowTableTitle.addEventListener('click', function(e) {
-    hideTableTitle();
+hideShowTableTitleButton.addEventListener('click', function(e) {
+    hideShowTableTitle();
 });
 
 function readFileContent1() {
@@ -236,16 +213,16 @@ function makeTable(jsons) {
     nameString.forEach(value => {
         let nameCell = document.createElement('td');
         nameCell.innerText = value;
-        nameCell.setAttribute('style', 'word-break: normal;');
-        nameCell.setAttribute('class', 'no-copy-text');
+        nameCell.style.display = 'word-break: normal';
+        nameCell.classList.add('no-copy-text');
         fileHeader.appendChild(nameCell);
     })
     let emptyArray = ['', ''];
     emptyArray.forEach(value => {
         let emptyCell = document.createElement('td');
         emptyCell.innerText = value;
-        emptyCell.setAttribute('style', 'display: none;');
-        emptyCell.setAttribute('class', 'no-copy-text');
+        emptyCell.style.display = 'none';
+        emptyCell.classList.add('no-copy-text');
         fileHeader.appendChild(emptyCell);
     })
 
@@ -256,7 +233,7 @@ function makeTable(jsons) {
     headers.forEach(header => {
         let cell = document.createElement('td');
         cell.innerText = header;
-        cell.setAttribute('class', 'no-copy-text');
+        cell.classList.add('no-copy-text');
         headerRow.appendChild(cell);
     });
 
@@ -268,7 +245,7 @@ function makeTable(jsons) {
         Object.values(value).forEach(val => {
             let cell = document.createElement('td');
             cell.innerText = val;
-            cell.setAttribute('class', 'copy-text');
+            cell.classList.add('copy-text');
             row.appendChild(cell);
         });
     });
@@ -303,7 +280,34 @@ function markDiff() {
     }
 }
 
-function hideTableTitle() {
+function hideShowUnchangedContent() {
+    let rows = document.querySelectorAll('tr');
+    for (let row of rows) {
+        if (row.cells[1].innerText == '原文' || row.cells[1].innerText == '') continue;
+        let cells = row.querySelectorAll('td');
+        let hasDeleteOrInsertClass = false;
+        for (let cell of cells) {
+            let spans = cell.querySelectorAll('span');
+            for (let span of spans) {
+                if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
+                    hasDeleteOrInsertClass = true;
+                    break;
+                }
+            }
+        }
+        if (!hasDeleteOrInsertClass) {
+            if (row.style.display !== 'none') {
+                row.style.display = 'none';
+                hideShowUnchangedButton.value = '显示所有句段';
+            } else {
+                row.style.display = '';
+                hideShowUnchangedButton.value = '隐藏未更改句段';
+            }
+        }
+    }
+}
+
+function hideShowTableTitle() {
     let rows = document.querySelectorAll('tr');
     for (let row of rows) {
         let cells = row.querySelectorAll('td');
@@ -317,30 +321,23 @@ function hideTableTitle() {
         if (hasNoCopyTextClass) {
             if (row.style.display !== 'none') {
                 row.style.display = 'none';
-                hideShowTableTitle.value = '显示表格标题';
+                hideShowTableTitleButton.value = '显示表格标题';
             } else {
                 row.style.display = '';
-                hideShowTableTitle.value = '隐藏表格标题';
+                hideShowTableTitleButton.value = '隐藏表格标题';
             }
         }
     }
 }
 
-function openNewTabWithTable() {
-    let newPage = window.open();
-    let counter = diffResultTable.rows.length;
-
-    newPage.document.write('<table>');
-
-    for (let i = 0; i <counter; i++){
-        if (diffResultTable.rows[i].cell[0].classList.contains == 'no-copy-text') continue;
-            newPage.document.write('<tr>');
-            diffResultTable.rows[i].cells.forEach(cell => {
-                newPage.document.write(`<td>${cell.innerHTML}</td>`);
-            })
-            newPage.document.write('</td>')
-    }
-    newPage.document.write('</table>');
+function showOnlyTable() {
+    hideShowUnchangedContent();
+    hideShowTableTitle();
+    let range = document.createRange();
+    range.selectNodeContents(diffResultTable);
+    let selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
 }
 
 })();
