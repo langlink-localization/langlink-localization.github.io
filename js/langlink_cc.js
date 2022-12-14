@@ -7,7 +7,6 @@ const uploadFilename = document.getElementById('upload-filename');
 const uploadFile = document.getElementById('upload-input');
 const downloadList = document.getElementById('download-list');
 const convertTableButton = document.getElementById('convert-table-button');
-const markDiffButton = document.getElementById('mark-diff-button');
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
 const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
 const diffResultTable = document.getElementById('diff-result-table');
@@ -65,17 +64,13 @@ convertTableButton.addEventListener('click', async () => {
     markTag();
 
     condition = true;
-
-}, false);
-
-markDiffButton.addEventListener('click', () => {
     if (condition) {
         markDiff();
         hideShowUnchangedButton.style.visibility = 'visible';
         collapseExpandTagButton.style.visibility = 'visible';
     }
-
     condition = false;
+
 }, false);
 
 hideShowUnchangedButton.addEventListener('click', function () {

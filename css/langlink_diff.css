@@ -6,7 +6,7 @@
 
 #main-content {
     position: relative;
-    top: 3rem;
+    top: 4rem;
 }
 
 .main {
@@ -22,6 +22,8 @@
 
 #filename-header1, #filename-header2 {
     flex: 1;
+    height: auto;
+    margin: 0 auto;
 }
 
 #upload-input1, #upload-input2 {
@@ -34,16 +36,20 @@
 
 #upload1, #upload2 {
     flex: 1;
-    padding: 1.5rem;
     background: #eee;
     border-color: #ddd;
     border-style: dashed;
     text-align: center;
-    width: 100%;
+    overflow: auto;
+}
+
+#upload-filename1, #upload-filename2 {
+    display: block;
+    padding: 2rem;
 }
 
 .button-wrapper {
-    text-align: left;
+    text-align: center;
 }
 
 
@@ -74,6 +80,10 @@
     min-width: 2.5rem;
     max-width: 30rem;
     word-wrap: break-word;
+}
+
+#diff-toggle-area {
+    text-align: center;
 }
 
 .delete1 {

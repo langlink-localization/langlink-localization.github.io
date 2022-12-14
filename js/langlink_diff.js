@@ -7,7 +7,6 @@ const uploadFilename2 = document.getElementById('upload-filename2');
 const uploadFile1 = document.getElementById('upload-input1');
 const uploadFile2 = document.getElementById('upload-input2');
 const convertTableButton = document.getElementById('convert-table-button');
-const markDiffButton = document.getElementById('mark-diff-button');
 const selectTableButton = document.getElementById('select-table');
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
 const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
@@ -23,6 +22,8 @@ let filenames1 = [];
 let filenames2 = [];
 let fileContents1 = [];
 let fileContents2 = [];
+let diffVisibility;
+let tagVisibility;
 
 uploadFile1.addEventListener('change', function(e) {
     files1 = e.target.files;
@@ -71,18 +72,14 @@ convertTableButton.addEventListener('click', async () => {
     markTag();
 
     condition = true;
-
-}, false);
-
-markDiffButton.addEventListener('click', function(e) {
     if (condition) {
         markDiff();
         hideShowUnchangedButton.style.visibility = 'visible';
         collapseExpandTagButton.style.visibility = 'visible';
         hideShowTableTitleButton.style.visibility = 'visible';
     }
-
     condition = false;
+
 }, false);
 
 selectTableButton.addEventListener('click', function(e) {
@@ -282,6 +279,7 @@ function markDiff() {
 
 function hideShowUnchangedContent() {
     let rows = document.querySelectorAll('tr');
+    
     for (let row of rows) {
         if (row.cells[1].innerText == '原文' || row.cells[1].innerText == '') continue;
         let cells = row.querySelectorAll('td');
@@ -299,9 +297,11 @@ function hideShowUnchangedContent() {
             if (row.style.display !== 'none') {
                 row.style.display = 'none';
                 hideShowUnchangedButton.value = '显示所有句段';
+                diffVisibility = 'hide';
             } else {
                 row.style.display = '';
                 hideShowUnchangedButton.value = '隐藏未更改句段';
+                diffVisibility = 'show';
             }
         }
     }
@@ -309,6 +309,7 @@ function hideShowUnchangedContent() {
 
 function hideShowTableTitle() {
     let rows = document.querySelectorAll('tr');
+
     for (let row of rows) {
         let cells = row.querySelectorAll('td');
         let hasNoCopyTextClass = false;
@@ -322,9 +323,11 @@ function hideShowTableTitle() {
             if (row.style.display !== 'none') {
                 row.style.display = 'none';
                 hideShowTableTitleButton.value = '显示表格标题';
+                tagVisibility = 'hide';
             } else {
                 row.style.display = '';
                 hideShowTableTitleButton.value = '隐藏表格标题';
+                tagVisibility = 'show';
             }
         }
     }
@@ -333,6 +336,14 @@ function hideShowTableTitle() {
 function showOnlyTable() {
     hideShowUnchangedContent();
     hideShowTableTitle();
+    if (diffVisibility == 'show') {
+        hideShowUnchangedContent();
+    }  
+    
+    if (tagVisibility == 'show') {
+        hideShowTableTitle();
+    }
+
     let range = document.createRange();
     range.selectNodeContents(diffResultTable);
     let selection = window.getSelection();
