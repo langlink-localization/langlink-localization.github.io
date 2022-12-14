@@ -8,9 +8,10 @@ const uploadFile1 = document.getElementById('upload-input1');
 const uploadFile2 = document.getElementById('upload-input2');
 const convertTableButton = document.getElementById('convert-table-button');
 const markDiffButton = document.getElementById('mark-diff-button');
-const copyContentButton = document.getElementById('copy-content');
+const selectContentButton = document.getElementById('select-content');
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
 const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
+const hideShowTableTitle = document.getElementById('hide-show-title');
 const diffResultTable = document.getElementById('diff-result-table');
 
 let files1;
@@ -37,6 +38,7 @@ uploadFile1.addEventListener('change', function(e) {
     
     hideShowUnchangedButton.style.visibility = 'hidden';
     collapseExpandTagButton.style.visibility = 'hidden';
+    hideShowTableTitle.style.visibility = 'hidden';
 })
 
 uploadFile2.addEventListener('change', function(e) {
@@ -53,6 +55,7 @@ uploadFile2.addEventListener('change', function(e) {
     
     hideShowUnchangedButton.style.visibility = 'hidden';
     collapseExpandTagButton.style.visibility = 'hidden';
+    hideShowTableTitle.style.visibility = 'hidden';
 })
 
 convertTableButton.addEventListener('click', async () => {
@@ -60,8 +63,10 @@ convertTableButton.addEventListener('click', async () => {
     // createDownloadLink(filenames2, fileContents2);
 
     collapseExpandTagButton.style.visibility = 'visible';
+    hideShowTableTitle.style.visibility = 'visible';
     hideShowUnchangedButton.value = '隐藏未更改句段';
     collapseExpandTagButton.value = '折叠标签';
+    hideShowTableTitle.value = '隐藏表格标题';
 
     markTag();
 
@@ -74,19 +79,25 @@ markDiffButton.addEventListener('click', function(e) {
         markDiff();
         hideShowUnchangedButton.style.visibility = 'visible';
         collapseExpandTagButton.style.visibility = 'visible';
+        hideShowTableTitle.style.visibility = 'visible';
     }
 
     condition = false;
 }, false);
 
-copyContentButton.addEventListener('click', function(e) {
-    copyContents();
-})
+selectContentButton.addEventListener('click', function(e) {
+    selectContents();
+});
+
+selectContentButton.addEventListener('copy', function(e) {
+    e.clipboardData.setData('text/plain', window.getSelection().toString);
+    e.preventDefault();
+});
 
 hideShowUnchangedButton.addEventListener('click', function (e) {
     let rows = document.querySelectorAll('tr');
     for (let row of rows) {
-        if (row.cells[1].innerText == '原文' || row.cells[2].innerText == '') continue;
+        if (row.cells[1].innerText == '原文' || row.cells[1].innerText == '') continue;
         let cells = row.querySelectorAll('td');
         let hasDeleteOrInsertClass = false;
         for (let cell of cells) {
@@ -144,6 +155,10 @@ collapseExpandTagButton.addEventListener('click', function (e) {
     } else {
         collapseExpandTagButton.value = '折叠标签';
     }
+});
+
+hideShowTableTitle.addEventListener('click', function(e) {
+    hideTableTitle();
 });
 
 function readFileContent1() {
@@ -246,6 +261,7 @@ function makeTable(jsons) {
     headers.forEach(header => {
         let cell = document.createElement('td');
         cell.innerText = header;
+        cell.setAttribute('class', 'no-copy-text');
         headerRow.appendChild(cell);
     });
 
@@ -292,21 +308,39 @@ function markDiff() {
     }
 }
 
-function copyContents() {
-    let copiedText = [];
-    let counter = diffResultTable.rows.length;
-    
-    for (let i = 0; i < counter; i++){
-        let row = diffResultTable.rows[i];
-        if (row.classList.contains('no-copy-text')) {
-            continue;
-        } else if (row.classList.contains('copy-text')){
-            copiedText.push(row.cels[1].textContent + '\t' 
-                            + row.cells[2].textContent + '\t' 
-                            + row.cells[3].textContent);
+function hideTableTitle() {
+    let rows = document.querySelectorAll('tr');
+    for (let row of rows) {
+        let cells = row.querySelectorAll('td');
+        let hasNoCopyTextClass = false;
+        for (let cell of cells) {
+            if (cell.classList.contains('no-copy-text')) {
+                hasNoCopyTextClass = true;
+                break;
+            }
+        }
+        if (hasNoCopyTextClass) {
+            if (row.style.display !== 'none') {
+                row.style.display = 'none';
+                hideShowTableTitle.value = '显示表格标题';
+            } else {
+                row.style.display = '';
+                hideShowTableTitle.value = '隐藏表格标题';
+            }
         }
     }
-    navigator.clipboard.writeText(copiedText.join('\n'));
+}
+
+function selectContents() {
+    let selection = window.getSelection();
+
+    for (let row of diffResultTable.rows) {
+        for (let cell of row.cells) {
+            let range = new Range();
+            range.selectNodeContents(cell);
+            selection.addRange(range);
+        }
+    }
 }
 
 })();

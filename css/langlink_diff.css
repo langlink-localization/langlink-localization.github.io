@@ -60,6 +60,10 @@
     visibility: hidden;
 }
 
+#hide-show-title {
+    visibility: hidden;
+}
+
 #diff-result {
     position: relative;
     top: 4rem;
