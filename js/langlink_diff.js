@@ -8,7 +8,7 @@ const uploadFile1 = document.getElementById('upload-input1');
 const uploadFile2 = document.getElementById('upload-input2');
 const convertTableButton = document.getElementById('convert-table-button');
 const markDiffButton = document.getElementById('mark-diff-button');
-const selectContentButton = document.getElementById('select-content');
+const openNewTab = document.getElementById('open-new-tab');
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
 const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
 const hideShowTableTitle = document.getElementById('hide-show-title');
@@ -85,13 +85,8 @@ markDiffButton.addEventListener('click', function(e) {
     condition = false;
 }, false);
 
-selectContentButton.addEventListener('click', function(e) {
-    selectContents();
-});
-
-selectContentButton.addEventListener('copy', function(e) {
-    e.clipboardData.setData('text/plain', window.getSelection().toString);
-    e.preventDefault();
+openNewTab.addEventListener('click', function(e) {
+    openNewTab();
 });
 
 hideShowUnchangedButton.addEventListener('click', function (e) {
@@ -331,16 +326,21 @@ function hideTableTitle() {
     }
 }
 
-function selectContents() {
-    let selection = window.getSelection();
+function openNewTab() {
+    let newPage = window.open();
+    let counter = diffResultTable.rows.length;
 
-    for (let row of diffResultTable.rows) {
-        for (let cell of row.cells) {
-            let range = new Range();
-            range.selectNodeContents(cell);
-            selection.addRange(range);
-        }
+    newPage.document.write('<table>');
+
+    for (let i = 0; i <counter; i++){
+        if (diffResultTable.rows[i].cell[0].classList.contains == 'no-copy-text') continue;
+            newPage.document.write('<tr>');
+            diffResultTable.rows[i].cells.forEach(cell => {
+                newPage.document.write(`<td>${cell.innerHTML}</td>`);
+            })
+            newPage.document.write('</td>')
     }
+    newPage.document.write('</table>');
 }
 
 })();
