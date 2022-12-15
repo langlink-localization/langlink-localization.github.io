@@ -23,7 +23,7 @@ let filenames2 = [];
 let fileContents1 = [];
 let fileContents2 = [];
 let diffVisibility;
-let tagVisibility;
+let titleVisibility;
 
 uploadFile1.addEventListener('change', function(e) {
     files1 = e.target.files;
@@ -305,29 +305,23 @@ function hideShowTag() {
 }
 
 function hideShowTableTitle() {
-    let rows = document.querySelectorAll('tr');
+    let cells = document.querySelectorAll('th');
+    let headHidden = true;
 
-    for (let row of rows) {
-        let cells = row.querySelectorAll('td');
-        let hasNoCopyTextClass = false;
-        for (let cell of cells) {
-            if (cell.classList.contains('no-copy-text')) {
-                hasNoCopyTextClass = true;
-                break;
-            }
-        }
-        if (hasNoCopyTextClass) {
-            if (row.style.display !== 'none') {
-                row.style.display = 'none';
+    for (let cell of cells) {
+        if (headHidden) {
+            if (cell.style.display !== 'none') {
+                cell.style.display = 'none';
                 hideShowTableTitleButton.value = '显示表格标题';
-                tagVisibility = 'hide';
+                titleVisibility = 'hide';
             } else {
-                row.style.display = '';
+                cell.style.display = '';
                 hideShowTableTitleButton.value = '隐藏表格标题';
-                tagVisibility = 'show';
+                titleVisibility = 'show';
             }
         }
     }
+    headHidden = !headHidden;
 }
 
 function selectTableContent() {
@@ -336,7 +330,7 @@ function selectTableContent() {
     if (diffVisibility == 'show') {
         hideShowUnchangedContent();
     }  
-    if (tagVisibility == 'show') {
+    if (titleVisibility == 'show') {
         hideShowTableTitle();
     }
 
