@@ -23,7 +23,7 @@
 #filename-header1, #filename-header2 {
     flex: 1;
     height: auto;
-    margin: 0 auto;
+    margin: 0.5rem auto;
 }
 
 #upload-input1, #upload-input2 {
@@ -41,6 +41,7 @@
     border-style: dashed;
     text-align: center;
     overflow: auto;
+    margin: 0.5rem;
 }
 
 #upload-filename1, #upload-filename2 {
@@ -71,7 +72,7 @@
 
 #diff-result {
     position: relative;
-    top: 4rem;
+    top: 4.5rem;
 }
 
 #diff-result-table {
@@ -79,11 +80,11 @@
 }
 
 #diff-result-table td {
-    border: solid black;
+    border: 2px solid black;
     min-width: 2.4rem;
-    max-width: 40rem;
+    max-width: 400px;
     word-wrap: break-word;
-    padding: 0.6rem;
+    padding: 0.5rem;
 }
 
 #diff-result-table td:nth-of-type(1) {

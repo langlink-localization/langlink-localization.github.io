@@ -155,7 +155,6 @@ function convertXliff(xliff1, xliff2) {
         }
         jsonArray.push(json);
     }
-    console.log(`jsonArray length: ${jsonArray.length}`)
     return jsonArray;
 }
 

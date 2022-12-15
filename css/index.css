@@ -28,6 +28,7 @@
     overflow: auto;
     position: relative;
     top: 5rem;
+    margin: 3rem;
 }
 
 .tool-name {

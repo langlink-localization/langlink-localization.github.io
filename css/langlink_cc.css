@@ -7,6 +7,7 @@
 #main-content {
     position: relative;
     top: 4rem;
+    overflow: auto;
 }
 
 .main {
@@ -15,22 +16,58 @@
     width: 100%;
 }
 
+#upload-header-wrapper {
+    display: flex;
+    text-align: left;
+}
+
+#upload-header1 {
+    flex: 1;
+    margin-right: 1rem;
+}
+#upload-header2 {
+    flex: 1;
+    margin-left: 1rem;
+}
+
+#upload-wrapper {
+    display: flex;
+    position: relative;
+    top: -1rem;
+}
+
 #upload-input {
     display: none;
 }
 
-#upload {
+#upload-form {
+    flex: 1;
+    margin-right: 1rem;
     display: grid;
     background: #eee;
     border-color: #ddd;
     border-style: dashed;
-    text-align: left;
+    text-align: center;
     width: 100%;
 }
 
 #upload-filename {
     display: block;
-    padding: 1rem 1rem 1rem 0;
+    padding: 1rem;
+}
+
+#download-filename {
+    flex: 1;
+    margin-left: 1rem;
+    background: #eee;
+    border-color: #ddd;
+    border-style: dashed;
+    text-align: center;
+    width: 100%;
+}
+
+#download-hint {
+    padding: 0 0 0 0;
 }
 
 .button-wrapper {
@@ -42,20 +79,10 @@
     border-bottom: 0.15rem solid;
 }
 
-#download-filename {
-    background: #eee;
-    border-color: #ddd;
-    border-style: dashed;
-    text-align: left;
-    width: 100%;
-}
-
-#download-hint {
-    padding: 0 0 0 0;
-}
-
 #convert-option {
     width: 100%;
+    position: relative;
+    top: -1rem;
 }
 
 .button {
@@ -81,11 +108,11 @@
 }
 
 #diff-result-table td {
-    border: solid black;
+    border: 2px solid black;
     min-width: 2.4rem;
-    max-width: 40rem;
+    max-width: 400px;
     word-wrap: break-word;
-    padding: 0.6rem;
+    padding: 0.5rem;
 }
 
 #diff-result-table td:nth-of-type(1) {

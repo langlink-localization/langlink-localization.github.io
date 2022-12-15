@@ -5,7 +5,7 @@
     <meta content="text/html" ; charset="UTF-8" />
     <title>Langlink 简繁转换</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/langlink_cc.css?v=2.7"/>
+    <link rel="stylesheet" href="./css/langlink_cc.css?v=3.0"/>
 </head>
 
 <body>
@@ -15,14 +15,23 @@
                 <h1>简繁转换</h1>
             </div>
             <div id="return-home-wrapper">
-                <a href="index.html?v=2.2" id="return-home">返回主页</a>
+                <a href="index.html" id="return-home">返回主页</a>
             </div>
         </div>
         <div id="main-content" class="main">
-            <form id="upload" enctype="multipart/form-data">
-                <label for="upload-input" id="upload-filename">点击上传文件</label>
-                <input id="upload-input" name="uploadInput" type="file" multiple>
-            </form>
+            <div id="upload-header-wrapper">
+                <h3 id="upload-header1" class="flex-display">点击上传文件</h3>
+                <h3 id="upload-header2" class="flex-display">点击链接下载转换后文件</h3>
+            </div>
+            <div id="upload-wrapper">
+                <form id="upload-form" enctype="multipart/form-data" class="flex-display">
+                    <label for="upload-input" id="upload-filename">上传</label>
+                    <input id="upload-input" name="uploadInput" type="file" multiple>
+                </form>
+                <div id="download-filename" class="flex-display">
+                    <ul id="download-list"></ul>
+                </div>
+            </div>
             <div id="convert-option" class="main">
                     <div id="orig-type.option" class="option">
                         原文
@@ -55,11 +64,11 @@
                 <div class="button-wrapper">
                     <input type="button" id="convert-table-button" class="button" value="简繁转换并展示表格">
                 </div>
-                <div id="download-filename">
+                <!-- <div id="download-filename">
                     <p id="download-hint">点击文件名下载转换后的文件：</p>
                     <ul id="download-list">
                     </ul>
-                </div>
+                </div> -->
             </div>
             <div id="diff-toggle-area">
                 <input type="button" id="collapse-expand-tag" class="toggle-button" value="折叠标签">
@@ -70,8 +79,8 @@
             <table id="diff-result-table"></table>
         </div>
     </div>
-    <script src="js/langlink_cc.js?v=2.5" type="module"></script>
-    <script src="js/modules/ace/ace.js?v=2.2" type="text/javascript" charset="utf-8"></script>
+    <script src="js/langlink_cc.js?v=3.0" type="module"></script>
+    <script src="js/modules/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 </html>
