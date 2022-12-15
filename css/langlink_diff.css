@@ -77,6 +77,16 @@
 
 #diff-result-table {
     border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#diff-result-table th {
+    border: 2px solid black;
+    min-width: 2.4rem;
+    max-width: 35rem;
+    word-wrap: break-word;
+    padding: 0.5rem;
+    background-color: cadetblue;
 }
 
 #diff-result-table td {

@@ -169,27 +169,27 @@ function makeTable(jsons) {
     diffResultTable.append(fileHeader);
     let nameString = [`file${i+1}`,``,`${filenames1[i]}`,`${filenames2[i]}`];
     nameString.forEach(value => {
-        let nameCell = document.createElement('td');
+        let nameCell = document.createElement('th');
         nameCell.innerText = value;
         nameCell.style.display = 'word-break: normal';
         nameCell.classList.add('no-copy-text');
         fileHeader.appendChild(nameCell);
     })
-    let emptyArray = ['', ''];
-    emptyArray.forEach(value => {
-        let emptyCell = document.createElement('td');
-        emptyCell.innerText = value;
-        emptyCell.style.display = 'none';
-        emptyCell.classList.add('no-copy-text');
-        fileHeader.appendChild(emptyCell);
-    })
+    // let emptyArray = ['', ''];
+    // emptyArray.forEach(value => {
+    //     let emptyCell = document.createElement('td');
+    //     emptyCell.innerText = value;
+    //     emptyCell.style.display = 'none';
+    //     emptyCell.classList.add('no-copy-text');
+    //     fileHeader.appendChild(emptyCell);
+    // })
 
     // Create the table headers
     let headers = ['序号', '原文', '译文1', '译文2'];
     let headerRow = document.createElement('tr');
     diffResultTable.appendChild(headerRow);
     headers.forEach(header => {
-        let cell = document.createElement('td');
+        let cell = document.createElement('th');
         cell.innerText = header;
         cell.classList.add('no-copy-text');
         headerRow.appendChild(cell);

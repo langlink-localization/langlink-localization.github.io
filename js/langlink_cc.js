@@ -241,14 +241,14 @@ function makeTable(jsons, locale1, locale2) {
     diffResultTable.append(fileHeader);
     let nameString = [`file${i+1}`,`${oldFilenames[i]}`];
     nameString.forEach(value => {
-        let nameCell = document.createElement('td');
+        let nameCell = document.createElement('th');
         nameCell.setAttribute('style', 'word-break: normal;');
         nameCell.innerText = value;
         fileHeader.appendChild(nameCell);
     })
     let emptyArray = ['', ''];
     emptyArray.forEach(value => {
-        let emptyCell = document.createElement('td');
+        let emptyCell = document.createElement('th');
         emptyCell.innerText = value;
         emptyCell.setAttribute('style', 'display: none;');
         fileHeader.appendChild(emptyCell);
@@ -259,7 +259,7 @@ function makeTable(jsons, locale1, locale2) {
     let headerRow = document.createElement('tr');
     diffResultTable.appendChild(headerRow);
     headers.forEach(header => {
-        let cell = document.createElement('td');
+        let cell = document.createElement('th');
         cell.innerText = header;
         headerRow.appendChild(cell);
     });
