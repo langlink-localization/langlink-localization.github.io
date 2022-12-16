@@ -6,6 +6,10 @@ const uploadFilename1 = document.getElementById('upload-filename1');
 const uploadFilename2 = document.getElementById('upload-filename2');
 const uploadFile1 = document.getElementById('upload-input1');
 const uploadFile2 = document.getElementById('upload-input2');
+const upload1 = document.getElementById('upload1');
+const upload2 = document.getElementById('upload2');
+const hintText1 = document.getElementById('hint1');
+const hintText2 = document.getElementById('hint2');
 const convertTableButton = document.getElementById('convert-table-button');
 const selectTableButton = document.getElementById('select-table');
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
@@ -15,47 +19,85 @@ const diffResultTable = document.getElementById('diff-result-table');
 
 let files1;
 let files2;
-let counter1;
-let counter2;
-let condition = false;
-let filenames1 = [];
-let filenames2 = [];
+let fileArray1 = new Array();
+let fileArray2 = new Array();
 let fileContents1 = [];
 let fileContents2 = [];
+let condition = false;
 let diffVisibility;
 let titleVisibility;
 
-uploadFile1.addEventListener('change', function(e) {
+upload1.addEventListener('dragover', function(e) {
+    e.preventDefault();
+});
+
+upload1.addEventListener('drop', async function(e) {
+    e.preventDefault();
+
+    files1 = e.dataTransfer.files;
+    // let sortedFiles = Array.from(files1).sort((a, b) => a.name.localeCompare(b.name));
+    hintText1.style.display = 'none';
+
+    fileArray1.length = 0;
+    setFileArray(files1, fileArray1, uploadFilename1).then(() => {
+        for (let file of fileArray1) {
+            fileContents1.push(file[1]);
+        }
+        hideShowUnchangedButton.style.visibility = 'hidden';
+        collapseExpandTagButton.style.visibility = 'hidden';
+        hideShowTableTitleButton.style.visibility = 'hidden';
+    });
+});
+
+upload2.addEventListener('dragover', function(e) {
+    e.preventDefault();
+});
+
+upload2.addEventListener('drop', async function(e) {
+    e.preventDefault();
+    files2 = e.dataTransfer.files;
+    // let sortedFiles = Array.from(files2).sort((a, b) => a.name.localeCompare(b.name));
+    hintText2.style.display = 'none';
+
+    fileArray2.length = 0;
+    setFileArray(files2, fileArray2, uploadFilename2).then(() => {
+        for (let file of fileArray2) {
+            fileContents2.push(file[1]);
+        }
+    });
+});
+
+uploadFile1.addEventListener('change', async function(e) {
     files1 = e.target.files;
+    // let sortedFiles = Array.from(files1).sort((a, b) => a.name.localeCompare(b.name));
+    hintText1.style.display = 'none'
     
-    filenames1.length = 0;
-    for (let file of files1) {
-        filenames1.push(file.name);
-    }
-    uploadFilename1.innerHTML = Array.from(filenames1).join('<br>');
+    fileArray1.length = 0;
+    setFileArray(files1, fileArray1, uploadFilename1).then(() => {
+        for (let file of fileArray1) {
+            fileContents1.push(file[1]);
+        }
+        hideShowUnchangedButton.style.visibility = 'hidden';
+        collapseExpandTagButton.style.visibility = 'hidden';
+        hideShowTableTitleButton.style.visibility = 'hidden';
+    });
+});
 
-    fileContents1.length = 0;
-    readFileContent1();
-    
-    hideShowUnchangedButton.style.visibility = 'hidden';
-    collapseExpandTagButton.style.visibility = 'hidden';
-    hideShowTableTitleButton.style.visibility = 'hidden';
-})
-
-uploadFile2.addEventListener('change', function(e) {
+uploadFile2.addEventListener('change', async function(e) {
     files2 = e.target.files;
-    
-    filenames2.length = 0;
-    for (let file of files2) {
-        filenames2.push(file.name);
-    }
-    uploadFilename2.innerHTML = Array.from(filenames2).join('<br>');
+    // let sortedFiles = Array.from(files2).sort((a, b) => a.name.localeCompare(b.name));
+    hintText2.style.display = 'none';
 
-    fileContents2.length = 0;
-    readFileContent2();
-})
+    fileArray2.length = 0;
+    setFileArray(files2, fileArray2, uploadFilename2).then(() => {
+        for (let file of fileArray2) {
+            fileContents2.push(file[1]);
+        }
+    });
+});
 
-convertTableButton.addEventListener('click', async () => {
+convertTableButton.addEventListener('click', function(e) {
+    // arrangeFileList();
     makeTable(convertXliff(fileContents1, fileContents2));
 
     collapseExpandTagButton.style.visibility = 'visible';
@@ -74,7 +116,7 @@ convertTableButton.addEventListener('click', async () => {
     hideShowUnchangedContent();
     condition = false;
 
-}, false);
+});
 
 selectTableButton.addEventListener('click', function(e) {
     selectTableContent();
@@ -92,66 +134,64 @@ hideShowTableTitleButton.addEventListener('click', function(e) {
     hideShowTableTitle();
 });
 
-function readFileContent1() {
-    if (fileContents1.length == 0) {
-        counter1 = files1.length;
-
-        for (let i = 0; i < counter1; i++) {
-            let reader1 = new FileReader();
-            reader1.onload = function(e) {
-                fileContents1.push(reader1.result);
-            };
-            reader1.readAsText(files1[i]);
-        }
-        return fileContents1;
+async function setFileArray(files, fileArray, uploadFilename) {
+    uploadFilename.innerHTML = '';
+    for (let file of files) {
+      let fileReader = new FileReader();
+      fileReader.readAsText(file);
+  
+      let fileContent = await new Promise((resolve, reject) => {
+        fileReader.onloadend = (e) => resolve(e.target.result);
+        fileReader.onerror = reject;
+      });
+  
+      fileArray.push([file.name, fileContent]);
+      console.log(`file name: ${file.name}, size: ${file.size}`);
+      uploadFilename.innerHTML += file.name + '<br>';
     }
-}
-
-function readFileContent2() {
-    if (fileContents2.length == 0) {
-        counter2 = files2.length;
-
-        for (let i = 0; i < counter1; i++) {
-            let reader2 = new FileReader();
-            reader2.onload = function(e) {
-                fileContents2.push(reader2.result);
-            };
-            reader2.readAsText(files2[i]);
-        }
-        return fileContents2;
-    }
+    return Promise.resolve();
 }
 
 function convertXliff(xliff1, xliff2) {
     let jsonArray = [];
-    counter2 = fileContents2.length;
+    let counter = xliff1.length;
 
-    for (let i = 0; i < counter2; i++) {
+    for (let i = 0; i < counter; i++) {
         let parser = new DOMParser();
         let xmlDoc1 = parser.parseFromString(xliff1[i], 'text/xml');
         let xmlDoc2 = parser.parseFromString(xliff2[i], 'text/xml');
     
         // Create an empty JSON object
         let json = {};
+
+        let file = xmlDoc1.querySelector('file');
     
         // Select the <unit> or <trans-unit> elements from each XLIFF document
         let transUnits1 = xmlDoc1.querySelectorAll('unit, trans-unit');
         let transUnits2 = xmlDoc2.querySelectorAll('unit, trans-unit');
     
         let unitNumber = transUnits1.length;
-        for (let i = 0; i < unitNumber; i++) {
-            let transUnit1 = transUnits1[i];
-            let transUnit2 = transUnits2[i];
-            let id = transUnit1.getAttribute('id');
-            let source = transUnit1.getElementsByTagName('source')[0].innerHTML;
-            let target1 = transUnit1.getElementsByTagName('target')[0].innerHTML;
-            let target2 = transUnit2.getElementsByTagName('target')[0].innerHTML;
-            json[id] = {
-                number: i + 1,
-                source: source,
-                target1: target1,
-                target2: target2
-            };
+        for (let j = 0; j < unitNumber; j++) {
+            let transUnit1 = transUnits1[j];
+            let transUnit2 = transUnits2[j];
+            let id1 = transUnit1.getAttribute('id');
+            let id2 = transUnit2.getAttribute('id');            
+            if (id1 == id2) {
+                let source1 = transUnit1.getElementsByTagName('source')[0].innerHTML;
+                let target1 = transUnit1.getElementsByTagName('target')[0].innerHTML;
+                let target2 = transUnit2.getElementsByTagName('target')[0].innerHTML;
+
+                json[id1] = {
+                    number: j + 1,
+                    source: source1,
+                    target1: target1,
+                    target2: target2
+                };
+            } else {
+                console.log(`第${i}个文件：id1: ${id1}, id2: ${id2}`);
+                break;
+            }
+            
         }
         jsonArray.push(json);
     }
@@ -161,52 +201,43 @@ function convertXliff(xliff1, xliff2) {
 function makeTable(jsons) {
     diffResultTable.querySelectorAll('tr').forEach(row => row.remove());
 
-    counter2 = filenames2.length;
+    let counter = fileArray2.length;
 
-    for (let i = 0; i < counter2; i++) {
+    for (let i = 0; i < counter; i++) {
+        let fileHeader = document.createElement('tr');
+        diffResultTable.append(fileHeader);
+        let nameString = [`file${i+1}`,``,`${fileArray1[i][0]}`,`${fileArray2[i][0]}`];
+        nameString.forEach(value => {
+            let nameCell = document.createElement('th');
+            nameCell.innerText = value;
+            nameCell.style.display = 'word-break: normal';
+            nameCell.classList.add('no-copy-text');
+            fileHeader.appendChild(nameCell);
+        })
 
-    let fileHeader = document.createElement('tr');
-    diffResultTable.append(fileHeader);
-    let nameString = [`file${i+1}`,``,`${filenames1[i]}`,`${filenames2[i]}`];
-    nameString.forEach(value => {
-        let nameCell = document.createElement('th');
-        nameCell.innerText = value;
-        nameCell.style.display = 'word-break: normal';
-        nameCell.classList.add('no-copy-text');
-        fileHeader.appendChild(nameCell);
-    })
-    // let emptyArray = ['', ''];
-    // emptyArray.forEach(value => {
-    //     let emptyCell = document.createElement('td');
-    //     emptyCell.innerText = value;
-    //     emptyCell.style.display = 'none';
-    //     emptyCell.classList.add('no-copy-text');
-    //     fileHeader.appendChild(emptyCell);
-    // })
-
-    // Create the table headers
-    let headers = ['序号', '原文', '译文1', '译文2'];
-    let headerRow = document.createElement('tr');
-    diffResultTable.appendChild(headerRow);
-    headers.forEach(header => {
-        let cell = document.createElement('th');
-        cell.innerText = header;
-        cell.classList.add('no-copy-text');
-        headerRow.appendChild(cell);
-    });
-
-    Object.entries(jsons[i]).forEach(([key, value]) => {
-        let row = document.createElement('tr');
-        diffResultTable.appendChild(row);
-
-        // Loop through the values and create cells for each value
-        Object.values(value).forEach(val => {
-            let cell = document.createElement('td');
-            cell.innerText = val;
-            cell.classList.add('copy-text');
-            row.appendChild(cell);
+        // Create the table headers
+        let headers = ['序号', '原文', '译文1', '译文2'];
+        let headerRow = document.createElement('tr');
+        diffResultTable.appendChild(headerRow);
+        headers.forEach(header => {
+            let cell = document.createElement('th');
+            cell.innerText = header;
+            cell.classList.add('no-copy-text');
+            headerRow.appendChild(cell);
         });
-    });
+
+        Object.entries(jsons[i]).forEach(([key, value]) => {
+            let row = document.createElement('tr');
+            diffResultTable.appendChild(row);
+
+            // Loop through the values and create cells for each value
+            Object.values(value).forEach(val => {
+                let cell = document.createElement('td');
+                cell.innerText = val;
+                cell.classList.add('copy-text');
+                row.appendChild(cell);
+            });
+        });
 
     }
 }

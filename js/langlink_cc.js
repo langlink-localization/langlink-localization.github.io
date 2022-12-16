@@ -29,6 +29,27 @@ let newFilenames = [];
 let oldFileContents = [];
 let newFileContents = [];
 
+uploadFilename.addEventListener('dragover', function(e) {
+    e.preventDefault();
+});
+
+uploadFilename.addEventListener('drop', function(e) {
+    e.preventDefault();
+    oldFiles = e.dataTransfer.files;
+    
+    oldFilenames.length = 0;
+    for (let file of oldFiles) {
+        oldFilenames.push(file.name);
+    }
+    uploadFilename.innerHTML = Array.from(oldFilenames).join('<br>');
+
+    oldFileContents.length = 0;
+    readFileContent();
+    
+    hideShowUnchangedButton.style.visibility = 'hidden';
+    collapseExpandTagButton.style.visibility = 'hidden';
+});
+
 uploadFile.addEventListener('change', function(e) {
     oldFiles = e.target.files;
     
@@ -43,7 +64,7 @@ uploadFile.addEventListener('change', function(e) {
     
     hideShowUnchangedButton.style.visibility = 'hidden';
     collapseExpandTagButton.style.visibility = 'hidden';
-})
+});
 
 convertTableButton.addEventListener('click', async () => {
     let locale1, locale2;

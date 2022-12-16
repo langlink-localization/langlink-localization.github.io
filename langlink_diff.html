@@ -20,18 +20,19 @@
         </div>
         <div id="main-content" class="main"> 
             <div id="filename-header-wrapper">
-                <h3 id="filename-header1" class="flex-display">文件 1</h3>
-                <h3 id="filename-header2" class="flex-display">文件 2</h3>
+                <h3 id="filename-header1">文件 1</h3>
+                <h3 id="filename-header2">文件 2</h3>
             </div>
             <div id="upload-wrapper" class="main">
-                <form id="upload1" enctype="multipart/form-data" class="flex-display">
-                    <label for="upload-input1" id="upload-filename1">点击上传文件</label>
+                <form id="upload1" enctype="multipart/form-data">
+                    <label for="upload-input1" id="upload-filename1"><span id="hint1">点击上传文件</span></label>
                     <input id="upload-input1" name="uploadInput1" type="file" multiple>
                 </form>
-                <form id="upload2" enctype="multipart/form-data" class="flex-display">
-                    <label for="upload-input2" id="upload-filename2">点击上传文件</label>
+                <form id="upload2" enctype="multipart/form-data">
+                    <label for="upload-input2" id="upload-filename2"><span id="hint2">点击上传文件</span></label>
                     <input id="upload-input2" name="uploadInput2" type="file" multiple>
                 </form>
+
             </div>
             <div class="button-wrapper">
                 <input type="button" id="convert-table-button" class="button" value="转换成表格">
