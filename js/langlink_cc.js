@@ -7,6 +7,7 @@ const uploadFilename = document.getElementById('upload-filename');
 const uploadFile = document.getElementById('upload-input');
 const downloadList = document.getElementById('download-list');
 const convertTableButton = document.getElementById('convert-table-button');
+const createLinkButton = document.getElementById('create-link-button')
 const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
 const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
 const diffResultTable = document.getElementById('diff-result-table');
@@ -66,7 +67,7 @@ uploadFile.addEventListener('change', function(e) {
     collapseExpandTagButton.style.visibility = 'hidden';
 });
 
-convertTableButton.addEventListener('click', async () => {
+convertTableButton.addEventListener('click', function(e) {
     let locale1, locale2;
 
     let result = getConvertOption();
@@ -94,11 +95,23 @@ convertTableButton.addEventListener('click', async () => {
 
 }, false);
 
-hideShowUnchangedButton.addEventListener('click', function () {
+createLinkButton.addEventListener('click', function(e) {
+    let locale1, locale2;
+
+    let result = getConvertOption();
+    locale1 = result[0];
+    locale2 = result[1];
+
+    setNewFileName(locale2);
+    setNewContent(locale1, locale2);
+    createDownloadLink(newFilenames, newFileContents);
+})
+
+hideShowUnchangedButton.addEventListener('click', function(e) {
     hideShowUnchangedContent();
 });
 
-collapseExpandTagButton.addEventListener('click', function () {
+collapseExpandTagButton.addEventListener('click', function(e) {
     hideShowTag();
 });
 
