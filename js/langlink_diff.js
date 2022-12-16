@@ -182,6 +182,7 @@ function convertXliff(xliff1, xliff2) {
                 let target2 = transUnit2.getElementsByTagName('target')[0].innerHTML;
 
                 json[id1] = {
+                    filename: fileArray1[i][0],
                     number: j + 1,
                     source: source1,
                     target1: target1,
@@ -206,7 +207,7 @@ function makeTable(jsons) {
     for (let i = 0; i < counter; i++) {
         let fileHeader = document.createElement('tr');
         diffResultTable.append(fileHeader);
-        let nameString = [`file${i+1}`,``,`${fileArray1[i][0]}`,`${fileArray2[i][0]}`];
+        let nameString = [`file${i+1}`,``,``,`${fileArray1[i][0]}`,`${fileArray2[i][0]}`];
         nameString.forEach(value => {
             let nameCell = document.createElement('th');
             nameCell.innerText = value;
@@ -216,7 +217,7 @@ function makeTable(jsons) {
         })
 
         // Create the table headers
-        let headers = ['序号', '原文', '译文1', '译文2'];
+        let headers = ['文件名', '序号', '原文', '译文1', '译文2'];
         let headerRow = document.createElement('tr');
         diffResultTable.appendChild(headerRow);
         headers.forEach(header => {
@@ -257,14 +258,14 @@ function markDiff() {
     let rowNumber = diffResultTable.rows.length;
     for (let i = 2; i < rowNumber; i++) {
         let row = diffResultTable.rows[i];
-        if (row.cells[1].innerText == '原文' || row.cells[1].innerText == '') {
+        if (row.cells[2].innerText == '原文' || row.cells[2].innerText == '') {
             continue;
         } else {
-            let diffs = dmp.diff_main(row.cells[2].innerHTML, row.cells[3].innerHTML);
+            let diffs = dmp.diff_main(row.cells[3].innerHTML, row.cells[4].innerHTML);
             let html1 = dmp.diff_prettyHtml1(diffs);
             let html2 = dmp.diff_prettyHtml2(diffs);
-            row.cells[2].innerHTML = html1;
-            row.cells[3].innerHTML = html2;
+            row.cells[3].innerHTML = html1;
+            row.cells[4].innerHTML = html2;
         }
     }
 }
@@ -273,7 +274,7 @@ function hideShowUnchangedContent() {
     let rows = document.querySelectorAll('tr');
     
     for (let row of rows) {
-        if (row.cells[1].innerText == '原文' || row.cells[1].innerText == '') continue;
+        if (row.cells[2].innerText == '原文' || row.cells[2].innerText == '') continue;
         let cells = row.querySelectorAll('td');
         let hasDeleteOrInsertClass = false;
         for (let cell of cells) {
