@@ -1,422 +1,406 @@
 import * as OpenCC from './modules/opencc-js/full.js';
 import diff_match_patch from './modules/diff_match_patch/diff_match_patch.js';
 
-(function () {
+$(function () {
+    let oldFiles;
+    let oldCounter;
+    let newCounter;
+    let condition = false;
+    let oldFilenames = [];
+    let newFilenames = [];
+    let oldFileContents = [];
+    let newFileContents = [];
 
-const uploadFilename = document.getElementById('upload-filename');
-const uploadFile = document.getElementById('upload-input');
-const downloadList = document.getElementById('download-list');
-const convertTableButton = document.getElementById('convert-table-button');
-const createLinkButton = document.getElementById('create-link-button')
-const hideShowUnchangedButton = document.getElementById('hide-show-unchanged');
-const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
-const diffResultTable = document.getElementById('diff-result-table');
+    $('#upload-filename').on('.dragover', function (e) {
+        e.preventDefault();
+    });
 
-const origCN = document.getElementById('orig-type-cn');
-const origHK = document.getElementById('orig-type-hk');
-const origTW = document.getElementById('orig-type-tw');
-const origTWP = document.getElementById('orig-type-twp');
-const tarCN = document.getElementById('tar-type-cn');
-const tarHK = document.getElementById('tar-type-hk');
-const tarTW = document.getElementById('tar-type-tw');
-const tarTWP = document.getElementById('tar-type-twp');
+    $('#upload-filename').on('.drop', function (e) {
+        e.preventDefault();
+        oldFiles = e.dataTransfer.files;
 
-let oldFiles;
-let oldCounter;
-let newCounter;
-let condition = false;
-let oldFilenames = [];
-let newFilenames = [];
-let oldFileContents = [];
-let newFileContents = [];
+        oldFilenames.length = 0;
+        for (let file of oldFiles) {
+            oldFilenames.push(file.name);
+        }
+        $('#upload-filename').html(Array.from(oldFilenames).join('<br>'));
 
-uploadFilename.addEventListener('dragover', function(e) {
-    e.preventDefault();
-});
+        oldFileContents.length = 0;
+        readFileContent();
 
-uploadFilename.addEventListener('drop', function(e) {
-    e.preventDefault();
-    oldFiles = e.dataTransfer.files;
-    
-    oldFilenames.length = 0;
-    for (let file of oldFiles) {
-        oldFilenames.push(file.name);
-    }
-    uploadFilename.innerHTML = Array.from(oldFilenames).join('<br>');
+        $('#hide-show-unchanged').css('visibility', 'hidden');
+        $('#collapse-expend-tag').css('visibility', 'hidden');
+    });
 
-    oldFileContents.length = 0;
-    readFileContent();
-    
-    hideShowUnchangedButton.style.visibility = 'hidden';
-    collapseExpandTagButton.style.visibility = 'hidden';
-});
+    $('#upload-input').change(function (e) {
+        oldFiles = e.target.files;
 
-uploadFile.addEventListener('change', function(e) {
-    oldFiles = e.target.files;
-    
-    oldFilenames.length = 0;
-    for (let file of oldFiles) {
-        oldFilenames.push(file.name);
-    }
-    uploadFilename.innerHTML = Array.from(oldFilenames).join('<br>');
+        oldFilenames.length = 0;
+        for (let file of oldFiles) {
+            oldFilenames.push(file.name);
+        }
+        $('#upload-filename').html(Array.from(oldFilenames).join('<br>'));
 
-    oldFileContents.length = 0;
-    readFileContent();
-    
-    hideShowUnchangedButton.style.visibility = 'hidden';
-    collapseExpandTagButton.style.visibility = 'hidden';
-});
+        oldFileContents.length = 0;
+        readFileContent();
 
-convertTableButton.addEventListener('click', function(e) {
-    let locale1, locale2;
+        $('#hide-show-unchanged').css('visibility', 'hidden');
+        $('#collapse-expend-tag').css('visibility', 'hidden');
+    });
 
-    let result = getConvertOption();
-    locale1 = result[0];
-    locale2 = result[1];
+    $('#convert-table-button').click(function (e) {
+        let locale1, locale2;
 
-    setNewFileName(locale2);
-    setNewContent(locale1, locale2);
-    makeTable(convertXliff(oldFileContents, newFileContents), locale1, locale2);
-    createDownloadLink(newFilenames, newFileContents);
+        let result = getConvertOption();
+        locale1 = result[0];
+        locale2 = result[1];
 
-    collapseExpandTagButton.style.visibility = 'visible';
-    collapseExpandTagButton.value = '折叠标签';
+        setNewFileName(locale2);
+        setNewContent(locale1, locale2);
+        makeTable(convertXliff(oldFileContents, newFileContents), locale1, locale2);
+        createDownloadLink(newFilenames, newFileContents);
 
-    markTag();
+        $('#collapse-expend-tag').css('visibility', 'visible');
+        $('#collapse-expend-tag').val('折叠标签');
 
-    condition = true;
-    if (condition) {
-        markDiff();
-        hideShowUnchangedButton.style.visibility = 'visible';
-        hideShowUnchangedButton.value = '隐藏未更改句段';
-    }
-    hideShowUnchangedContent();
-    condition = false;
+        markTag();
 
-}, false);
+        condition = true;
+        if (condition) {
+            markDiff();
+            $('#hide-show-unchanged').css('visibility', 'visible');
+            $('#hide-show-unchanged').val('隐藏未更改句段');
+        }
+        hideShowUnchangedContent();
+        condition = false;
 
-createLinkButton.addEventListener('click', function(e) {
-    let locale1, locale2;
+    });
 
-    let result = getConvertOption();
-    locale1 = result[0];
-    locale2 = result[1];
+    $('#create-link-button').click(function (e) {
+        let locale1, locale2;
 
-    setNewFileName(locale2);
-    setNewContent(locale1, locale2);
-    createDownloadLink(newFilenames, newFileContents);
-})
+        let result = getConvertOption();
+        locale1 = result[0];
+        locale2 = result[1];
 
-hideShowUnchangedButton.addEventListener('click', function(e) {
-    hideShowUnchangedContent();
-});
+        setNewFileName(locale2);
+        setNewContent(locale1, locale2);
+        createDownloadLink(newFilenames, newFileContents);
+    })
 
-collapseExpandTagButton.addEventListener('click', function(e) {
-    hideShowTag();
-});
+    $('#hide-show-unchanged').click(function (e) {
+        hideShowUnchangedContent();
+    });
 
-function readFileContent() {
-    if (oldFileContents.length == 0) {
+    $('#collapse-expand-tag').click(function (e) {
+        hideShowTag();
+    });
+
+    function readFileContent() {
         oldCounter = oldFiles.length;
 
-        for (let i = 0; i < oldCounter; i++) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                oldFileContents.push(reader.result);
-            };
-            reader.readAsText(oldFiles[i]);
-        }
-        return oldFileContents;
-    } else {
-        return oldFileContents;
-    }
-}
-
-function setNewFileName(locale2) {   
-    newFilenames.length = 0;
-
-    for (let filename of oldFilenames) {
-        let lastDotIndex = filename.lastIndexOf('.');
-        let fileNameWithoutExtension = filename.substring(0, lastDotIndex);
-        let fileExtension = filename.substring(lastDotIndex + 1);
-        let nameSuffix = '_zh_' + locale2;
-        let newFileName = `${fileNameWithoutExtension}${nameSuffix}.${fileExtension}`;
-        newFilenames.push(newFileName);
-    }
-    return newFilenames;
-}
-
-function setNewContent(locale1, locale2) {
-    let converter = OpenCC.Converter({ from: locale1, to: locale2 });
-    let regex = /(?<=target-language\=\"zh\-)[a-zA-Z]{2}|(?<=trgLang\=\"zh\_)[a-zA-Z]{2}/gm;
-
-    switch (locale2) {
-        case 'cn':
-            oldFileContents.forEach((content, index) => {
-                oldFileContents[index] = content.replace(regex, 'CN')
+        if (oldFileContents.length === 0) {
+            $.each(oldFiles, function (index, file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    oldFileContents.push(reader.result);
+                };
+                reader.readAsText(file);
             });
-            break;
-        case 'hk':
-            oldFileContents.forEach((content, index) => {
-                oldFileContents[index] = content.replace(regex, 'HK')
-            });
-            break;
-        case 'tw':
-            oldFileContents.forEach((content, index) => {
-                oldFileContents[index] = content.replace(regex, 'TW')
-                                            .replaceAll('“', '「')
-                                            .replaceAll('”', '」')
-                                            .replaceAll(['‘', '『'])
-                                            .replaceAll('’', '』')
-            });
-            break;
-        case 'twp':
-            oldFileContents.forEach((content, index) => {
-                oldFileContents[index] = content.replace(regex, 'TW')
-                                            .replaceAll('“', '「')
-                                            .replaceAll('”', '」')
-                                            .replaceAll(['‘', '『'])
-                                            .replaceAll('’', '』')
-            });
-            break;
-    }
-
-    oldCounter = oldFiles.length;
-
-    newFileContents.length = 0;
-    for (let i = 0; i < oldCounter; i++) {
-        let oldContent = oldFileContents[i];
-        newFileContents.push(converter(oldContent));
-    }
-    return newFileContents;
-}
-
-function getConvertOption() {
-    let locale1, locale2;
-    let result = [];
-
-    switch (true) {
-        case origCN.checked:
-            locale1 = 'cn';
-            break;
-        case origHK.checked:
-            locale1 = 'hk';
-            break;
-        case origTW.checked:
-            locale1 = 'tw';
-            break;
-        case origTWP.checked:
-            locale1 = 'twp';
-            break;
-    }
-    switch (true) {
-        case tarCN.checked:
-            locale2 = 'cn';
-            break;
-        case tarHK.checked:
-            locale2 = 'hk';
-            break;
-        case tarTW.checked:
-            locale2 = 'tw';
-            break;
-        case tarTWP.checked:
-            locale2 = 'twp';
-            break;
-    }
-    result.push(locale1);
-    result.push(locale2);
-    return result;
-}
-
-function convertXliff(oldXliff, newXliff) {
-    let jsonArray = [];
-    newCounter = newFileContents.length;
-
-    for (let i = 0; i < newCounter; i++) {
-        let parser = new DOMParser();
-        let xmlDoc1 = parser.parseFromString(oldXliff[i], 'text/xml');
-        let xmlDoc2 = parser.parseFromString(newXliff[i], 'text/xml');
-    
-        // Create an empty JSON object
-        let json = {};
-    
-        // Select the <unit> or <trans-unit> elements from each XLIFF document
-        let transUnits1 = xmlDoc1.querySelectorAll('unit, trans-unit');
-        let transUnits2 = xmlDoc2.querySelectorAll('unit, trans-unit');
-    
-        let unitNumber = transUnits1.length;
-        for (let i = 0; i < unitNumber; i++) {
-            let transUnit1 = transUnits1[i];
-            let transUnit2 = transUnits2[i];
-            let id = transUnit1.getAttribute('id');
-            let source = transUnit1.getElementsByTagName('source')[0].innerHTML;
-            let target1 = transUnit1.getElementsByTagName('target')[0].innerHTML;
-            let target2 = transUnit2.getElementsByTagName('target')[0].innerHTML;
-            json[id] = {
-                number: i + 1,
-                source: source,
-                target1: target1,
-                target2: target2
-            };
-        }
-        jsonArray.push(json);
-    }
-    return jsonArray;
-}
-
-function makeTable(jsons, locale1, locale2) {
-    diffResultTable.querySelectorAll('tr').forEach(row => row.remove());
-
-    newCounter = newFilenames.length;
-
-    for (let i = 0; i < newCounter; i++) {
-
-    let fileHeader = document.createElement('tr');
-    diffResultTable.append(fileHeader);
-    let nameString = [`file${i+1}`,`${oldFilenames[i]}`];
-    nameString.forEach(value => {
-        let nameCell = document.createElement('th');
-        nameCell.setAttribute('style', 'word-break: normal;');
-        nameCell.innerText = value;
-        fileHeader.appendChild(nameCell);
-    })
-    let emptyArray = ['', ''];
-    emptyArray.forEach(value => {
-        let emptyCell = document.createElement('th');
-        emptyCell.innerText = value;
-        emptyCell.setAttribute('style', 'display: none;');
-        fileHeader.appendChild(emptyCell);
-    })
-
-    // Create the table headers
-    let headers = ['序号', '原文', locale1, locale2];
-    let headerRow = document.createElement('tr');
-    diffResultTable.appendChild(headerRow);
-    headers.forEach(header => {
-        let cell = document.createElement('th');
-        cell.innerText = header;
-        headerRow.appendChild(cell);
-    });
-
-    
-    Object.entries(jsons[i]).forEach(([key, value]) => {
-        let row = document.createElement('tr');
-        diffResultTable.appendChild(row);
-
-        // Loop through the values and create cells for each value
-        Object.values(value).forEach(val => {
-            let cell = document.createElement('td');
-            cell.innerText = val;
-            row.appendChild(cell);
-        });
-    });
-
-    }
-}
-
-function markTag() {
-    let cells = document.querySelectorAll('td');
-    let pattern = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
-    for (let cell of cells) {
-        cell.textContent = cell.textContent.replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
-        cell.innerHTML = cell.textContent;
-    }
-}
-
-function markDiff() {
-    let dmp = new diff_match_patch();
-    // Iterate over the rows in the table
-    let rowNumber = diffResultTable.rows.length;
-    for (let i = 2; i < rowNumber; i++) {
-        let row = diffResultTable.rows[i];
-        if (row.cells[1].innerText == '原文' || row.cells[2].innerText == '') {
-            continue;
+            return oldFileContents;
         } else {
-            let diffs = dmp.diff_main(row.cells[2].innerHTML, row.cells[3].innerHTML);
-            let html1 = dmp.diff_prettyHtml1(diffs);
-            let html2 = dmp.diff_prettyHtml2(diffs);
-            row.cells[2].innerHTML = html1;
-            row.cells[3].innerHTML = html2;
+            return oldFileContents;
         }
     }
-}
 
-function hideShowUnchangedContent() {
-    let rows = document.querySelectorAll('tr');
-    for (let row of rows) {
-        if (row.cells[1].innerText == '原文' || row.cells[2].innerText == '') continue;
-        let cells = row.querySelectorAll('td');
-        let hasDeleteOrInsertClass = false;
-        for (let cell of cells) {
-            let spans = cell.querySelectorAll('span');
-            for (let span of spans) {
-                if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
-                    hasDeleteOrInsertClass = true;
-                    break;
+
+    function setNewFileName(locale2) {
+        newFilenames.length = 0;
+
+        oldFilenames.forEach(function (filename) {
+            let lastDotIndex = filename.lastIndexOf('.');
+            let fileNameWithoutExtension = filename.substring(0, lastDotIndex);
+            let fileExtension = filename.substring(lastDotIndex + 1);
+            let nameSuffix = '_zh_' + locale2;
+            let newFileName = `${fileNameWithoutExtension}${nameSuffix}.${fileExtension}`;
+            newFilenames.push(newFileName);
+        });
+
+        return newFilenames;
+    }
+
+    function setNewContent(locale1, locale2) {
+        let converter = OpenCC.Converter({ from: locale1, to: locale2 });
+        let regex = /(?<=target-language\=\"zh\-)[a-zA-Z]{2}|(?<=trgLang\=\"zh\_)[a-zA-Z]{2}/gm;
+
+        let replacements = {
+            cn: ['CN'],
+            hk: ['HK'],
+            tw: ['TW', '“', '”', '‘', '’', '「', '」', '『', '』'],
+            twp: ['TW', '“', '”', '‘', '’', '「', '」', '『', '』']
+        };
+
+        oldFileContents.forEach((content, index) => {
+            let replacementValues = replacements[locale2];
+            oldFileContents[index] = content.replace(regex, replacementValues[0]);
+            for (let i = 1; i < replacementValues.length; i += 2) {
+                oldFileContents[index] = oldFileContents[index].replaceAll(replacementValues[i], replacementValues[i + 1]);
+            }
+        });
+
+        newFileContents.length = 0;
+        for (let i = 0; i < oldFileContents.length; i++) {
+            let oldContent = oldFileContents[i];
+            newFileContents.push(converter(oldContent));
+        }
+        return newFileContents;
+    }
+
+    function getConvertOption() {
+        let locale1, locale2;
+        let result = [];
+
+        if ($('#orig-type-cn').prop('checked')) {
+            locale1 = 'cn';
+        } else if ($('#orig-type-hk').prop('checked')) {
+            locale1 = 'hk';
+        } else if ($('#orig-type-tw').prop('checked')) {
+            locale1 = 'tw';
+        } else if ($('#orig-type-twp').prop('checked')) {
+            locale1 = 'twp';
+        }
+
+        if ($('#tar-type-CN').prop('checked')) {
+            locale2 = 'cn';
+        } else if ($('#tar-type-hk').prop('checked')) {
+            locale2 = 'hk';
+        } else if ($('#tar-type-tw').prop('checked')) {
+            locale2 = 'tw';
+        } else if ($('#tar-type-twp').prop('checked')) {
+            locale2 = 'twp';
+        }
+
+        result.push(locale1);
+        result.push(locale2);
+        return result;
+    }
+
+    function convertXliff(oldXliff, newXliff) {
+        let jsonArray = [];
+        newCounter = newFileContents.length;
+
+        for (let i = 0; i < newCounter; i++) {
+            let parser = new DOMParser();
+            let xmlDoc1 = parser.parseFromString(oldXliff[i], 'text/xml');
+            let xmlDoc2 = parser.parseFromString(newXliff[i], 'text/xml');
+
+            // Create an empty JSON object
+            let json = {};
+
+            // Select the <unit> or <trans-unit> elements from each XLIFF document
+            let transUnits1 = $(xmlDoc1).find('unit, trans-unit');
+            let transUnits2 = $(xmlDoc2).find('unit, trans-unit');
+
+            let unitNumber = transUnits1.length;
+            for (let i = 0; i < unitNumber; i++) {
+                let transUnit1 = transUnits1[i];
+                let transUnit2 = transUnits2[i];
+                let id = $(transUnit1).attr('id');
+                let source = $(transUnit1).find('source').html();
+                let target1 = $(transUnit1).find('target').html();
+                let target2 = $(transUnit2).find('target').html();
+                json[id] = {
+                    number: i + 1,
+                    source: source,
+                    target1: target1,
+                    target2: target2
+                };
+            }
+            jsonArray.push(json);
+        }
+        return jsonArray;
+    }
+
+    function makeTable(jsons, locale1, locale2) {
+        // remove all rows from the table
+        $('#diff-result-table tr').remove();
+
+        newCounter = newFilenames.length;
+
+        for (let i = 0; i < newCounter; i++) {
+            // create a row for the file name
+            let fileHeader = $('<tr>');
+            $('#diff-result-table').append(fileHeader);
+
+            // create cells for the file name and append them to the row
+            let nameString = ['file' + (i + 1), oldFilenames[i]];
+            nameString.forEach(value => {
+                let nameCell = $('<th>');
+                nameCell.css('word-break', 'normal');
+                nameCell.text(value);
+                fileHeader.append(nameCell);
+            });
+            // create empty cells and append them to the row
+            let emptyArray = ['', ''];
+            emptyArray.forEach(value => {
+                let emptyCell = $('<th>');
+                emptyCell.text(value);
+                emptyCell.css('display', 'none');
+                fileHeader.append(emptyCell);
+            });
+
+            // create the table headers
+            let headers = ['序号', '原文', locale1, locale2];
+            let headerRow = $('<tr>');
+            $('#diff-result-table').append(headerRow);
+            headers.forEach(header => {
+                let cell = $('<th>');
+                cell.text(header);
+                headerRow.append(cell);
+            });
+
+            // create rows for the JSON data and append them to the table
+            Object.entries(jsons[i]).forEach(([key, value]) => {
+                let row = $('<tr>');
+                $('#diff-result-table').append(row);
+
+                // create cells for the values and append them to the row
+                Object.values(value).forEach(val => {
+                    let cell = $('<td>');
+                    cell.text(val);
+                    row.append(cell);
+                });
+            });
+        }
+    }
+
+    function markTag() {
+        // select all td elements
+        let cells = $('td');
+
+        // create a regular expression to match tags
+        let pattern = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
+
+        // iterate over the td elements
+        cells.each(function () {
+            // replace the tags with spans
+            $(this).text($(this).text().replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>'));
+            // set the innerHTML of the td element to the modified text content
+            $(this).html($(this).text());
+        });
+    }
+
+    function markDiff() {
+        let dmp = new diff_match_patch();
+
+        // Iterate over the rows in the table
+        let rowNumber = $('#diff-result-table tr').length;
+        for (let i = 2; i < rowNumber; i++) {
+            let row = $('#diff-result-table tr:nth-child(' + i + ')');
+            if (row.find('td:nth-child(2)').text() === '原文' || row.find('td:nth-child(3)').text() === '') {
+                continue;
+            } else {
+                let diffs = dmp.diff_main(row.find('td:nth-child(3)').html(), row.find('td:nth-child(4)').html());
+                let html1 = dmp.diff_prettyHtml1(diffs);
+                let html2 = dmp.diff_prettyHtml2(diffs);
+                row.find('td:nth-child(3)').html(html1);
+                row.find('td:nth-child(4)').html(html2);
+            }
+        }
+    }
+
+    function hideShowUnchangedContent() {
+        // select all tr elements
+        let rows = $('tr');
+
+        rows.each(function () {
+            // skip rows where the second cell is "原文" or the third cell is empty
+            if ($(this).find('td:nth-child(2)').text() === '原文' || $(this).find('td:nth-child(3)').text() === '') return;
+
+            // select all td elements within the row
+            let cells = $(this).find('td');
+            let hasDeleteOrInsertClass = false;
+
+            // check if any of the td elements contain a span with the 'delete1' or 'insert2' class
+            cells.each(function () {
+                let spans = $(this).find('span');
+                spans.each(function () {
+                    if ($(this).hasClass('delete1') || $(this).hasClass('insert2')) {
+                        hasDeleteOrInsertClass = true;
+                        return false; // exit the loop
+                    }
+                });
+                if (hasDeleteOrInsertClass) return false; // exit the loop
+            });
+
+            // if no td elements contain a span with the 'delete1' or 'insert2' class, toggle the display of the row
+            if (!hasDeleteOrInsertClass) {
+                if ($(this).css('display') !== 'none') {
+                    $(this).css('display', 'none');
+                    $('#hide-show-unchanged').val('显示所有句段');
+                } else {
+                    $(this).css('display', '');
+                    $('#hide-show-unchanged').val('隐藏未更改句段');
                 }
             }
-        }
-        if (!hasDeleteOrInsertClass) {
-            if (row.style.display !== 'none') {
-                row.style.display = 'none';
-                hideShowUnchangedButton.value = '显示所有句段';
+        });
+    }
+
+    function hideShowTag() {
+        // select all td elements with the 'tag' class
+        let tagTds = $('.tag');
+
+        // select all td elements with the 'ph' class
+        let phTds = $('.ph');
+
+        // loop through each td element with the 'tag' class
+        tagTds.each(function () {
+            // if the td element is visible
+            if ($(this).css('display') !== 'none') {
+                // hide it
+                $(this).css('display', 'none');
             } else {
-                row.style.display = '';
-                hideShowUnchangedButton.value = '隐藏未更改句段';
+                // show it
+                $(this).css('display', '');
             }
+        });
+
+        // loop through each td element with the 'ph' class
+        phTds.each(function () {
+            // if the td element is visible
+            if ($(this).css('display') === 'none') {
+                // hide it
+                $(this).css('display', '');
+            } else {
+                // show it
+                $(this).css('display', 'none');
+            }
+        });
+
+        // toggle the value of the element with the ID "collapse-expend-tag"
+        $('#collapse-expend-tag').val(function (i, value) {
+            return value === '折叠标签' ? '展开标签' : '折叠标签';
+        });
+    }
+
+    function createDownloadLink(filenames, contents) {
+        $('#download-list li').remove(); // remove all list items from the element with the ID "download-list"
+
+        for (let i = 0; i < filenames.length; i++) {
+            // create a list item and an anchor element
+            let listItem = $('<li></li>');
+            let element = $('<a></a>');
+
+            // set the href and download attributes of the anchor element
+            element.attr('href', URL.createObjectURL(new Blob([contents[i]])));
+            element.attr('download', filenames[i]);
+
+            // set the text of the anchor element to the filename
+            element.text(filenames[i]);
+
+            // append the anchor element to the list item, and the list item to the element with the ID "download-list"
+            listItem.append(element);
+            $('#download-list').append(listItem);
         }
     }
-}
-
-function hideShowTag() {
-    let tagTds = document.querySelectorAll('.tag');
-
-    // get all td elements with the 'ph' class
-    let phTds = document.querySelectorAll('.ph');
-
-    // loop through each td element with the 'tag' class
-    for (let td of tagTds) {
-        // if the td element is visible
-        if (td.style.display !== 'none') {
-            // hide it
-            td.style.display = 'none';
-        } else {
-            // show it
-            td.style.display = '';
-        }
-    }
-
-    // loop through each td element with the 'ph' class
-    for (let td of phTds) {
-        // if the td element is visible
-        if (td.style.display == 'none') {
-            // hide it
-            td.style.display = '';
-        } else {
-            // show it
-            td.style.display = 'none';
-        }
-    }
-    if (collapseExpandTagButton.value == '折叠标签') {
-        collapseExpandTagButton.value = '展开标签';
-    } else {
-        collapseExpandTagButton.value = '折叠标签';
-    }
-}
-
-function createDownloadLink(filenames, contents) {
-    downloadList.querySelectorAll('li').forEach(list => list.remove());
-    newCounter = newFilenames.length;
-    
-    for (let i = 0; i < newCounter; i++) {
-        let listIterm = document.createElement('li');
-        let element = document.createElement('a');
-        element.setAttribute('href', URL.createObjectURL(new Blob([contents[i]])));
-        element.setAttribute('download', filenames[i]);
-        element.text = filenames[i];
-
-        listIterm.appendChild(element);
-        downloadList.appendChild(listIterm);   
-    }
-}
-})();
+});
