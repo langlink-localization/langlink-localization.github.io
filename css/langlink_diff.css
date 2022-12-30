@@ -84,28 +84,32 @@ body{
 }
 
 #diff-result-table th {
-    border: 2px solid black;
+    border: 1px solid black;
     min-width: 2.4rem;
-    max-width: 35rem;
+    max-width: 30rem;
     word-wrap: break-word;
     padding: 0.5rem;
     background-color: aquamarine;
 }
 
 #diff-result-table td {
-    border: 2px solid black;
-    min-width: 2.4rem;
-    max-width: 35rem;
-    word-wrap: break-word;
-    padding: 0.5rem;
+    border: 1px solid black;
+
 }
 
 #diff-result-table td:nth-of-type(1) {
-    max-width: 7rem;
+    overflow: hidden;
 }
 
 #diff-result-table td:nth-of-type(2) {
     text-align: center;
+}
+
+#diff-result-table td:nth-of-type(3), td:nth-of-type(4), td:nth-of-type(5) {
+    min-width: 2.4rem;
+    max-width: 30rem;
+    padding: 0.5rem;
+    word-wrap: break-word;
 }
 
 #diff-toggle-area {

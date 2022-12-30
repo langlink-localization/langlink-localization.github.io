@@ -205,17 +205,6 @@ function makeTable(jsons) {
     let counter = fileArray2.length;
 
     for (let i = 0; i < counter; i++) {
-        let fileHeader = document.createElement('tr');
-        diffResultTable.append(fileHeader);
-        let nameString = [`file${i+1}`,``,``,`${fileArray1[i][0]}`,`${fileArray2[i][0]}`];
-        nameString.forEach(value => {
-            let nameCell = document.createElement('th');
-            nameCell.innerText = value;
-            nameCell.style.display = 'word-break: normal';
-            nameCell.classList.add('no-copy-text');
-            fileHeader.appendChild(nameCell);
-        })
-
         // Create the table headers
         let headers = ['文件名', '序号', '原文', '译文1', '译文2'];
         let headerRow = document.createElement('tr');
