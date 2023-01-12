@@ -94,6 +94,11 @@ body{
     width: auto;
 }
 
+#convert-table-button[disabled] {
+    color: grey;
+    opacity: 0.5;
+}
+
 #collapse-expand-tag {
     visibility: hidden;
 }
