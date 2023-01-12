@@ -17,6 +17,12 @@ const collapseExpandTagButton = document.getElementById('collapse-expand-tag');
 const hideShowTableTitleButton = document.getElementById('hide-show-title');
 const diffResultTable = document.getElementById('diff-result-table');
 
+const setFileArrayWithLog = logPerformance(setFileArray);
+const convertXliffWithLog = logPerformance(convertXliff);
+const makeTableWithLog = logPerformance(makeTable);
+const markDiffWithLog = logPerformance(markDiff);
+const markTagWithLog = logPerformance(markTag);
+
 let files1;
 let files2;
 let fileArray1 = new Array();
@@ -39,7 +45,15 @@ upload1.addEventListener('drop', async function(e) {
     hintText1.style.display = 'none';
 
     fileArray1.length = 0;
-    setFileArray(files1, fileArray1, uploadFilename1).then(() => {
+    // setFileArray(files1, fileArray1, uploadFilename1).then(() => {
+    //     for (let file of fileArray1) {
+    //         fileContents1.push(file[1]);
+    //     }
+    //     hideShowUnchangedButton.style.visibility = 'hidden';
+    //     collapseExpandTagButton.style.visibility = 'hidden';
+    //     hideShowTableTitleButton.style.visibility = 'hidden';
+    // });
+    setFileArrayWithLog(...[files1, fileArray1, uploadFilename1]).then(() => {
         for (let file of fileArray1) {
             fileContents1.push(file[1]);
         }
@@ -60,7 +74,12 @@ upload2.addEventListener('drop', async function(e) {
     hintText2.style.display = 'none';
 
     fileArray2.length = 0;
-    setFileArray(files2, fileArray2, uploadFilename2).then(() => {
+    // setFileArray(files2, fileArray2, uploadFilename2).then(() => {
+    //     for (let file of fileArray2) {
+    //         fileContents2.push(file[1]);
+    //     }
+    // });
+    setFileArrayWithLog(...[files2, fileArray2, uploadFilename2]).then(() => {
         for (let file of fileArray2) {
             fileContents2.push(file[1]);
         }
@@ -73,7 +92,15 @@ uploadFile1.addEventListener('change', async function(e) {
     hintText1.style.display = 'none'
     
     fileArray1.length = 0;
-    setFileArray(files1, fileArray1, uploadFilename1).then(() => {
+    // setFileArray(files1, fileArray1, uploadFilename1).then(() => {
+    //     for (let file of fileArray1) {
+    //         fileContents1.push(file[1]);
+    //     }
+    //     hideShowUnchangedButton.style.visibility = 'hidden';
+    //     collapseExpandTagButton.style.visibility = 'hidden';
+    //     hideShowTableTitleButton.style.visibility = 'hidden';
+    // });
+    setFileArrayWithLog(...[files1, fileArray1, uploadFilename1]).then(() => {
         for (let file of fileArray1) {
             fileContents1.push(file[1]);
         }
@@ -89,7 +116,12 @@ uploadFile2.addEventListener('change', async function(e) {
     hintText2.style.display = 'none';
 
     fileArray2.length = 0;
-    setFileArray(files2, fileArray2, uploadFilename2).then(() => {
+    // setFileArray(files2, fileArray2, uploadFilename2).then(() => {
+    //     for (let file of fileArray2) {
+    //         fileContents2.push(file[1]);
+    //     }
+    // });
+    setFileArrayWithLog(...[files2, fileArray2, uploadFilename2]).then(() => {
         for (let file of fileArray2) {
             fileContents2.push(file[1]);
         }
@@ -98,18 +130,19 @@ uploadFile2.addEventListener('change', async function(e) {
 
 convertTableButton.addEventListener('click', function(e) {
     // arrangeFileList();
-    makeTable(convertXliff(fileContents1, fileContents2));
+    // makeTable(convertXliff(fileContents1, fileContents2));
+    makeTableWithLog(...[convertXliffWithLog(...[fileContents1, fileContents2])]);
 
     collapseExpandTagButton.style.visibility = 'visible';
     hideShowTableTitleButton.style.visibility = 'visible';
     collapseExpandTagButton.value = '折叠标签';
     hideShowTableTitleButton.value = '隐藏表格标题';
 
-    markTag();
+    markTagWithLog();
 
     condition = true;
     if (condition) {
-        markDiff();
+        markDiffWithLog();
         hideShowUnchangedButton.style.visibility = 'visible';
         hideShowUnchangedButton.value = '隐藏未更改句段';
     }
@@ -164,7 +197,7 @@ function convertXliff(xliff1, xliff2) {
         // Create an empty JSON object
         let json = {};
 
-        let file = xmlDoc1.querySelector('file');
+        // let file = xmlDoc1.querySelector('file');
     
         // Select the <unit> or <trans-unit> elements from each XLIFF document
         let transUnits1 = xmlDoc1.querySelectorAll('unit, trans-unit');
@@ -180,13 +213,14 @@ function convertXliff(xliff1, xliff2) {
                 let source1 = transUnit1.getElementsByTagName('source')[0].innerHTML;
                 let target1 = transUnit1.getElementsByTagName('target')[0].innerHTML;
                 let target2 = transUnit2.getElementsByTagName('target')[0].innerHTML;
-
-                json[id1] = {
-                    filename: fileArray1[i][0],
-                    number: j + 1,
-                    source: source1,
-                    target1: target1,
-                    target2: target2
+                if (target1 && target2) {
+                    json[id1] = {
+                        filename: fileArray1[i][0],
+                        number: j + 1,
+                        source: source1,
+                        target1: target1,
+                        target2: target2
+                    }
                 };
             } else {
                 console.log(`第${i}个文件：id1: ${id1}, id2: ${id2}`);
@@ -232,97 +266,141 @@ function makeTable(jsons) {
     }
 }
 
+// function markTag() {
+//     let cells = document.querySelectorAll('td');
+//     let pattern = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
+//     for (let cell of cells) {
+//         cell.textContent = cell.textContent.replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
+//         cell.innerHTML = cell.textContent;
+//     }
+// }
+
 function markTag() {
-    let cells = document.querySelectorAll('td');
     let pattern = /(<ph[^>]*?>.*?<\/ph[^>]*?>|<bpt[^>]*?>.*?<\/bpt[^>]*?>|<ept[^>]*?>.*?<\/ept[^>]*?>)/gm;
-    for (let cell of cells) {
-        cell.textContent = cell.textContent.replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
-        cell.innerHTML = cell.textContent;
-    }
+    $('td').each(function() {
+        let text = $(this).text().replace(pattern, '<span class="tag">$1</span><span class="ph" style="display:none;">⬣</span>');
+        $(this).html(text);
+    });
 }
+
+// function markDiff() {
+//     let dmp = new diff_match_patch();
+//     // Iterate over the rows in the table
+//     let rowNumber = diffResultTable.rows.length;
+//     for (let i = 2; i < rowNumber; i++) {
+//         let row = diffResultTable.rows[i];
+//         if (row.cells[2].innerText == '原文' || row.cells[2].innerText == '') {
+//             continue;
+//         } else {
+//             let diffs = dmp.diff_main(row.cells[3].innerHTML, row.cells[4].innerHTML);
+//             let html1 = dmp.diff_prettyHtml1(diffs);
+//             let html2 = dmp.diff_prettyHtml2(diffs);
+//             row.cells[3].innerHTML = html1;
+//             row.cells[4].innerHTML = html2;
+//         }
+//     }
+// }
 
 function markDiff() {
     let dmp = new diff_match_patch();
-    // Iterate over the rows in the table
-    let rowNumber = diffResultTable.rows.length;
-    for (let i = 2; i < rowNumber; i++) {
-        let row = diffResultTable.rows[i];
-        if (row.cells[2].innerText == '原文' || row.cells[2].innerText == '') {
-            continue;
+    $('#diff-result-table tr').each(function(){
+        let row = $(this);
+        if (row.find('td:eq(2)').text() == '原文' || row.find('td:eq(2)').text() == '') {
+            return true;
         } else {
-            let diffs = dmp.diff_main(row.cells[3].innerHTML, row.cells[4].innerHTML);
+            let diffs = dmp.diff_main(row.find('td:eq(3)').html(), row.find('td:eq(4)').html());
             let html1 = dmp.diff_prettyHtml1(diffs);
             let html2 = dmp.diff_prettyHtml2(diffs);
-            row.cells[3].innerHTML = html1;
-            row.cells[4].innerHTML = html2;
+            row.find('td:eq(3)').html(html1);
+            row.find('td:eq(4)').html(html2);
         }
-    }
+    });
 }
+
+// function hideShowUnchangedContent() {
+//     let rows = document.querySelectorAll('tr');
+    
+//     for (let row of rows) {
+//         if (row.cells[2].innerText == '原文' || row.cells[2].innerText == '') continue;
+//         let cells = row.querySelectorAll('td');
+//         let hasDeleteOrInsertClass = false;
+//         for (let cell of cells) {
+//             let spans = cell.querySelectorAll('span');
+//             for (let span of spans) {
+//                 if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
+//                     hasDeleteOrInsertClass = true;
+//                     break;
+//                 }
+//             }
+//         }
+//         if (!hasDeleteOrInsertClass) {
+//             if (row.style.display !== 'none') {
+//                 row.style.display = 'none';
+//                 hideShowUnchangedButton.value = '显示所有句段';
+//                 diffVisibility = 'hide';
+//             } else {
+//                 row.style.display = '';
+//                 hideShowUnchangedButton.value = '隐藏未更改句段';
+//                 diffVisibility = 'show';
+//             }
+//         }
+//     }
+// }
 
 function hideShowUnchangedContent() {
-    let rows = document.querySelectorAll('tr');
-    
-    for (let row of rows) {
-        if (row.cells[2].innerText == '原文' || row.cells[2].innerText == '') continue;
-        let cells = row.querySelectorAll('td');
-        let hasDeleteOrInsertClass = false;
-        for (let cell of cells) {
-            let spans = cell.querySelectorAll('span');
-            for (let span of spans) {
-                if (span.classList.contains('delete1') || span.classList.contains('insert2')) {
-                    hasDeleteOrInsertClass = true;
-                    break;
-                }
-            }
+    $("tr").each(function() {
+        if ($(this).find("td:nth-child(1)").text() === "原文" || $(this).find("td:nth-child(2)").text() === "") return;
+        if (!$(this).find("td span").hasClass("delete1") && !$(this).find("td span").hasClass("insert2")) {
+            $(this).toggle();
         }
-        if (!hasDeleteOrInsertClass) {
-            if (row.style.display !== 'none') {
-                row.style.display = 'none';
-                hideShowUnchangedButton.value = '显示所有句段';
-                diffVisibility = 'hide';
-            } else {
-                row.style.display = '';
-                hideShowUnchangedButton.value = '隐藏未更改句段';
-                diffVisibility = 'show';
-            }
-        }
-    }
+    });
+    $("#hide-show-unchanged").val() === "隐藏未更改句段" ? $("#hide-show-unchanged").val("显示所有句段") : $("#hide-show-unchanged").val("隐藏未更改句段");
 }
 
+// function hideShowTag() {
+//     let tagTds = document.querySelectorAll('.tag');
+
+//     // get all td elements with the 'ph' class
+//     let phTds = document.querySelectorAll('.ph');
+
+//     // loop through each td element with the 'tag' class
+//     for (let td of tagTds) {
+//         // if the td element is visible
+//         if (td.style.display !== 'none') {
+//             // hide it
+//             td.style.display = 'none';
+//         } else {
+//             // show it
+//             td.style.display = '';
+//         }
+//     }
+
+//     // loop through each td element with the 'ph' class
+//     for (let td of phTds) {
+//         // if the td element is visible
+//         if (td.style.display == 'none') {
+//             // hide it
+//             td.style.display = '';
+//         } else {
+//             // show it
+//             td.style.display = 'none';
+//         }
+//     }
+//     if (collapseExpandTagButton.value == '折叠标签') {
+//         collapseExpandTagButton.value = '展开标签';
+//     } else {
+//         collapseExpandTagButton.value = '折叠标签';
+//     }
+// }
+
 function hideShowTag() {
-    let tagTds = document.querySelectorAll('.tag');
-
-    // get all td elements with the 'ph' class
-    let phTds = document.querySelectorAll('.ph');
-
-    // loop through each td element with the 'tag' class
-    for (let td of tagTds) {
-        // if the td element is visible
-        if (td.style.display !== 'none') {
-            // hide it
-            td.style.display = 'none';
-        } else {
-            // show it
-            td.style.display = '';
-        }
-    }
-
-    // loop through each td element with the 'ph' class
-    for (let td of phTds) {
-        // if the td element is visible
-        if (td.style.display == 'none') {
-            // hide it
-            td.style.display = '';
-        } else {
-            // show it
-            td.style.display = 'none';
-        }
-    }
-    if (collapseExpandTagButton.value == '折叠标签') {
-        collapseExpandTagButton.value = '展开标签';
-    } else {
-        collapseExpandTagButton.value = '折叠标签';
-    }
+    let $tagTds = $('.tag');
+    let $phTds = $('.ph');
+    $tagTds.toggle();
+    $phTds.toggle();
+    $("#collapse-expand-tag").val(function(i, v){
+        return v === '折叠标签' ? '展开标签' : '折叠标签';
+    });
 }
 
 function hideShowTableTitle() {
@@ -362,4 +440,13 @@ function selectTableContent() {
     selection.addRange(range);
 }
 
+function logPerformance(fn) {
+    return function() {
+        let start = performance.now();
+        let result = fn.apply(this, arguments);
+        let end = performance.now();
+        console.log(`${fn.name} took ${end - start} ms`);
+        return result;
+    }
+}
 })();

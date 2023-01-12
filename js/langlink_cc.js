@@ -529,16 +529,4 @@ import diff_match_patch from './modules/diff_match_patch/diff_match_patch.js';
             return result;
         }
     }
-
-    function checkFileSize() {
-        let totalSize = 0;
-        for (let file of oldFiles) {
-          totalSize += file.size;
-        }
-        if (totalSize > 20 * 1024 * 1024) {
-          return false;
-        } else {
-          return true;
-        }
-    }
 })();
