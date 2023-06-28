@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "opencc-js": "^1.0.5"
+  }
+}
