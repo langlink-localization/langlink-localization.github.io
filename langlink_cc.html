@@ -1,82 +1,152 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
-<head>
+  <head>
     <meta content="text/html" ; charset="UTF-8" />
     <title>Langlink 简繁转换</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/langlink_cc.css?v=3.1"/>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/langlink_cc.css?v=3.1" />
+  </head>
 
-<body>
+  <body>
     <div id="wrapper">
-        <div id="header">
-            <div id="header-wrapper">
-                <h1>简繁转换</h1>
-            </div>
-            <div id="return-home-wrapper">
-                <a href="index.html" id="return-home">返回主页</a>
-            </div>
+      <div id="header">
+        <div id="header-wrapper">
+          <h1>简繁转换</h1>
         </div>
-        <div id="main-content" class="main">
-            <div id="upload-header-wrapper">
-                <h3 id="upload-header1" class="flex-display">点击上传文件</h3>
-                <h3 id="upload-header2" class="flex-display">点击链接下载转换后文件</h3>
-            </div>
-            <div id="upload-wrapper">
-                <form id="upload-form" enctype="multipart/form-data" class="flex-display">
-                    <label for="upload-input" id="upload-filename">上传</label>
-                    <input id="upload-input" name="uploadInput" type="file" multiple>
-                </form>
-                <div id="download-filename" class="flex-display">
-                    <ul id="download-list"></ul>
-                </div>
-            </div>
-            <div id="convert-option" class="main">
-                    <div id="orig-type.option" class="option">
-                        原文
-                        <div class="orig-option">
-                            <input id="orig-type-cn" type="radio" name="orig-type" value="cn" checked>
-                            <label for="orig-type-cn">CN</label>
-                            <input id="orig-type-hk" type="radio" name="orig-type" value="hk" >
-                            <label for="orig-type-hk">HK</label>
-                            <input id="orig-type-tw" type="radio" name="orig-type" value="tw" >
-                            <label for="orig-type-tw">TW</label>
-                            <input id="orig-type-twp" type="radio" name="orig-type" value="twp" >
-                            <label for="orig-type-twp">TW+TW_Phrases</label>
-                        </div>
-                    </div>
-                    <div id="tar-type.option" class="option">
-                        目标
-                        <div class="tar-option">
-                            <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn" >
-                            <label for="tar-type-cn">CN</label>
-                            <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" value="hk" checked>
-                            <label for="tar-type-hk">HK</label>
-                            <input id="tar-type-tw" type="radio" class="radio-button" name="tar-type" value="tw" >
-                            <label for="tar-type-tw">TW</label>
-                            <input id="tar-type-twp" type="radio" class="radio-button" name="tar-type" value="twp" >
-                            <label for="tar-type-twp">TW+TW_Phrases</label>
-                        </div>
-                    </div>
-            </div>
-            <div id="download" class="main">
-                <div class="button-wrapper">
-                    <input type="button" id="convert-table-button" class="button" value="简繁转换并展示表格">
-                    <input type="button" id="create-link-button" class="button" value="直接创建下载链接">
-                </div>
-            </div>
-            <div id="diff-toggle-area">
-                <input type="button" id="collapse-expand-tag" class="toggle-button" value="折叠标签">
-                <input type="button" id="hide-show-unchanged" class="toggle-button" value="隐藏未更改句段">
-            </div>
+        <div id="return-home-wrapper">
+          <a href="index.html" id="return-home">返回主页</a>
         </div>
-        <div id="diff-result">
-            <table id="diff-result-table"></table>
+      </div>
+      <div id="main-content" class="main">
+        <div id="upload-header-wrapper">
+          <h3 id="upload-header1" class="flex-display">点击上传文件</h3>
+          <h3 id="upload-header2" class="flex-display">
+            点击链接下载转换后文件
+          </h3>
         </div>
+        <div id="upload-wrapper">
+          <form
+            id="upload-form"
+            enctype="multipart/form-data"
+            class="flex-display"
+          >
+            <label for="upload-input" id="upload-filename">上传</label>
+            <input id="upload-input" name="uploadInput" type="file" multiple />
+          </form>
+          <div id="download-filename" class="flex-display">
+            <ul id="download-list"></ul>
+          </div>
+        </div>
+        <div id="convert-option" class="main">
+          <div id="orig-type.option" class="option">
+            原文
+            <div class="orig-option">
+              <input
+                id="orig-type-cn"
+                type="radio"
+                name="orig-type"
+                value="cn"
+                checked
+              />
+              <label for="orig-type-cn">CN</label>
+              <input
+                id="orig-type-hk"
+                type="radio"
+                name="orig-type"
+                value="hk"
+              />
+              <label for="orig-type-hk">HK</label>
+              <input
+                id="orig-type-tw"
+                type="radio"
+                name="orig-type"
+                value="tw"
+              />
+              <label for="orig-type-tw">TW</label>
+              <input
+                id="orig-type-twp"
+                type="radio"
+                name="orig-type"
+                value="twp"
+              />
+              <label for="orig-type-twp">TW+TW_Phrases</label>
+            </div>
+          </div>
+          <div id="tar-type.option" class="option">
+            目标
+            <div class="tar-option">
+              <input
+                id="tar-type-cn"
+                type="radio"
+                class="radio-button"
+                name="tar-type"
+                value="cn"
+              />
+              <label for="tar-type-cn">CN</label>
+              <input
+                id="tar-type-hk"
+                type="radio"
+                class="radio-button"
+                name="tar-type"
+                value="hk"
+                checked
+              />
+              <label for="tar-type-hk">HK</label>
+              <input
+                id="tar-type-tw"
+                type="radio"
+                class="radio-button"
+                name="tar-type"
+                value="tw"
+              />
+              <label for="tar-type-tw">TW</label>
+              <input
+                id="tar-type-twp"
+                type="radio"
+                class="radio-button"
+                name="tar-type"
+                value="twp"
+              />
+              <label for="tar-type-twp">TW+TW_Phrases</label>
+            </div>
+          </div>
+        </div>
+        <div id="download" class="main">
+          <div class="button-wrapper">
+            <input
+              type="button"
+              id="convert-table-button"
+              class="button"
+              value="简繁转换并展示表格"
+            />
+            <input
+              type="button"
+              id="create-link-button"
+              class="button"
+              value="直接创建下载链接"
+            />
+          </div>
+        </div>
+        <div id="diff-toggle-area">
+          <input
+            type="button"
+            id="collapse-expand-tag"
+            class="toggle-button"
+            value="折叠标签"
+          />
+          <input
+            type="button"
+            id="hide-show-unchanged"
+            class="toggle-button"
+            value="隐藏未更改句段"
+          />
+        </div>
+      </div>
+      <div id="diff-result">
+        <table id="diff-result-table"></table>
+      </div>
     </div>
     <script src="js/langlink_cc.js?v=3.3" type="module"></script>
     <script src="js/modules/jQuery/jQuery.js" type="module"></script>
-</body>
-
+  </body>
 </html>
