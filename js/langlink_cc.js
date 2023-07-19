@@ -1,11 +1,18 @@
 import * as OpenCC from "./modules/opencc-js/full.js";
 import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
+import * as XLSX from "./modules/xlsx/xlsx.js";
+import * as CP from "./modules/xlsx/cpexcel.js";
 
 (function () {
-  const uploadFilename = document.getElementById("upload-filename");
+  const uploadFileLabel = document.getElementById("upload-file-label");
   const uploadFile = document.getElementById("upload-input");
+  const uploadExcelLabel = document.getElementById("upload-excel-label");
+  const uploadExcel = document.getElementById("upload-excel");
   const convertTableButton = document.getElementById("convert-table-button");
   const createLinkButton = document.getElementById("create-link-button");
+  const convertExcelTableButton = document.getElementById(
+    "convert-excel-button"
+  );
   const hideShowUnchangedButton = document.getElementById(
     "hide-show-unchanged"
   );
@@ -13,6 +20,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
     "collapse-expand-tag"
   );
   const diffResultTable = document.getElementById("diff-result-table");
+  const customDictTable = document.getElementById("custom-dict-table");
 
   const readFileContentWithLog = logPerformance(readFileContent);
   const setNewFileNameWithLog = logPerformance(setNewFileName);
@@ -22,6 +30,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
   const markDiffWithLog = logPerformance(markDiff);
   const markTagWithLog = logPerformance(markTag);
   const createDownloadLinkWithLog = logPerformance(createDownloadLink);
+  const makeExcelTableWithLog = logPerformance(makeExcelTable);
 
   let oldFiles;
   let oldCounter;
@@ -31,12 +40,16 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
   let newFilenames = [];
   let oldFileContents = [];
   let newFileContents = [];
+  let excelFile;
+  let excelFilename;
+  let excelFileContent;
+  let jsonData;
 
-  uploadFilename.addEventListener("dragover", function (e) {
+  uploadFileLabel.addEventListener("dragover", function (e) {
     e.preventDefault();
   });
 
-  uploadFilename.addEventListener("drop", function (e) {
+  uploadFileLabel.addEventListener("drop", function (e) {
     e.preventDefault();
     oldFiles = e.dataTransfer.files;
     let totalSize = 0;
@@ -46,7 +59,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
       oldFilenames.push(file.name);
       totalSize += file.size;
     }
-    uploadFilename.innerHTML = Array.from(oldFilenames).join("<br>");
+    uploadFileLabel.innerHTML = Array.from(oldFilenames).join("<br>");
 
     if (totalSize > 20 * 1024 * 1024) {
       convertTableButton.disabled = true;
@@ -73,7 +86,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
       oldFilenames.push(file.name);
       totalSize += file.size;
     }
-    uploadFilename.innerHTML = Array.from(oldFilenames).join("<br>");
+    uploadFileLabel.innerHTML = Array.from(oldFilenames).join("<br>");
 
     if (totalSize > 20 * 1024 * 1024) {
       convertTableButton.disabled = true;
@@ -89,6 +102,83 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
 
     hideShowUnchangedButton.style.visibility = "hidden";
     collapseExpandTagButton.style.visibility = "hidden";
+  });
+
+  uploadExcelLabel.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
+
+  uploadExcelLabel.addEventListener("drop", function (e) {
+    e.preventDefault();
+    excelFile = e.dataTransfer.files[0];
+    let totalSize = 0;
+
+    excelFilename = "";
+
+    excelFilename = excelFile.name;
+    totalSize += excelFile.size;
+
+    uploadExcelLabel.innerHTML = excelFilename;
+
+    if (totalSize > 20 * 1024 * 1024) {
+      convertExcelTableButton.disabled = true;
+      convertExcelTableButton.title = "文件过大，无法转换成表格";
+    } else {
+      convertExcelTableButton.disabled = false;
+      convertExcelTableButton.title = "";
+    }
+
+    excelFileContent = "";
+    // readFileContent();
+    let reader = new FileReader();
+
+    reader.onload = function (e) {
+      let data = new Uint8Array(e.target.result);
+      let str = CP.utils.decode(936, data);
+      let workbook = XLSX.read(str, { type: "string" });
+
+      let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      console.log(`jsonData: ${jsonData}`);
+      return jsonData;
+    };
+    reader.readAsArrayBuffer(excelFile);
+  });
+
+  uploadExcel.addEventListener("change", function (e) {
+    excelFile = e.target.files[0];
+    let totalSize = 0;
+
+    excelFilename = "";
+
+    excelFilename = excelFile.name;
+    totalSize += excelFile.size;
+
+    uploadExcelLabel.innerHTML = excelFilename;
+
+    if (totalSize > 20 * 1024 * 1024) {
+      convertExcelTableButton.disabled = true;
+      convertExcelTableButton.title = "文件过大，无法转换成表格";
+    } else {
+      convertExcelTableButton.disabled = false;
+      convertExcelTableButton.title = "";
+    }
+
+    excelFileContent = "";
+    // readFileContent();
+    let reader = new FileReader();
+
+    reader.onload = function (e) {
+      let data = new Uint8Array(e.target.result);
+      let str = CP.utils.decode(936, data);
+      let workbook = XLSX.read(str, { type: "string" });
+
+      let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      console.log(`jsonData: ${jsonData}`);
+      return jsonData;
+    };
+    reader.readAsArrayBuffer(excelFile);
   });
 
   convertTableButton.addEventListener("click", function (e) {
@@ -180,6 +270,10 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
     }
   }
 
+  convertExcelTableButton.addEventListener("click", function (e) {
+    makeExcelTableWithLog(jsonData);
+  });
+
   function setNewFileName(locale2) {
     newFilenames.length = 0;
 
@@ -195,7 +289,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
   }
 
   function setNewContent(locale1, locale2) {
-    const customDict = [
+    const customPunDict = [
       ["“", "「"],
       ["”", "」"],
       ["‘", "『"],
@@ -216,7 +310,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
       const converter = OpenCC.ConverterFactory(
         OpenCC.Locale.from[locale1], // From locale
         OpenCC.Locale.to[locale2].concat(
-          locale2 === "tw" || locale2 === "twp" ? [customDict] : []
+          locale2 === "tw" || locale2 === "twp" ? [customPunDict] : []
         ) // To locale with custom words
       );
 
@@ -319,6 +413,22 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
         });
       });
     }
+  }
+
+  function makeExcelTable(jsons) {
+    customDictTable.querySelectorAll("tr").forEach((row) => row.remove());
+
+    jsons.forEach((rowData) => {
+      let row = document.createElement("tr");
+      customDictTable.appendChild(row);
+
+      // Loop through the values and create cells for each value
+      rowData.forEach((cellData) => {
+        let cell = document.createElement("td");
+        cell.innerText = cellData;
+        row.appendChild(cell);
+      });
+    });
   }
 
   function markTag() {

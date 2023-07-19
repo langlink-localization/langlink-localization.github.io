@@ -32,6 +32,11 @@ body{
 #upload-header2 {
     flex: 1;
     margin-left: 1rem;
+    margin-right: 1rem;
+}
+#upload-header3 {
+    flex: 1;
+    margin-left: 1rem;
 }
 
 #upload-wrapper {
@@ -55,7 +60,7 @@ body{
     width: 100%;
 }
 
-#upload-filename {
+#upload-file-label {
     display: block;
     padding: 1rem;
 }
@@ -63,6 +68,27 @@ body{
 #download-filename {
     flex: 1;
     margin-left: 1rem;
+    margin-right: 1rem;
+    background: #eee;
+    border-color: #ddd;
+    border-style: dashed;
+    text-align: center;
+    width: 100%;
+}
+
+#upload-excel {
+    display: none;
+}
+
+#upload-excel-label {
+    display: block;
+    padding: 1rem;
+}
+
+#upload-excel-form {
+    flex: 1;
+    margin-left: 1rem;
+    display: grid;
     background: #eee;
     border-color: #ddd;
     border-style: dashed;
@@ -99,6 +125,11 @@ body{
     opacity: 0.5;
 }
 
+#convert-excel-button[disbaled] {
+    color: grey;
+    opacity: 0.5;
+}
+
 #collapse-expand-tag {
     visibility: hidden;
 }
@@ -107,17 +138,37 @@ body{
     visibility: hidden;
 }
 
-#diff-result {
+
+#table-wrapper {
+    display: flex;
+    width: 100%
+}
+
+table {
+    width: auto;
+}
+
+.table-section {
     position: relative;
     top: 4.5rem;
 }
 
-#diff-result-table {
+#diff-result {
+    flex: 2;
+    margin-right: 1rem;
+}
+
+#custom-dict {
+    flex: 1;
+    margin-left: 1rem;
+}
+
+.display-table {
     border-collapse: collapse;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#diff-result-table th {
+.display-table th {
     border: 2px solid black;
     min-width: 2.4rem;
     max-width: 35rem;
@@ -126,7 +177,7 @@ body{
     background-color: aquamarine;
 }
 
-#diff-result-table td {
+.display-table td {
     border: 2px solid black;
     min-width: 2.4rem;
     max-width: 35rem;
@@ -134,7 +185,7 @@ body{
     padding: 0.5rem;
 }
 
-#diff-result-table td:nth-of-type(1) {
+.display-table td:nth-of-type(1) {
     text-align: center;
 }
 

@@ -23,6 +23,7 @@
           <h3 id="upload-header2" class="flex-display">
             点击链接下载转换后文件
           </h3>
+          <h3 id="upload-header3" class="flex-display">点击上传自定义转换词</h3>
         </div>
         <div id="upload-wrapper">
           <form
@@ -30,12 +31,20 @@
             enctype="multipart/form-data"
             class="flex-display"
           >
-            <label for="upload-input" id="upload-filename">上传</label>
+            <label for="upload-input" id="upload-file-label">上传</label>
             <input id="upload-input" name="uploadInput" type="file" multiple />
           </form>
           <div id="download-filename" class="flex-display">
             <ul id="download-list"></ul>
           </div>
+          <form
+            id="upload-excel-form"
+            enctype="multipart/form-data"
+            class="flex-display"
+          >
+            <label for="upload-excel" id="upload-excel-label">上传</label>
+            <input id="upload-excel" name="upload-excel" type="file" />
+          </form>
         </div>
         <div id="convert-option" class="main">
           <div id="orig-type.option" class="option">
@@ -110,6 +119,28 @@
               <label for="tar-type-twp">TW+TW_Phrases</label>
             </div>
           </div>
+          <div id="custom-dict.option" class="option">
+            自定义转换词
+            <div class="custom-dict-option">
+              <input
+                id="custom-dict-on"
+                type="radio"
+                class="radio-button"
+                name="custom-dict"
+                value="on"
+              />
+              <label for="custom-dict-on">开</label>
+              <input
+                id="custom-dict-off"
+                type="radio"
+                class="radio-button"
+                name="custom-dict"
+                value="off"
+                checked
+              />
+              <label for="custom-dict-off">关</label>
+            </div>
+          </div>
         </div>
         <div id="download" class="main">
           <div class="button-wrapper">
@@ -124,6 +155,12 @@
               id="create-link-button"
               class="button"
               value="直接创建下载链接"
+            />
+            <input
+              type="button"
+              id="convert-excel-button"
+              class="button"
+              value="展示Excel数据"
             />
           </div>
         </div>
@@ -142,8 +179,39 @@
           />
         </div>
       </div>
-      <div id="diff-result">
-        <table id="diff-result-table"></table>
+      <div id="table-wrapper">
+        <div id="diff-result" class="table-section">
+          <table id="diff-result-table" class="display-table">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div id="custom-dict" class="table-section">
+          <table id="custom-dict-table" class="display-table">
+          </table>
+        </div>
       </div>
     </div>
     <script src="js/langlink_cc.js?v=3.3" type="module"></script>
