@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta content="text/html" ; charset="UTF-8" />
+    <title>memoQ文件Xbench报错修复</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/memoq_file_fix.css?v=3.1" />
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <div id="header-wrapper">
+          <h1>memoQ文件Xbench报错修复</h1>
+        </div>
+        <div id="return-home-wrapper">
+          <a href="index.html" id="return-home">返回主页</a>
+        </div>
+      </div>
+      <div id="main-content" class="main">
+        <div id="upload-header-wrapper">
+          <h3 id="upload-header1" class="flex-display">点击上传mqxliff文件</h3>
+          <h3 id="upload-header2" class="flex-display">
+            点击链接下载修复后的文件
+          </h3>
+        </div>
+        <div id="upload-wrapper">
+          <form
+            id="upload-form"
+            enctype="multipart/form-data"
+            class="flex-display"
+          >
+            <label for="upload-input" id="upload-filename">上传</label>
+            <input id="upload-input" name="uploadInput" type="file" multiple />
+          </form>
+          <div id="download-filename" class="flex-display">
+            <ul id="download-list"></ul>
+          </div>
+        </div>
+        <div id="download" class="main">
+          <div class="button-wrapper">
+            <input
+              type="button"
+              id="create-link-button"
+              class="button"
+              value="文件修复并创建下载链接"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/memoq_file_fix.js?v=3.3" type="module"></script>
+    <script src="js/modules/jQuery/jQuery.js" type="module"></script>
+  </body>
+</html>
