@@ -1,4 +1,4 @@
-import * as OpenCC from "./modules/opencc-js/full.js";
+// import * as OpenCC from "./modules/opencc-js/full.js";
 import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
 
 (function () {

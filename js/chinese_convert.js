@@ -1,4 +1,4 @@
-import * as OpenCC from "./modules/opencc-js/full.js";
+// import * as OpenCC from "./modules/opencc-js/full.js";
 import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
 
 (function () {
@@ -275,51 +275,65 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
   }
 
   function makeTable(jsons, locale1, locale2) {
-    diffResultTable.querySelectorAll("tr").forEach((row) => row.remove());
+    // 清空现有的表格内容
+    diffResultTable.innerHTML = '';
 
+    // 创建 thead 和 tbody 元素
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+
+    // 添加文件标题作为表头
+    let fileHeaderRow = document.createElement("tr");
     newCounter = newFilenames.length;
-
     for (let i = 0; i < newCounter; i++) {
-      let fileHeader = document.createElement("tr");
-      diffResultTable.append(fileHeader);
       let nameString = [`file${i + 1}`, `${oldFilenames[i]}`];
       nameString.forEach((value) => {
         let nameCell = document.createElement("th");
         nameCell.setAttribute("style", "word-break: normal;");
         nameCell.innerText = value;
-        fileHeader.appendChild(nameCell);
+        fileHeaderRow.appendChild(nameCell);
       });
       let emptyArray = ["", ""];
       emptyArray.forEach((value) => {
         let emptyCell = document.createElement("th");
         emptyCell.innerText = value;
         emptyCell.setAttribute("style", "display: none;");
-        fileHeader.appendChild(emptyCell);
+        fileHeaderRow.appendChild(emptyCell);
       });
+    }
+    thead.appendChild(fileHeaderRow);
 
-      // Create the table headers
-      let headers = ["序号", "原文", locale1, locale2];
-      let headerRow = document.createElement("tr");
-      diffResultTable.appendChild(headerRow);
-      headers.forEach((header) => {
-        let cell = document.createElement("th");
-        cell.innerText = header;
-        headerRow.appendChild(cell);
-      });
+    // 创建列标题行
+    let headersRow = document.createElement("tr");
+    let headers = ["序号", "原文", locale1, locale2];
+    headers.forEach((headerText) => {
+      let header = document.createElement("th");
+      header.innerText = headerText;
+      headersRow.appendChild(header);
+    });
+    thead.appendChild(headersRow);
 
-      Object.entries(jsons[i]).forEach(([key, value]) => {
+    // 添加 thead 到表格
+    diffResultTable.appendChild(thead);
+
+    // 添加数据到 tbody
+    jsons.forEach((json, fileIndex) => {
+      Object.entries(json).forEach(([key, value]) => {
         let row = document.createElement("tr");
-        diffResultTable.appendChild(row);
-
         // Loop through the values and create cells for each value
         Object.values(value).forEach((val) => {
           let cell = document.createElement("td");
           cell.innerText = val;
           row.appendChild(cell);
         });
+        tbody.appendChild(row);
       });
-    }
+    });
+
+    // 添加 tbody 到表格
+    diffResultTable.appendChild(tbody);
   }
+
 
   function markTag() {
     let pattern =
