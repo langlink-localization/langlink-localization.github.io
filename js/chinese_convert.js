@@ -334,6 +334,45 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
     diffResultTable.appendChild(tbody);
   }
 
+  // function makeTable(jsons, locale1, locale2) {
+  //   // Prepare data for the Handsontable
+  //   let data = [];
+  //   jsons.forEach((json) => {
+  //     Object.entries(json).forEach(([key, value]) => {
+  //       // Create an array from the value object and prepend the key
+  //       let rowData = [key, value.number, value.source, value.target1, value.target2];
+  //       data.push(rowData);
+  //     });
+  //   });
+
+  //   // Define the column headers
+  //   let headers = ["ID", "序号", "原文", locale1, locale2];
+
+  //   // Options for the Handsontable
+  //   let hotSettings = {
+  //     data: data,
+  //     colHeaders: headers,
+  //     rowHeaders: true,
+  //     filters: true,
+  //     dropdownMenu: true,
+  //     licenseKey: 'non-commercial-and-evaluation', // Replace with your license key for commercial use
+  //     contextMenu: true,
+  //     manualRowResize: true,
+  //     manualColumnResize: true,
+  //     stretchH: 'all', // Stretch all columns to fill the table horizontally
+  //     autoColumnSize: true, // Automatically set column sizes to fit content
+  //     height: 'auto', // Set the table height to auto to ensure it resizes based on content
+  //     width: 'auto' // Set the table width to auto to ensure it resizes based on content
+  //   };
+
+  //   // Clear existing table content
+  //   diffResultTable.innerHTML = '';
+
+  //   // Create a Handsontable instance
+  //   let hot = new Handsontable(diffResultTable, hotSettings);
+  // }
+
+
 
   function markTag() {
     let pattern =
