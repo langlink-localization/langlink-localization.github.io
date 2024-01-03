@@ -107,7 +107,7 @@ body{
     visibility: hidden;
 }
 
-#diff-result {
+#diff-result-table {
     position: relative;
     top: 4.5rem;
 }
@@ -139,6 +139,7 @@ body{
 }
 
 .delete1 {
+    text-decoration: line-through;
     color: blue;
 }
 
@@ -153,6 +154,7 @@ body{
 }
 
 .insert2 {
+    text-decoration: underline;
     color: red;
 }
 
