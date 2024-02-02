@@ -4,6 +4,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
 (function () {
   const uploadFilename = document.getElementById("upload-filename");
   const uploadFile = document.getElementById("upload-input");
+  const findAndReplaceButton = document.getElementById("find-replace-button");
   const convertTableButton = document.getElementById("convert-table-button");
   const createLinkButton = document.getElementById("create-link-button");
   const hideShowUnchangedButton = document.getElementById(
@@ -90,6 +91,17 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
 
     hideShowUnchangedButton.style.visibility = "hidden";
     collapseExpandTagButton.style.visibility = "hidden";
+  });
+
+  findAndReplaceButton.addEventListener("click", function (e) {
+    const findText = document.getElementById("find-text").value;
+    const replaceText = document.getElementById("replace-text").value;
+    findAndReplace(findText, replaceText);
+    // 同时更新下载文件内容
+    findAndReplaceInDownloadContent(findText, replaceText);
+
+    // 重新创建下载链接以反映更新的内容
+    createDownloadLinkWithLog(...[newFilenames, newFileContents]);
   });
 
   convertTableButton.addEventListener("click", function (e) {
@@ -226,6 +238,27 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
 
     return newFileContents;
   }
+
+  function findAndReplace(findText, replaceText) {
+    // 假设第四列是需要替换文本的列
+    const columnIndex = 3; // 因为列的索引从0开始，第四列的索引是3
+    const rows = document.querySelectorAll("#diff-result-table tbody tr");
+    rows.forEach(row => {
+      const cell = row.cells[columnIndex];
+      if (cell) {
+        cell.innerHTML = cell.innerHTML.replace(new RegExp(findText, 'g'), replaceText);
+      }
+    });
+  }
+
+  function findAndReplaceInDownloadContent(findText, replaceText) {
+    newFileContents = newFileContents.map(content => {
+      // 假设这里直接替换文本，实际应用中可能需要根据文件格式进行特定处理
+      return content.replace(new RegExp(findText, 'g'), replaceText);
+    });
+  }
+
+
 
   function getConvertOption() {
     let result = [];

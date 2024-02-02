@@ -1,167 +1,207 @@
 #header {
-    text-align: center;
-    position: relative;
-    top: 2.5rem;
+  text-align: center;
+  position: relative;
+  top: 2.5rem;
 }
 
-body{
-    font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+body {
+  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica,
+    "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN",
+    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
+    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
 
 #main-content {
-    position: relative;
-    top: 4rem;
-    overflow: auto;
+  position: relative;
+  top: 4rem;
+  overflow: auto;
 }
 
 .main {
-    display: grid;
-    gap: 0.5rem;
-    width: 100%;
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 #upload-header-wrapper {
-    display: flex;
-    text-align: left;
+  display: flex;
+  text-align: left;
 }
 
 #upload-header1 {
-    flex: 1;
-    margin-right: 1rem;
+  flex: 1;
+  margin-right: 1rem;
 }
 #upload-header2 {
-    flex: 1;
-    margin-left: 1rem;
+  flex: 1;
+  margin-left: 1rem;
 }
 
 #upload-wrapper {
-    display: flex;
-    position: relative;
-    top: -1rem;
+  display: flex;
+  position: relative;
+  top: -1rem;
 }
 
 #upload-input {
-    display: none;
+  display: none;
 }
 
 #upload-form {
-    flex: 1;
-    margin-right: 1rem;
-    display: grid;
-    background: #eee;
-    border-color: #ddd;
-    border-style: dashed;
-    text-align: center;
-    width: 100%;
+  flex: 1;
+  margin-right: 1rem;
+  display: grid;
+  background: #eee;
+  border-color: #ddd;
+  border-style: dashed;
+  text-align: center;
+  width: 100%;
 }
 
 #upload-filename {
-    display: block;
-    padding: 1rem;
+  display: block;
+  padding: 1rem;
 }
 
 #download-filename {
-    flex: 1;
-    margin-left: 1rem;
-    background: #eee;
-    border-color: #ddd;
-    border-style: dashed;
-    text-align: center;
-    width: 100%;
+  flex: 1;
+  margin-left: 1rem;
+  background: #eee;
+  border-color: #ddd;
+  border-style: dashed;
+  text-align: center;
+  width: 100%;
 }
 
 #download-hint {
-    padding: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 
 .button-wrapper {
-    text-align: center;
+  text-align: center;
+}
+
+#find-replace-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem; /* 调整间距 */
+  position: relative;
+  padding: 0.5rem; /* 减少内边距 */
+  background: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto; /* 居中显示 */
+  max-width: 100%; /* 限制最大宽度 */
+}
+
+#find-replace-area input[type="text"] {
+  /* width: calc(100% - 10px); /* 计算宽度，减去一些边距 */
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#find-replace-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap; /* 防止文本换行 */
+}
+
+#find-replace-button:hover {
+  background-color: #0056b3;
 }
 
 .option {
-    padding-bottom: 0.2rem;
-    border-bottom: 0.15rem solid;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.15rem solid;
 }
 
 #convert-option {
-    width: 100%;
-    position: relative;
-    top: -1rem;
+  width: 100%;
+  position: relative;
+  top: -1rem;
 }
 
 .button {
-    height: 2rem;
-    width: auto;
+  height: 2rem;
+  width: auto;
 }
 
 #convert-table-button[disabled] {
-    color: grey;
-    opacity: 0.5;
+  color: grey;
+  opacity: 0.5;
 }
 
 #collapse-expand-tag {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 #hide-show-unchanged {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 #diff-result-table {
-    position: relative;
-    top: 4.5rem;
+  position: relative;
+  top: 4.5rem;
 }
 
 #diff-result-table {
-    border-collapse: collapse;
-    font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #diff-result-table th {
-    border: 2px solid black;
-    min-width: 2.4rem;
-    max-width: 35rem;
-    word-wrap: break-word;
-    padding: 0.5rem;
-    background-color: aquamarine;
+  border: 2px solid black;
+  min-width: 2.4rem;
+  max-width: 35rem;
+  word-wrap: break-word;
+  padding: 0.5rem;
+  background-color: aquamarine;
 }
 
 #diff-result-table td {
-    border: 2px solid black;
-    min-width: 2.4rem;
-    max-width: 35rem;
-    word-wrap: break-word;
-    padding: 0.5rem;
+  border: 2px solid black;
+  min-width: 2.4rem;
+  max-width: 35rem;
+  word-wrap: break-word;
+  padding: 0.5rem;
 }
 
 #diff-result-table td:nth-of-type(1) {
-    text-align: center;
+  text-align: center;
 }
 
 .delete1 {
-    text-decoration: line-through;
-    color: blue;
+  text-decoration: line-through;
+  color: blue;
 }
 
 .insert1 {
-    color: red;
-    display: none;
+  color: red;
+  display: none;
 }
 
 .delete2 {
-    color: blue;
-    display: none;
+  color: blue;
+  display: none;
 }
 
 .insert2 {
-    text-decoration: underline;
-    color: red;
+  text-decoration: underline;
+  color: red;
 }
 
 .tag {
-    color: grey;
+  color: grey;
 }
 
 .ph {
-    color: grey;
+  color: grey;
 }
