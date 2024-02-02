@@ -87,17 +87,22 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 1rem; /* 调整间距 */
-  position: relative;
+  /* position: relative; */
+  top: 5rem;
   padding: 0.5rem; /* 减少内边距 */
   background: #f9f9f9;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 1rem auto; /* 居中显示 */
-  max-width: 100%; /* 限制最大宽度 */
+  max-width: 80%; /* 限制最大宽度 */
 }
+/* 
+#find-replace-area div {
+  flex: 1; /* 每个子元素占据相等的空间 */
+} */
 
 #find-replace-area input[type="text"] {
-  /* width: calc(100% - 10px); /* 计算宽度，减去一些边距 */
+  width: calc(100% - 10px); /* 计算宽度，减去一些边距 */
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -109,7 +114,7 @@ body {
   color: white;
   background-color: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   white-space: nowrap; /* 防止文本换行 */
 }
