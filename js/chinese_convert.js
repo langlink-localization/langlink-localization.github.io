@@ -1,18 +1,12 @@
-import * as OpenCC from "./modules/opencc-js/full.js";
+// import * as OpenCC from "./modules/opencc-js/full.js";
 import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
-import * as XLSX from "./modules/xlsx/xlsx.js";
-import * as CP from "./modules/xlsx/cpexcel.js";
 
 (function () {
-  const uploadFileLabel = document.getElementById("upload-file-label");
+  const uploadFilename = document.getElementById("upload-filename");
   const uploadFile = document.getElementById("upload-input");
-  const uploadExcelLabel = document.getElementById("upload-excel-label");
-  const uploadExcel = document.getElementById("upload-excel");
+  const findAndReplaceButton = document.getElementById("find-replace-button");
   const convertTableButton = document.getElementById("convert-table-button");
   const createLinkButton = document.getElementById("create-link-button");
-  const convertExcelTableButton = document.getElementById(
-    "convert-excel-button"
-  );
   const hideShowUnchangedButton = document.getElementById(
     "hide-show-unchanged"
   );
@@ -20,7 +14,6 @@ import * as CP from "./modules/xlsx/cpexcel.js";
     "collapse-expand-tag"
   );
   const diffResultTable = document.getElementById("diff-result-table");
-  const customDictTable = document.getElementById("custom-dict-table");
 
   const readFileContentWithLog = logPerformance(readFileContent);
   const setNewFileNameWithLog = logPerformance(setNewFileName);
@@ -30,7 +23,6 @@ import * as CP from "./modules/xlsx/cpexcel.js";
   const markDiffWithLog = logPerformance(markDiff);
   const markTagWithLog = logPerformance(markTag);
   const createDownloadLinkWithLog = logPerformance(createDownloadLink);
-  const makeExcelTableWithLog = logPerformance(makeExcelTable);
 
   let oldFiles;
   let oldCounter;
@@ -40,16 +32,13 @@ import * as CP from "./modules/xlsx/cpexcel.js";
   let newFilenames = [];
   let oldFileContents = [];
   let newFileContents = [];
-  let excelFile;
-  let excelFilename;
-  let excelFileContent;
-  let jsonData;
+  // let hot;
 
-  uploadFileLabel.addEventListener("dragover", function (e) {
+  uploadFilename.addEventListener("dragover", function (e) {
     e.preventDefault();
   });
 
-  uploadFileLabel.addEventListener("drop", function (e) {
+  uploadFilename.addEventListener("drop", function (e) {
     e.preventDefault();
     oldFiles = e.dataTransfer.files;
     let totalSize = 0;
@@ -59,7 +48,7 @@ import * as CP from "./modules/xlsx/cpexcel.js";
       oldFilenames.push(file.name);
       totalSize += file.size;
     }
-    uploadFileLabel.innerHTML = Array.from(oldFilenames).join("<br>");
+    uploadFilename.innerHTML = Array.from(oldFilenames).join("<br>");
 
     if (totalSize > 20 * 1024 * 1024) {
       convertTableButton.disabled = true;
@@ -86,7 +75,7 @@ import * as CP from "./modules/xlsx/cpexcel.js";
       oldFilenames.push(file.name);
       totalSize += file.size;
     }
-    uploadFileLabel.innerHTML = Array.from(oldFilenames).join("<br>");
+    uploadFilename.innerHTML = Array.from(oldFilenames).join("<br>");
 
     if (totalSize > 20 * 1024 * 1024) {
       convertTableButton.disabled = true;
@@ -104,81 +93,15 @@ import * as CP from "./modules/xlsx/cpexcel.js";
     collapseExpandTagButton.style.visibility = "hidden";
   });
 
-  uploadExcelLabel.addEventListener("dragover", function (e) {
-    e.preventDefault();
-  });
+  findAndReplaceButton.addEventListener("click", function (e) {
+    const findText = document.getElementById("find-text").value;
+    const replaceText = document.getElementById("replace-text").value;
+    findAndReplace(findText, replaceText);
+    // 同时更新下载文件内容
+    findAndReplaceInDownloadContent(findText, replaceText);
 
-  uploadExcelLabel.addEventListener("drop", function (e) {
-    e.preventDefault();
-    excelFile = e.dataTransfer.files[0];
-    let totalSize = 0;
-
-    excelFilename = "";
-
-    excelFilename = excelFile.name;
-    totalSize += excelFile.size;
-
-    uploadExcelLabel.innerHTML = excelFilename;
-
-    if (totalSize > 20 * 1024 * 1024) {
-      convertExcelTableButton.disabled = true;
-      convertExcelTableButton.title = "文件过大，无法转换成表格";
-    } else {
-      convertExcelTableButton.disabled = false;
-      convertExcelTableButton.title = "";
-    }
-
-    excelFileContent = "";
-    // readFileContent();
-    let reader = new FileReader();
-
-    reader.onload = function (e) {
-      let data = new Uint8Array(e.target.result);
-      let str = CP.utils.decode(936, data);
-      let workbook = XLSX.read(str, { type: "string" });
-
-      let worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      console.log(`jsonData: ${jsonData}`);
-      return jsonData;
-    };
-    reader.readAsArrayBuffer(excelFile);
-  });
-
-  uploadExcel.addEventListener("change", function (e) {
-    excelFile = e.target.files[0];
-    let totalSize = 0;
-
-    excelFilename = "";
-
-    excelFilename = excelFile.name;
-    totalSize += excelFile.size;
-
-    uploadExcelLabel.innerHTML = excelFilename;
-
-    if (totalSize > 20 * 1024 * 1024) {
-      convertExcelTableButton.disabled = true;
-      convertExcelTableButton.title = "文件过大，无法转换成表格";
-    } else {
-      convertExcelTableButton.disabled = false;
-      convertExcelTableButton.title = "";
-    }
-
-    excelFileContent = "";
-    // readFileContent();
-    let reader = new FileReader();
-
-    reader.onload = function (e) {
-      let data = new Uint8Array(e.target.result);
-      let str = CP.utils.decode(936, data);
-      let workbook = XLSX.read(str, { type: "string" });
-
-      let worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      console.log(`jsonData: ${jsonData}`);
-      return jsonData;
-    };
-    reader.readAsArrayBuffer(excelFile);
+    // 重新创建下载链接以反映更新的内容
+    createDownloadLinkWithLog(...[newFilenames, newFileContents]);
   });
 
   convertTableButton.addEventListener("click", function (e) {
@@ -270,10 +193,6 @@ import * as CP from "./modules/xlsx/cpexcel.js";
     }
   }
 
-  convertExcelTableButton.addEventListener("click", function (e) {
-    makeExcelTableWithLog(jsonData);
-  });
-
   function setNewFileName(locale2) {
     newFilenames.length = 0;
 
@@ -289,7 +208,7 @@ import * as CP from "./modules/xlsx/cpexcel.js";
   }
 
   function setNewContent(locale1, locale2) {
-    const customPunDict = [
+    const customDict = [
       ["“", "「"],
       ["”", "」"],
       ["‘", "『"],
@@ -310,7 +229,7 @@ import * as CP from "./modules/xlsx/cpexcel.js";
       const converter = OpenCC.ConverterFactory(
         OpenCC.Locale.from[locale1], // From locale
         OpenCC.Locale.to[locale2].concat(
-          locale2 === "tw" || locale2 === "twp" ? [customPunDict] : []
+          locale2 === "tw" || locale2 === "twp" ? [customDict] : []
         ) // To locale with custom words
       );
 
@@ -319,6 +238,27 @@ import * as CP from "./modules/xlsx/cpexcel.js";
 
     return newFileContents;
   }
+
+  function findAndReplace(findText, replaceText) {
+    // 假设第四列是需要替换文本的列
+    const columnIndex = 3; // 因为列的索引从0开始，第四列的索引是3
+    const rows = document.querySelectorAll("#diff-result-table tbody tr");
+    rows.forEach(row => {
+      const cell = row.cells[columnIndex];
+      if (cell) {
+        cell.innerHTML = cell.innerHTML.replace(new RegExp(findText, 'g'), replaceText);
+      }
+    });
+  }
+
+  function findAndReplaceInDownloadContent(findText, replaceText) {
+    newFileContents = newFileContents.map(content => {
+      // 假设这里直接替换文本，实际应用中可能需要根据文件格式进行特定处理
+      return content.replace(new RegExp(findText, 'g'), replaceText);
+    });
+  }
+
+
 
   function getConvertOption() {
     let result = [];
@@ -369,66 +309,63 @@ import * as CP from "./modules/xlsx/cpexcel.js";
   }
 
   function makeTable(jsons, locale1, locale2) {
-    diffResultTable.querySelectorAll("tr").forEach((row) => row.remove());
+    // 清空现有的表格内容
+    diffResultTable.innerHTML = '';
 
+    // 创建 thead 和 tbody 元素
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+
+    // 添加文件标题作为表头
+    let fileHeaderRow = document.createElement("tr");
     newCounter = newFilenames.length;
-
     for (let i = 0; i < newCounter; i++) {
-      let fileHeader = document.createElement("tr");
-      diffResultTable.append(fileHeader);
       let nameString = [`file${i + 1}`, `${oldFilenames[i]}`];
       nameString.forEach((value) => {
         let nameCell = document.createElement("th");
         nameCell.setAttribute("style", "word-break: normal;");
         nameCell.innerText = value;
-        fileHeader.appendChild(nameCell);
+        fileHeaderRow.appendChild(nameCell);
       });
       let emptyArray = ["", ""];
       emptyArray.forEach((value) => {
         let emptyCell = document.createElement("th");
         emptyCell.innerText = value;
         emptyCell.setAttribute("style", "display: none;");
-        fileHeader.appendChild(emptyCell);
+        fileHeaderRow.appendChild(emptyCell);
       });
+    }
+    thead.appendChild(fileHeaderRow);
 
-      // Create the table headers
-      let headers = ["序号", "原文", locale1, locale2];
-      let headerRow = document.createElement("tr");
-      diffResultTable.appendChild(headerRow);
-      headers.forEach((header) => {
-        let cell = document.createElement("th");
-        cell.innerText = header;
-        headerRow.appendChild(cell);
-      });
+    // 创建列标题行
+    let headersRow = document.createElement("tr");
+    let headers = ["序号", "原文", locale1, locale2];
+    headers.forEach((headerText) => {
+      let header = document.createElement("th");
+      header.innerText = headerText;
+      headersRow.appendChild(header);
+    });
+    thead.appendChild(headersRow);
 
-      Object.entries(jsons[i]).forEach(([key, value]) => {
+    // 添加 thead 到表格
+    diffResultTable.appendChild(thead);
+
+    // 添加数据到 tbody
+    jsons.forEach((json, fileIndex) => {
+      Object.entries(json).forEach(([key, value]) => {
         let row = document.createElement("tr");
-        diffResultTable.appendChild(row);
-
         // Loop through the values and create cells for each value
         Object.values(value).forEach((val) => {
           let cell = document.createElement("td");
           cell.innerText = val;
           row.appendChild(cell);
         });
-      });
-    }
-  }
-
-  function makeExcelTable(jsons) {
-    customDictTable.querySelectorAll("tr").forEach((row) => row.remove());
-
-    jsons.forEach((rowData) => {
-      let row = document.createElement("tr");
-      customDictTable.appendChild(row);
-
-      // Loop through the values and create cells for each value
-      rowData.forEach((cellData) => {
-        let cell = document.createElement("td");
-        cell.innerText = cellData;
-        row.appendChild(cell);
+        tbody.appendChild(row);
       });
     });
+
+    // 添加 tbody 到表格
+    diffResultTable.appendChild(tbody);
   }
 
   function markTag() {
@@ -460,6 +397,7 @@ import * as CP from "./modules/xlsx/cpexcel.js";
           row.find("td:eq(3)").html()
         );
         let html1 = dmp.diff_prettyHtml1(diffs);
+        console.log(`html1: ${html1}`);
         let html2 = dmp.diff_prettyHtml2(diffs);
         row.find("td:eq(2)").html(html1);
         row.find("td:eq(3)").html(html2);

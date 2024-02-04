@@ -5,7 +5,7 @@
     <meta content="text/html" ; charset="UTF-8" />
     <title>Langlink Adapt转换</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/langlink_adapt.css?v=1.0"/>
+    <link rel="stylesheet" href="../css/memoq_adapt.css?v=1.0" />
 </head>
 
 <body>
@@ -15,7 +15,7 @@
                 <h1>Adapt转换</h1>
             </div>
             <div id="return-home-wrapper">
-                <a href="index.html" id="return-home">返回主页</a>
+                <a href="../index.html" id="return-home">返回主页</a>
             </div>
         </div>
         <div id="main-content" class="main">
@@ -38,32 +38,32 @@
                 </div>
             </div>
             <div id="convert-option" class="main">
-                    <div id="orig-type.option" class="option">
-                        原文
-                        <div class="orig-option">
-                            <input id="orig-type-cn" type="radio" name="orig-type" value="cn" checked>
-                            <label for="orig-type-cn">CN</label>
-                            <input id="orig-type-hk" type="radio" name="orig-type" value="hk" >
-                            <label for="orig-type-hk">HK</label>
-                            <input id="orig-type-tw" type="radio" name="orig-type" value="tw" >
-                            <label for="orig-type-tw">TW</label>
-                            <input id="orig-type-twp" type="radio" name="orig-type" value="twp" >
-                            <label for="orig-type-twp">TW+TW_Phrases</label>
-                        </div>
+                <div id="orig-type.option" class="option">
+                    原文
+                    <div class="orig-option">
+                        <input id="orig-type-cn" type="radio" name="orig-type" value="cn" checked>
+                        <label for="orig-type-cn">CN</label>
+                        <input id="orig-type-hk" type="radio" name="orig-type" value="hk">
+                        <label for="orig-type-hk">HK</label>
+                        <input id="orig-type-tw" type="radio" name="orig-type" value="tw">
+                        <label for="orig-type-tw">TW</label>
+                        <input id="orig-type-twp" type="radio" name="orig-type" value="twp">
+                        <label for="orig-type-twp">TW+TW_Phrases</label>
                     </div>
-                    <div id="tar-type.option" class="option">
-                        目标
-                        <div class="tar-option">
-                            <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn" >
-                            <label for="tar-type-cn">CN</label>
-                            <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" value="hk" checked>
-                            <label for="tar-type-hk">HK</label>
-                            <input id="tar-type-tw" type="radio" class="radio-button" name="tar-type" value="tw" >
-                            <label for="tar-type-tw">TW</label>
-                            <input id="tar-type-twp" type="radio" class="radio-button" name="tar-type" value="twp" >
-                            <label for="tar-type-twp">TW+TW_Phrases</label>
-                        </div>
+                </div>
+                <div id="tar-type.option" class="option">
+                    目标
+                    <div class="tar-option">
+                        <input id="tar-type-cn" type="radio" class="radio-button" name="tar-type" value="cn">
+                        <label for="tar-type-cn">CN</label>
+                        <input id="tar-type-hk" type="radio" class="radio-button" name="tar-type" value="hk" checked>
+                        <label for="tar-type-hk">HK</label>
+                        <input id="tar-type-tw" type="radio" class="radio-button" name="tar-type" value="tw">
+                        <label for="tar-type-tw">TW</label>
+                        <input id="tar-type-twp" type="radio" class="radio-button" name="tar-type" value="twp">
+                        <label for="tar-type-twp">TW+TW_Phrases</label>
                     </div>
+                </div>
             </div>
             <div id="download" class="main">
                 <div class="button-wrapper">
@@ -80,8 +80,11 @@
             <table id="diff-result-table"></table>
         </div>
     </div>
-    <script src="js/langlink_adapt.js?v=1.0" type="module"></script>
-    <script src="js/modules/jQuery/jQuery.js" type="module"></script>
+    <script src="../js/memoq_adapt.js?v=1.0" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
