@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { ThemeSwitcher } from "@/components/ThemeSwitchers";
+import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
 import { ListboxWrapper } from "@/components/ListboxWrapper";
+import UploadManager from "@/components/UploadManager";
+
 import {
   Link,
   Button,
@@ -26,14 +28,6 @@ import {
 } from "@nextui-org/react";
 
 export default function App() {
-  const srcFileIds = Array.from({ length: 5 }, (_, i) => i + 1);
-  const srcListData = [
-    srcFileIds.map((id) => ({
-      key: `srcFile${id}`,
-      text: `out${id}.mqxliff`,
-    })),
-  ];
-
   const tgtFileIds = Array.from({ length: 5 }, (_, i) => i + 1);
   const tgtListData = [
     tgtFileIds.map((id) => ({
@@ -70,28 +64,12 @@ export default function App() {
         </Link>
       </div>
       <div className="grid-rows-auto grid grid-cols-2 pt-8">
-        <Button className=" place-self-center" radius="full" color="primary">
-          上传文件
-        </Button>
-        <Button className=" place-self-center" radius="full" color="primary">
-          下载所有文件
-        </Button>
-        <ListboxWrapper>
-          <Listbox color="primary" variant="bordered">
-            <ListboxSection>
-              {srcListData[0].map((item) => (
-                <ListboxItem
-                  key={item.key}
-                  className="text-center hover:underline"
-                >
-                  {item.text}
-                </ListboxItem>
-              ))}
-            </ListboxSection>
-          </Listbox>
-        </ListboxWrapper>
-        <ListboxWrapper>
-          <Listbox color="primary" variant="bordered">
+        <UploadManager onFilesUploaded={(files) => console.log(files)} />
+        <div className="col-span-1 col-start-2">
+          <Button className="place-self-center" radius="full" color="primary">
+            下载所有文件
+          </Button>
+          <Listbox color="primary" variant="bordered" className="">
             <ListboxSection>
               {tgtListData[0].map((item) => (
                 <ListboxItem
@@ -105,7 +83,7 @@ export default function App() {
               ))}
             </ListboxSection>
           </Listbox>
-        </ListboxWrapper>
+        </div>
         <div className="col-span-2 mt-4 grid grid-cols-4 grid-rows-1">
           <Select
             label="选择原文语言"
