@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
-import UploadManager from "@/components/UploadManager";
+import UploadManager from "@/app/components/UploadManager";
+import ConvertOption from "@/app/chinese_convert/ConvertOption";
 
 import {
   Link,
@@ -22,10 +23,14 @@ import {
   Chip,
 } from "@nextui-org/react";
 
+const handleOptionChange = (languages: [string, string]) => {
+  console.log(`原文语言：${languages[0]}，目标语言：${languages[1]}`);
+};
+
 export default function App() {
-  const tgtFileIds = Array.from({ length: 5 }, (_, i) => i + 1);
-  const tgtListData = [
-    tgtFileIds.map((id) => ({
+  const targtFileIds = Array.from({ length: 5 }, (_, i) => i + 1);
+  const targtListData = [
+    targtFileIds.map((id) => ({
       key: `targetFile${id}`,
       text: `out${id}_zhcn_zhhk.mqxliff`,
       href: `out${id}_zhcn_zhhk.mqxliff`,
@@ -62,11 +67,13 @@ export default function App() {
         <UploadManager onFilesUploaded={(files) => console.log(files)} />
         <div className="col-span-1 col-start-2">
           <div className="text-center">
-            <Button className="" radius="full" color="primary">
-              下载所有文件
-            </Button>
+            <Tooltip content="点击下载所有文件" showArrow={true}>
+              <Button className="" radius="full" color="primary">
+                下载所有文件
+              </Button>
+            </Tooltip>
           </div>
-          {tgtListData[0].map((item) => (
+          {targtListData[0].map((item) => (
             <Tooltip
               key={item.key}
               content="点击下载"
@@ -86,62 +93,9 @@ export default function App() {
             </Tooltip>
           ))}
         </div>
-        <div className="col-span-2 mt-4 grid grid-cols-4 grid-rows-1">
-          <Select
-            label="选择原文语言"
-            placeholder="请选择一个语言"
-            defaultSelectedKeys={["zh-cn"]}
-            size="sm"
-            variant="bordered"
-            className="col-span-1 col-start-1"
-          >
-            <SelectSection showDivider title="简中">
-              <SelectItem key="zh-cn">zh-cn</SelectItem>
-            </SelectSection>
-            <SelectSection showDivider title="繁中">
-              <SelectItem key="zh-hk">zh-hk</SelectItem>
-              <SelectItem key="zh-tw">zh-tw</SelectItem>
-              <SelectItem key="zh-tw+twphrase">zh-tw+twp</SelectItem>
-            </SelectSection>
-          </Select>
-
-          <Select
-            label="选择目标语言"
-            placeholder="请选择一个语言"
-            defaultSelectedKeys={["zh-hk"]}
-            size="sm"
-            variant="bordered"
-            className="col-span-1 col-start-2"
-          >
-            <SelectSection showDivider title="简中">
-              <SelectItem key="zh-cn">zh-cn</SelectItem>
-            </SelectSection>
-            <SelectSection showDivider title="繁中">
-              <SelectItem key="zh-hk">zh-hk</SelectItem>
-              <SelectItem key="zh-tw">zh-tw</SelectItem>
-              <SelectItem key="zh-tw+twphrase">zh-tw+twp</SelectItem>
-            </SelectSection>
-          </Select>
-          <div className="col-span-2 col-start-3 flex">
-            <Button
-              className=" place-self-center text-xs"
-              radius="md"
-              color="primary"
-              size="sm"
-            >
-              转换并展示表格
-            </Button>
-            <Button
-              className=" place-self-center text-xs"
-              radius="md"
-              color="primary"
-              size="sm"
-            >
-              直接创建下载链接
-            </Button>
-          </div>
-        </div>
+        <div className="col-span-2 mt-4 grid grid-cols-4 grid-rows-1"></div>
       </div>
+      <ConvertOption onOptionChange={handleOptionChange} />
       <div className="grid-rows-auto mt-4 grid grid-cols-12">
         <Input
           isClearable

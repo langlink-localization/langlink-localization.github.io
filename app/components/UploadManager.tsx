@@ -2,26 +2,51 @@ import React, { useState, useRef } from "react";
 import { Button, Tooltip, Chip } from "@nextui-org/react";
 
 interface UploadManagerProps {
-  onFilesUploaded: (files: File[]) => void; // 用于处理上传文件
+  onFilesUploaded: (filesData: { name: string; content: string }[]) => void; // 用于处理上传文件
 }
 
 const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
-  const [filesData, setFilesData] = useState<{ key: string; text: string }[]>(
-    [],
-  );
+  const [upldFilesData, setupldFilesData] = useState<
+    { key: string; name: string; content?: string }[]
+  >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const readFilesContent = (files: File[]) => {
+    const fileReaders = files.map((file) => {
+      return new Promise<{ name: string; content: string }>(
+        (resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            resolve({
+              name: file.name,
+              content: event.target?.result as string,
+            });
+          };
+          reader.onerror = (error) => reject(error);
+          reader.readAsText(file); // Assuming text files for simplicity
+        },
+      );
+    });
+
+    Promise.all(fileReaders)
+      .then((filesData) => {
+        setupldFilesData(
+          filesData.map((file, index) => ({
+            key: `uploadFile-${index}`,
+            name: file.name,
+            content: file.content,
+          })),
+        );
+        onFilesUploaded(filesData); // Calling the callback with file name and content
+      })
+      .catch((error) => console.error("Error reading files:", error));
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+    const files = event.target?.files as FileList; // 结合使用可选链和类型断言
     if (!files) return;
 
-    const newFilesData = Array.from(files).map((file, index) => ({
-      key: `uploadFile-${index}`,
-      text: file.name,
-    }));
-
-    setFilesData(newFilesData);
-    onFilesUploaded(Array.from(files));
+    readFilesContent(Array.from(files));
   };
 
   const triggerFileInputClick = () => {
@@ -29,7 +54,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
   };
 
   const handleCloseFileChip = (key: string) => {
-    setFilesData((prev) => prev.filter((item) => item.key !== key));
+    setupldFilesData((prev) => prev.filter((item) => item.key !== key));
   };
 
   return (
@@ -53,11 +78,11 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
           </Button>
         </Tooltip>
       </div>
-      <div className="row-start-2">
-        {filesData.map((item) => (
+      <div className="">
+        {upldFilesData.map((item) => (
           <Tooltip
             key={item.key}
-            content={item.text}
+            content={item.name}
             placement="top-start"
             showArrow={true}
             delay={1000}
@@ -69,7 +94,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
               variant="faded"
               onClose={() => handleCloseFileChip(item.key)}
             >
-              {item.text}
+              {item.name}
             </Chip>
           </Tooltip>
         ))}
