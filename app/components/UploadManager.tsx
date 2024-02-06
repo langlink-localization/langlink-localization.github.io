@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Button, Tooltip, Chip } from "@nextui-org/react";
+import uuid from 'uuid';
 
 interface UploadManagerProps {
   onFilesUploaded: (filesData: { name: string; content: string }[]) => void; // 用于处理上传文件
@@ -23,7 +24,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
             });
           };
           reader.onerror = (error) => reject(error);
-          reader.readAsText(file); // Assuming text files for simplicity
+          reader.readAsText(file);
         },
       );
     });
@@ -31,16 +32,21 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
     Promise.all(fileReaders)
       .then((filesData) => {
         setupldFilesData(
-          filesData.map((file, index) => ({
-            key: `uploadFile-${index}`,
+          filesData.map((file) => ({
+            key: uuidFromUuid(),
             name: file.name,
             content: file.content,
           })),
         );
-        onFilesUploaded(filesData); // Calling the callback with file name and content
+        onFilesUploaded(filesData);
       })
       .catch((error) => console.error("Error reading files:", error));
   };
+
+  const uuidFromUuid = () => {
+    const newUuid = uuid.v4();
+    return newUuid;
+  }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target?.files as FileList; // 结合使用可选链和类型断言
@@ -91,7 +97,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
             <Chip
               key={item.key}
               className=""
-              variant="faded"
+              variant="dot"
               onClose={() => handleCloseFileChip(item.key)}
             >
               {item.name}

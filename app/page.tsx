@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export default function App() {
   return (

@@ -64,7 +64,7 @@ export default function App() {
         </Link>
       </div>
       <div className="grid-rows-auto grid grid-cols-2 overflow-auto pt-8">
-        <UploadManager onFilesUploaded={(files) => console.log(files)} />
+        <UploadManager onFilesUploaded={(files) => console.log(`上传了${files.length}个文件`)} />
         <div className="col-span-1 col-start-2">
           <div className="text-center">
             <Tooltip content="点击下载所有文件" showArrow={true}>
