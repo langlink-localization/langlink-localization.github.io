@@ -3,20 +3,14 @@
 import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
-import { ListboxWrapper } from "@/components/ListboxWrapper";
 import UploadManager from "@/components/UploadManager";
 
 import {
   Link,
   Button,
-  Card,
-  Listbox,
-  ListboxSection,
-  ListboxItem,
   Select,
   SelectSection,
   SelectItem,
-  Spacer,
   Input,
   Table,
   TableHeader,
@@ -24,7 +18,8 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-  Tab,
+  Tooltip,
+  Chip,
 } from "@nextui-org/react";
 
 export default function App() {
@@ -33,7 +28,7 @@ export default function App() {
     tgtFileIds.map((id) => ({
       key: `targetFile${id}`,
       text: `out${id}_zhcn_zhhk.mqxliff`,
-      href: "out${id}_zhcn_zhhk.mqxliff",
+      href: `out${id}_zhcn_zhhk.mqxliff`,
       download: `out${id}_zhcn_zhhk.mqxliff`,
     })),
   ];
@@ -63,26 +58,33 @@ export default function App() {
           返回主页
         </Link>
       </div>
-      <div className="grid-rows-auto grid grid-cols-2 pt-8">
+      <div className="grid-rows-auto grid grid-cols-2 overflow-auto pt-8">
         <UploadManager onFilesUploaded={(files) => console.log(files)} />
         <div className="col-span-1 col-start-2">
-          <Button className="place-self-center" radius="full" color="primary">
-            下载所有文件
-          </Button>
-          <Listbox color="primary" variant="bordered" className="">
-            <ListboxSection>
-              {tgtListData[0].map((item) => (
-                <ListboxItem
-                  key={item.key}
-                  className="text-center hover:underline"
-                  download={item.download}
+          <div className="text-center">
+            <Button className="" radius="full" color="primary">
+              下载所有文件
+            </Button>
+          </div>
+          {tgtListData[0].map((item) => (
+            <Tooltip
+              key={item.key}
+              content="点击下载"
+              showArrow={true}
+              delay={1000}
+              size="sm"
+            >
+              <Chip key={item.key} variant="dot">
+                <Link
                   href={item.href}
+                  download={item.download}
+                  className="hover:underline"
                 >
                   {item.text}
-                </ListboxItem>
-              ))}
-            </ListboxSection>
-          </Listbox>
+                </Link>
+              </Chip>
+            </Tooltip>
+          ))}
         </div>
         <div className="col-span-2 mt-4 grid grid-cols-4 grid-rows-1">
           <Select

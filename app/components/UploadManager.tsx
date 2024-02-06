@@ -1,10 +1,5 @@
 import React, { useState, useRef } from "react";
-import {
-  Listbox,
-  ListboxSection,
-  ListboxItem,
-  Button,
-} from "@nextui-org/react";
+import { Button, Tooltip, Chip } from "@nextui-org/react";
 
 interface UploadManagerProps {
   onFilesUploaded: (files: File[]) => void; // 用于处理上传文件
@@ -21,7 +16,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
     if (!files) return;
 
     const newFilesData = Array.from(files).map((file, index) => ({
-      key: `file-${index}`,
+      key: `uploadFile-${index}`,
       text: file.name,
     }));
 
@@ -33,37 +28,52 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
     fileInputRef.current?.click(); // 触发input的点击事件
   };
 
-  return (
-    <div className="col-span-1 col-start-1 grid grid-rows-2">
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-        multiple
-      ></input>
-      <Button
-        className="align-self-end row-span-1 row-start-1"
-        radius="full"
-        color="primary"
-        onClick={triggerFileInputClick}
-      >
-        上传文件
-      </Button>
+  const handleCloseFileChip = (key: string) => {
+    setFilesData((prev) => prev.filter((item) => item.key !== key));
+  };
 
-      <Listbox
-        color="primary"
-        variant="bordered"
-        className="rows-start-2 row-span-1"
-      >
-        <ListboxSection>
-          {filesData.map((item) => (
-            <ListboxItem key={item.key} className="text-center">
+  return (
+    <div className="col-span-1 col-start-1 overflow-auto">
+      <div className="text-center">
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+          multiple
+        ></input>
+        <Tooltip content="上传文件" showArrow={true}>
+          <Button
+            className=""
+            radius="full"
+            color="primary"
+            onClick={triggerFileInputClick}
+          >
+            上传文件
+          </Button>
+        </Tooltip>
+      </div>
+      <div className="row-start-2">
+        {filesData.map((item) => (
+          <Tooltip
+            key={item.key}
+            content={item.text}
+            placement="top-start"
+            showArrow={true}
+            delay={1000}
+            size="sm"
+          >
+            <Chip
+              key={item.key}
+              className=""
+              variant="faded"
+              onClose={() => handleCloseFileChip(item.key)}
+            >
               {item.text}
-            </ListboxItem>
-          ))}
-        </ListboxSection>
-      </Listbox>
+            </Chip>
+          </Tooltip>
+        ))}
+      </div>
     </div>
   );
 };
