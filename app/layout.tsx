@@ -1,7 +1,14 @@
 "use client";
 
-import { NextUIProvider } from "@nextui-org/react";
-import "@/styles/global.css";
+import "@/styles/globals.css";
+import { Inter as FontSans } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
+
+export const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export default function RootLayout({
   children,
@@ -9,9 +16,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-cn" className="dark">
-      <body>
-        <NextUIProvider>{children}</NextUIProvider>
+    <html lang="zh-cn" suppressHydrationWarning>
+      <head />
+      <body
+        className={cn(
+          "bg-background min-h-screen font-sans antialiased",
+          fontSans.variable,
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

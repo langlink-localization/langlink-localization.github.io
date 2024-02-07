@@ -1,6 +1,13 @@
 import React, { useState, useRef } from "react";
-import { Button, Tooltip, Chip } from "@nextui-org/react";
-import uuid from 'uuid';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 
 interface UploadManagerProps {
   onFilesUploaded: (filesData: { name: string; content: string }[]) => void; // 用于处理上传文件
@@ -33,7 +40,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
       .then((filesData) => {
         setupldFilesData(
           filesData.map((file) => ({
-            key: uuidFromUuid(),
+            key: file.name,
             name: file.name,
             content: file.content,
           })),
@@ -42,11 +49,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
       })
       .catch((error) => console.error("Error reading files:", error));
   };
-
-  const uuidFromUuid = () => {
-    const newUuid = uuid.v4();
-    return newUuid;
-  }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target?.files as FileList; // 结合使用可选链和类型断言
@@ -59,50 +61,43 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
     fileInputRef.current?.click(); // 触发input的点击事件
   };
 
-  const handleCloseFileChip = (key: string) => {
-    setupldFilesData((prev) => prev.filter((item) => item.key !== key));
-  };
-
   return (
     <div className="col-span-1 col-start-1 overflow-auto">
       <div className="text-center">
-        <input
+        <Input
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
           style={{ display: "none" }}
           multiple
-        ></input>
-        <Tooltip content="上传文件" showArrow={true}>
-          <Button
-            className=""
-            radius="full"
-            color="primary"
-            onClick={triggerFileInputClick}
-          >
-            上传文件
-          </Button>
-        </Tooltip>
+        ></Input>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="" onClick={triggerFileInputClick}>
+                上传文件
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>点击上传文件</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <div className="">
         {upldFilesData.map((item) => (
-          <Tooltip
-            key={item.key}
-            content={item.name}
-            placement="top-start"
-            showArrow={true}
-            delay={1000}
-            size="sm"
-          >
-            <Chip
-              key={item.key}
-              className=""
-              variant="dot"
-              onClose={() => handleCloseFileChip(item.key)}
-            >
-              {item.name}
-            </Chip>
-          </Tooltip>
+          <TooltipProvider key={item.key}>
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge className="" variant="secondary">
+                  {item.name}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{item.name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ))}
       </div>
     </div>
