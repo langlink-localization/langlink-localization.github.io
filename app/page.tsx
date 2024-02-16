@@ -33,8 +33,8 @@ export default function App() {
                   支持的文件类型：xliff, mqxliff, sdlxliff, xlf, txlf...
                 </p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="link">
+              <CardFooter className="justify-center">
+                <Button asChild className="size-20 rounded-full">
                   <Link href="/chinese_convert" className="text-xl">
                     访问
                   </Link>
@@ -53,9 +53,9 @@ export default function App() {
                   支持的文件类型：xliff, mqxliff, sdlxliff, xlf, txlf...
                 </p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="link">
-                  <Link href="/diff_maker" className="self-center text-xl">
+              <CardFooter className="justify-center">
+                <Button asChild className="size-20 rounded-full">
+                  <Link href="/diff_maker" className="text-xl">
                     访问
                   </Link>
                 </Button>
@@ -71,9 +71,9 @@ export default function App() {
               <CardContent>
                 <p className="text-sm">支持的文件类型：mqxliff</p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="link">
-                  <Link href="/memoq_adapt" className="self-center text-xl">
+              <CardFooter className="justify-center">
+                <Button asChild className="size-20 rounded-full">
+                  <Link href="/memoq_adapt" className="text-xl">
                     访问
                   </Link>
                 </Button>
@@ -89,12 +89,9 @@ export default function App() {
               <CardContent>
                 <p className="text-sm">支持的文件类型：mqxliff</p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="link">
-                  <Link
-                    href="/memoq_file_error_fix"
-                    className="self-center text-xl"
-                  >
+              <CardFooter className="justify-center">
+                <Button asChild className="size-20 rounded-full">
+                  <Link href="/memoq_file_error_fix" className="text-xl">
                     访问
                   </Link>
                 </Button>
