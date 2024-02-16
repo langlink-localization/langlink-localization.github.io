@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -89,9 +90,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
           <TooltipProvider key={item.key}>
             <Tooltip>
               <TooltipTrigger>
-                <Badge className="" variant="outline">
+                <Button className="rounded-full text-xs" variant="outline">
+                  <X className="h-3 w-3" />
                   {item.name}
-                </Badge>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{item.name}</p>
