@@ -5,6 +5,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import UploadManager from "@/components/upload-manager";
+import ConvertOption from "@/app/chinese_convert/convert-option";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           }
         />
       </div>
+      <ConvertOption onOptionChange={(languages) => console.log(languages)} />
     </NextThemesProvider>
   );
 }

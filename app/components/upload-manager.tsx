@@ -63,7 +63,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
   };
 
   return (
-    <div className="col-span-1 col-start-1 overflow-auto">
+    <div className="col-span-1 col-start-1 mb-2 overflow-auto">
       <div className="text-center">
         <Input
           type="file"

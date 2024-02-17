@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
+  SelectContent,
   SelectItem,
   SelectLabel,
+  SelectValue,
   SelectGroup,
+  SelectTrigger,
 } from "@/components/ui/select";
 
 interface ConvertOptionProps {
@@ -22,38 +25,46 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   }, [origLanguage, targetLanguage, onOptionChange]);
 
   return (
-    <div className="col-span-2 mt-4 grid grid-cols-4 grid-rows-1">
+    <div className="col-span-2 mt-2 grid grid-cols-4 grid-rows-1 gap-2">
       <Select
         value={origLanguage}
-        onValueChange={(e) => setOrigLanguage(e.target.value)}
+        onValueChange={(newValue) => setOrigLanguage(newValue)}
         defaultValue={"cn"}
       >
-        <SelectGroup>
-          <SelectLabel>简中</SelectLabel>
-          <SelectItem value="cn">zh-cn</SelectItem>
-
-          <SelectLabel>繁中</SelectLabel>
-          <SelectItem value="hk">zh-hk</SelectItem>
-          <SelectItem value="tw">zh-tw</SelectItem>
-          <SelectItem value="twp">zh-tw+twphrase</SelectItem>
-        </SelectGroup>
+        <SelectTrigger>
+          <SelectValue placeholder="选择原文语言" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>简中</SelectLabel>
+            <SelectItem value="cn">zh-cn</SelectItem>
+            <SelectLabel>繁中</SelectLabel>
+            <SelectItem value="hk">zh-hk</SelectItem>
+            <SelectItem value="tw">zh-tw</SelectItem>
+            <SelectItem value="twp">zh-tw+twphrase</SelectItem>
+          </SelectGroup>
+        </SelectContent>
       </Select>
       <Select
         value={targetLanguage}
-        onValueChange={(e) => setTargetLanguage(e.target.value)}
+        onValueChange={(newValue) => setTargetLanguage(newValue)}
         defaultValue={"hk"}
       >
-        <SelectGroup>
-          <SelectLabel>简中</SelectLabel>
-          <SelectItem value="cn">zh-cn</SelectItem>
-
-          <SelectLabel>繁中</SelectLabel>
-          <SelectItem value="hk">zh-hk</SelectItem>
-          <SelectItem value="tw">zh-tw</SelectItem>
-          <SelectItem value="twp">zh-tw+twprase</SelectItem>
-        </SelectGroup>
+        <SelectTrigger>
+          <SelectValue placeholder="选择目标语言" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>简中</SelectLabel>
+            <SelectItem value="cn">zh-cn</SelectItem>
+            <SelectLabel>繁中</SelectLabel>
+            <SelectItem value="hk">zh-hk</SelectItem>
+            <SelectItem value="tw">zh-tw</SelectItem>
+            <SelectItem value="twp">zh-tw+twprase</SelectItem>
+          </SelectGroup>
+        </SelectContent>
       </Select>
-      <div className="col-span-2 col-start-3 flex">
+      <div className="col-span-2 col-start-3 flex gap-2">
         <Button className=" place-self-center text-xs">转换并展示表格</Button>
         <Button className=" place-self-center text-xs">直接创建下载链接</Button>
       </div>
