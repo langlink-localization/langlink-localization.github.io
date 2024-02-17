@@ -2,6 +2,7 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import UploadManager from "@/components/upload-manager";
 import ConvertOption from "@/app/chinese_convert/convert-option";
@@ -27,6 +28,19 @@ export default function App() {
         <DownloadManager downloadItems={[]} />
       </div>
       <ConvertOption onOptionChange={(languages) => console.log(languages)} />
+      <div className="grid-rows-auto mt-4 grid grid-cols-12 gap-2">
+        <Input
+          placeholder="查找内容"
+          className="col-span-2 col-start-8 row-span-1"
+        />
+        <Input
+          placeholder="替换内容"
+          className="col-span-2 col-start-10 row-span-1"
+        />
+        <Button className="col-span-1 col-start-12 row-span-1 self-center justify-self-start">
+          查找替换
+        </Button>
+      </div>
     </NextThemesProvider>
   );
 }
