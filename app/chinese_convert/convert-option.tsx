@@ -64,7 +64,7 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div className="col-span-2 col-start-3 flex gap-2">
+      <div className="col-span-2 col-start-3 ml-4 flex gap-3">
         <Button className=" place-self-center text-xs">转换并展示表格</Button>
         <Button className=" place-self-center text-xs">直接创建下载链接</Button>
       </div>

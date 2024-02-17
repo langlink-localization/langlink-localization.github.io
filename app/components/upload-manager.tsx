@@ -75,7 +75,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button className="rounded-xl" onClick={triggerFileInputClick}>
+              <Button className="rounded-lg" onClick={triggerFileInputClick}>
                 上传文件
               </Button>
             </TooltipTrigger>
@@ -90,7 +90,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
           <TooltipProvider key={item.key}>
             <Tooltip>
               <TooltipTrigger>
-                <Button className="rounded-full text-xs" variant="outline">
+                <Button className="rounded-lg text-xs" variant="outline">
                   <X className="h-3 w-3" />
                   {item.name}
                 </Button>

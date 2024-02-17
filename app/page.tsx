@@ -34,7 +34,7 @@ export default function App() {
                 </p>
               </CardContent>
               <CardFooter className="justify-center">
-                <Button asChild className="size-20 rounded-full">
+                <Button asChild className="size-19 rounded-full">
                   <Link href="/chinese_convert" className="text-xl">
                     访问
                   </Link>
@@ -54,8 +54,8 @@ export default function App() {
                 </p>
               </CardContent>
               <CardFooter className="justify-center">
-                <Button asChild className="size-20 rounded-full">
-                  <Link href="/diff_maker" className="text-xl">
+                <Button asChild className="size-19 rounded-full">
+                  <Link href="/diff_maker" className="text-lg">
                     访问
                   </Link>
                 </Button>
@@ -72,7 +72,7 @@ export default function App() {
                 <p className="text-sm">支持的文件类型：mqxliff</p>
               </CardContent>
               <CardFooter className="justify-center">
-                <Button asChild className="size-20 rounded-full">
+                <Button asChild className="size-19 rounded-full">
                   <Link href="/memoq_adapt" className="text-xl">
                     访问
                   </Link>
@@ -90,7 +90,7 @@ export default function App() {
                 <p className="text-sm">支持的文件类型：mqxliff</p>
               </CardContent>
               <CardFooter className="justify-center">
-                <Button asChild className="size-20 rounded-full">
+                <Button asChild className="size-19 rounded-full">
                   <Link href="/memoq_file_error_fix" className="text-xl">
                     访问
                   </Link>

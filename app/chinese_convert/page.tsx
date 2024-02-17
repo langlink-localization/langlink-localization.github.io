@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import UploadManager from "@/components/upload-manager";
 import ConvertOption from "@/app/chinese_convert/convert-option";
+import DownloadManager from "@/components/download-manager";
 
 export default function App() {
   return (
@@ -19,12 +20,13 @@ export default function App() {
           </Link>
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid-rows-auto grid grid-cols-2 overflow-auto pt-8">
         <UploadManager
           onFilesUploaded={(files) =>
             console.log(`上传了${files.length}个文件`)
           }
         />
+        <DownloadManager />
       </div>
       <ConvertOption onOptionChange={(languages) => console.log(languages)} />
     </NextThemesProvider>
