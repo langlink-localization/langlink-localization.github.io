@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "./ui/skeleton";
 
 interface UploadManagerProps {
   onFilesUploaded: (filesData: { name: string; content: string }[]) => void; // 用于处理上传文件
@@ -53,13 +54,19 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target?.files as FileList; // 结合使用可选链和类型断言
-    if (!files) return;
+    if (!files || files.length === 0) return;
 
     readFilesContent(Array.from(files));
+
+    event.target.value = ""; // 清空input的值
   };
 
   const triggerFileInputClick = () => {
     fileInputRef.current?.click(); // 触发input的点击事件
+  };
+
+  const handleCloseFileIcon = (key: string) => {
+    setupldFilesData((prev) => prev.filter((item) => item.key !== key));
   };
 
   return (
@@ -86,21 +93,31 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
         </TooltipProvider>
       </div>
       <div className="">
-        {upldFilesData.map((item) => (
-          <TooltipProvider key={item.key}>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button className="rounded-lg text-xs" variant="outline">
-                  <X className="h-3 w-3" />
-                  {item.name}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{item.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        ))}
+        {upldFilesData.length === 0 ? (
+          <Skeleton className="h-40" />
+        ) : (
+          upldFilesData.map((item) => (
+            <TooltipProvider key={item.key}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge
+                    className="border-transparent text-xs"
+                    variant="outline"
+                  >
+                    {item.name}
+                    <X
+                      className="ml-2 h-4 w-4 text-red-500"
+                      onClick={() => handleCloseFileIcon(item.key)}
+                    />
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{item.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))
+        )}
       </div>
     </div>
   );

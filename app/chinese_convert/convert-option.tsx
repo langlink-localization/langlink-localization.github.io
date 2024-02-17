@@ -16,8 +16,8 @@ interface ConvertOptionProps {
 
 const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   // 状态管理原文和目标语言的选择
-  const [origLanguage, setOrigLanguage] = useState("cn");
-  const [targetLanguage, setTargetLanguage] = useState("hk");
+  const [origLanguage, setOrigLanguage] = useState("");
+  const [targetLanguage, setTargetLanguage] = useState("");
 
   // 获取转换选项
   useEffect(() => {
@@ -29,7 +29,6 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
       <Select
         value={origLanguage}
         onValueChange={(newValue) => setOrigLanguage(newValue)}
-        defaultValue={"cn"}
       >
         <SelectTrigger>
           <SelectValue placeholder="选择原文语言" />
@@ -48,7 +47,6 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
       <Select
         value={targetLanguage}
         onValueChange={(newValue) => setTargetLanguage(newValue)}
-        defaultValue={"hk"}
       >
         <SelectTrigger>
           <SelectValue placeholder="选择目标语言" />

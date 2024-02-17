@@ -6,29 +6,20 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-// interface DownloadManagerProps {
-//   downloadItems: {
-//     key: string;
-//     text: string;
-//     href: string;
-//     download: string;
-//   }[];
-// }
+interface DownloadManagerProps {
+  downloadItems: {
+    key: string;
+    text: string;
+    href: string;
+    download: string;
+  }[];
+}
 
-const DownloadManager = () => {
-  const targtFileIds = Array.from({ length: 5 }, (_, i) => i + 1);
-  const targtListData = [
-    targtFileIds.map((id) => ({
-      key: `targetFile${id}`,
-      text: `out${id}_zhcn_zhhk.mqxliff`,
-      href: `out${id}_zhcn_zhhk.mqxliff`,
-      download: `out${id}_zhcn_zhhk.mqxliff`,
-    })),
-  ];
-
+const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
   return (
     <div className="col-span-1 col-start-2 mb-2 overflow-auto">
       <div className="text-center">
@@ -44,18 +35,18 @@ const DownloadManager = () => {
         </TooltipProvider>
       </div>
       <div className="">
-        {targtListData[0].map((item) => (
+        {downloadItems.map((item) => (
           <TooltipProvider key={item.key}>
             <Tooltip>
               <TooltipTrigger>
-                <Button
-                  className="rounded-lg text-xs underline"
+                <Badge
+                  className="border-transparent text-xs underline"
                   variant="outline"
                 >
                   <Link href={item.href} className="text-center text-sm">
                     {item.text}
                   </Link>
-                </Button>
+                </Badge>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{item.text}</p>

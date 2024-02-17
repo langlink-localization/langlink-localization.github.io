@@ -14,7 +14,7 @@ export default function App() {
       <ModeToggle />
       <div className="mb-4 flex flex-col justify-center">
         <p className="mb-2 text-center text-3xl">简繁转换</p>
-        <Button asChild variant="link">
+        <Button variant="link">
           <Link href="./" className="text-md text-center">
             返回主页
           </Link>
@@ -26,7 +26,7 @@ export default function App() {
             console.log(`上传了${files.length}个文件`)
           }
         />
-        <DownloadManager />
+        <DownloadManager downloadItems={[]} />
       </div>
       <ConvertOption onOptionChange={(languages) => console.log(languages)} />
     </NextThemesProvider>
