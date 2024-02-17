@@ -8,7 +8,9 @@ import {
   SelectValue,
   SelectGroup,
   SelectTrigger,
+  SelectSeparator,
 } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 interface ConvertOptionProps {
   onOptionChange: (languages: [string, string]) => void;
@@ -25,18 +27,20 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   }, [origLanguage, targetLanguage, onOptionChange]);
 
   return (
-    <div className="col-span-2 mt-2 grid grid-cols-4 grid-rows-1 gap-2">
+    <div className="col-span-1 mt-2 grid grid-cols-8 grid-rows-1 gap-2">
       <Select
         value={origLanguage}
         onValueChange={(newValue) => setOrigLanguage(newValue)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="选择原文语言" />
+          <Label>原文语言</Label>
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>简中</SelectLabel>
             <SelectItem value="cn">zh-cn</SelectItem>
+            <SelectSeparator />
             <SelectLabel>繁中</SelectLabel>
             <SelectItem value="hk">zh-hk</SelectItem>
             <SelectItem value="tw">zh-tw</SelectItem>
@@ -49,12 +53,14 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
         onValueChange={(newValue) => setTargetLanguage(newValue)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="选择目标语言" />
+          <Label>目标语言</Label>
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>简中</SelectLabel>
             <SelectItem value="cn">zh-cn</SelectItem>
+            <SelectSeparator />
             <SelectLabel>繁中</SelectLabel>
             <SelectItem value="hk">zh-hk</SelectItem>
             <SelectItem value="tw">zh-tw</SelectItem>
@@ -62,9 +68,9 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div className="col-span-2 col-start-3 ml-4 flex gap-3">
-        <Button className=" place-self-center text-xs">转换并展示表格</Button>
-        <Button className=" place-self-center text-xs">直接创建下载链接</Button>
+      <div className="col-span-2 col-start-3 flex gap-3">
+        <Button className=" place-self-center text-sm">转换并展示表格</Button>
+        <Button className=" place-self-center text-sm">直接创建下载链接</Button>
       </div>
     </div>
   );
