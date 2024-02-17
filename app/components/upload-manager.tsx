@@ -92,16 +92,16 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="">
+      <div className="mt-4">
         {upldFilesData.length === 0 ? (
-          <Skeleton className="h-40" />
+          <Skeleton className="h-40 bg-transparent" />
         ) : (
           upldFilesData.map((item) => (
             <TooltipProvider key={item.key}>
               <Tooltip>
                 <TooltipTrigger>
                   <Badge
-                    className="border-transparent text-xs"
+                    className="border-transparent text-left text-xs"
                     variant="outline"
                   >
                     {item.name}

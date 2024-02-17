@@ -40,7 +40,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
             <Tooltip>
               <TooltipTrigger>
                 <Badge
-                  className="border-transparent text-xs underline"
+                  className="border-transparent text-left text-xs underline"
                   variant="outline"
                 >
                   <Link href={item.href} className="text-center text-sm">

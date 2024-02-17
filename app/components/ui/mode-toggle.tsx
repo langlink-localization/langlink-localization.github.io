@@ -3,7 +3,7 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
@@ -23,9 +23,8 @@ export function ModeToggle() {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <Button
+            <Badge
               variant="outline"
-              size="icon"
               className="border-transparent"
               onClick={toggleTheme}
             >
@@ -34,7 +33,7 @@ export function ModeToggle() {
               ) : (
                 <Moon className="h-[1.2rem] w-[1.2rem]" />
               )}
-            </Button>
+            </Badge>
           </TooltipTrigger>
           <TooltipContent>
             <p>切换主题</p>

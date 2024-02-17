@@ -1,7 +1,6 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import UploadManager from "@/components/upload-manager";
@@ -11,7 +10,6 @@ import DownloadManager from "@/components/download-manager";
 export default function App() {
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
-      <ModeToggle />
       <div className="mb-4 flex flex-col justify-center">
         <p className="mb-2 text-center text-3xl">简繁转换</p>
         <Button variant="link">
