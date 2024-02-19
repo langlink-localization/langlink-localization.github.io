@@ -9,6 +9,14 @@ import ConvertOption from "@/app/chinese_convert/convert-option";
 import DownloadManager from "@/components/download-manager";
 
 export default function App() {
+  const rowIds = Array.from({ length: 30 }, (_, i) => i + 1);
+  const staticData = {
+    original:
+      "Posted by Ben Mathes and Neoklis Polyzotis, on behalf of the TFX Team",
+    zh_cn: "由 Ben Mathes 和 Neoklis Polyzotis 代表 TFX 团队发布",
+    zh_hk: "由 Ben Mathes 和 Neoklis Polyzotis 代表 TFX 團隊發布",
+  };
+
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
       <div className="mb-4 flex flex-col justify-center">
