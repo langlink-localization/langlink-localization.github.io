@@ -7,6 +7,14 @@ import Link from "next/link";
 import UploadManager from "@/components/upload-manager";
 import ConvertOption from "@/app/chinese_convert/convert-option";
 import DownloadManager from "@/components/download-manager";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 
 export default function App() {
   const rowIds = Array.from({ length: 30 }, (_, i) => i + 1);
@@ -49,6 +57,26 @@ export default function App() {
           查找替换
         </Button>
       </div>
+      <Table className="mt-5">
+        <TableHeader>
+          <TableRow>
+            <TableHead>序号</TableHead>
+            <TableHead>原文</TableHead>
+            <TableHead>译文</TableHead>
+            <TableHead>zh-hk</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rowIds.map((id) => (
+            <TableRow key={id}>
+              <TableCell>{id}</TableCell>
+              <TableCell>{staticData.original}</TableCell>
+              <TableCell>{staticData.zh_cn}</TableCell>
+              <TableCell>{staticData.zh_hk}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </NextThemesProvider>
   );
 }
