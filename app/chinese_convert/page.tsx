@@ -77,7 +77,7 @@ export default function App() {
         </Button>
       </div>
 
-      <div className="container mx-auto py-10">
+      <div className="">
         <DataTable columns={xliffColumns} data={xliffData} />
       </div>
     </NextThemesProvider>
