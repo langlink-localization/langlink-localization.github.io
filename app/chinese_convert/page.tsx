@@ -51,7 +51,7 @@ export default function App() {
       </div>
       <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
         <ConvertOption onOptionChange={(languages) => console.log(languages)} />
-        <div className="col-start-5 -ml-24 flex gap-3">
+        <div className="col-start-5 flex gap-3">
           <Button
             className=" place-self-center text-sm"
             onClick={handFileConvert}
