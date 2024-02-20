@@ -22,15 +22,10 @@
       "@/app/*": ["app/*"],
       "@/components/*": ["app/components/*"],
       "@/lib/*": ["app/lib/*"],
-      "@/styles/*": ["app/styles/*"]
+      "@/styles/*": ["app/styles/*"],
+      "@/services/*": ["app/services/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/chinese_convert/data.js"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

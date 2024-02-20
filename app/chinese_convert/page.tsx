@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,22 +8,31 @@ import Link from "next/link";
 import UploadManager from "@/components/upload-manager";
 import ConvertOption from "@/app/chinese_convert/convert-option";
 import DownloadManager from "@/components/download-manager";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableCell,
-} from "@/components/ui/table";
+import { processXliffString } from "@/services/xliff-processor";
+import { DataTable } from "./data-table";
+import { TableData, xliffColumns } from "./columns";
 
 export default function App() {
-  const rowIds = Array.from({ length: 30 }, (_, i) => i + 1);
-  const staticData = {
-    original:
-      "Posted by Ben Mathes and Neoklis Polyzotis, on behalf of the TFX Team",
-    zh_cn: "由 Ben Mathes 和 Neoklis Polyzotis 代表 TFX 团队发布",
-    zh_hk: "由 Ben Mathes 和 Neoklis Polyzotis 代表 TFX 團隊發布",
+  const [filesData, setFilesData] = useState<
+    { name: string; content: string }[]
+  >([]);
+
+  const [xliffData, setXliffData] = useState<TableData[]>([]);
+
+  const handleFileUpload = (
+    uploadedFilesData: { name: string; content: string }[],
+  ) => {
+    setFilesData(uploadedFilesData);
+  };
+
+  const handFileConvert = () => {
+    const allFilesData = filesData.map(async (fileData) => {
+      return processXliffString(fileData.name, fileData.content);
+    });
+
+    Promise.all(allFilesData).then((data) => {
+      setXliffData(data.flat());
+    });
   };
 
   return (
@@ -36,14 +46,23 @@ export default function App() {
         </Button>
       </div>
       <div className="grid-rows-auto grid grid-cols-2 overflow-auto pt-8">
-        <UploadManager
-          onFilesUploaded={(files) =>
-            console.log(`上传了${files.length}个文件`)
-          }
-        />
+        <UploadManager onFilesUploaded={handleFileUpload} />
         <DownloadManager downloadItems={[]} />
       </div>
-      <ConvertOption onOptionChange={(languages) => console.log(languages)} />
+      <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
+        <ConvertOption onOptionChange={(languages) => console.log(languages)} />
+        <div className="col-start-5 -ml-24 flex gap-3">
+          <Button
+            className=" place-self-center text-sm"
+            onClick={handFileConvert}
+          >
+            转换并展示表格
+          </Button>
+          <Button className=" place-self-center text-sm">
+            直接创建下载链接
+          </Button>
+        </div>
+      </div>
       <div className="grid-rows-auto mt-4 grid grid-cols-12 gap-2">
         <Input
           placeholder="查找内容"
@@ -57,26 +76,10 @@ export default function App() {
           查找替换
         </Button>
       </div>
-      <Table className="mt-5">
-        <TableHeader>
-          <TableRow>
-            <TableHead>序号</TableHead>
-            <TableHead>原文</TableHead>
-            <TableHead>译文</TableHead>
-            <TableHead>zh-hk</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rowIds.map((id) => (
-            <TableRow key={id}>
-              <TableCell>{id}</TableCell>
-              <TableCell>{staticData.original}</TableCell>
-              <TableCell>{staticData.zh_cn}</TableCell>
-              <TableCell>{staticData.zh_hk}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+
+      <div className="container mx-auto py-10">
+        <DataTable columns={xliffColumns} data={xliffData} />
+      </div>
     </NextThemesProvider>
   );
 }

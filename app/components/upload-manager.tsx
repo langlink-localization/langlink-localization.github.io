@@ -16,7 +16,7 @@ interface UploadManagerProps {
 }
 
 const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
-  const [upldFilesData, setupldFilesData] = useState<
+  const [upldFilesData, setUpldFilesData] = useState<
     { key: string; name: string; content?: string }[]
   >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -40,7 +40,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
 
     Promise.all(fileReaders)
       .then((filesData) => {
-        setupldFilesData(
+        setUpldFilesData(
           filesData.map((file) => ({
             key: file.name,
             name: file.name,
@@ -66,7 +66,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
   };
 
   const handleCloseFileIcon = (key: string) => {
-    setupldFilesData((prev) => prev.filter((item) => item.key !== key));
+    setUpldFilesData((prev) => prev.filter((item) => item.key !== key));
   };
 
   return (

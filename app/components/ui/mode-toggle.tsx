@@ -14,10 +14,6 @@ import {
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
   return (
     <div className="flex justify-end p-4">
       <TooltipProvider>
@@ -27,7 +23,7 @@ export function ModeToggle() {
               variant="outline"
               size="icon"
               className="border-transparent"
-              onClick={toggleTheme}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
               {theme === "dark" ? (
                 <Sun className="h-[1.2rem] w-[1.2rem]" />

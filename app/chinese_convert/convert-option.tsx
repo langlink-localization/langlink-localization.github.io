@@ -27,50 +27,50 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   }, [origLanguage, targetLanguage, onOptionChange]);
 
   return (
-    <div className="col-span-1 mt-2 grid grid-cols-8 grid-rows-1 gap-2">
-      <Select
-        value={origLanguage}
-        onValueChange={(newValue) => setOrigLanguage(newValue)}
-      >
-        <SelectTrigger>
-          <Label>原文语言</Label>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>简中</SelectLabel>
-            <SelectItem value="cn">zh-cn</SelectItem>
-            <SelectSeparator />
-            <SelectLabel>繁中</SelectLabel>
-            <SelectItem value="hk">zh-hk</SelectItem>
-            <SelectItem value="tw">zh-tw</SelectItem>
-            <SelectItem value="twp">zh-tw+twphrase</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <Select
-        value={targetLanguage}
-        onValueChange={(newValue) => setTargetLanguage(newValue)}
-      >
-        <SelectTrigger>
-          <Label>目标语言</Label>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>简中</SelectLabel>
-            <SelectItem value="cn">zh-cn</SelectItem>
-            <SelectSeparator />
-            <SelectLabel>繁中</SelectLabel>
-            <SelectItem value="hk">zh-hk</SelectItem>
-            <SelectItem value="tw">zh-tw</SelectItem>
-            <SelectItem value="twp">zh-tw+twprase</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <div className="col-span-2 col-start-3 flex gap-3">
-        <Button className=" place-self-center text-sm">转换并展示表格</Button>
-        <Button className=" place-self-center text-sm">直接创建下载链接</Button>
+    <div className="col-span-4 col-start-1 grid grid-cols-8 grid-rows-1 gap-2">
+      <div className="col-span-3 col-start-1">
+        <Select
+          value={origLanguage}
+          onValueChange={(newValue) => setOrigLanguage(newValue)}
+        >
+          <SelectTrigger>
+            <Label className="text-xs">原文语言</Label>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>简中</SelectLabel>
+              <SelectItem value="cn">zh-cn</SelectItem>
+              <SelectSeparator />
+              <SelectLabel>繁中</SelectLabel>
+              <SelectItem value="hk">zh-hk</SelectItem>
+              <SelectItem value="tw">zh-tw</SelectItem>
+              <SelectItem value="twp">zh-tw+twphrase</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="col-span-3 col-start-4">
+        <Select
+          value={targetLanguage}
+          onValueChange={(newValue) => setTargetLanguage(newValue)}
+        >
+          <SelectTrigger>
+            <Label className="text-xs">目标语言</Label>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>简中</SelectLabel>
+              <SelectItem value="cn">zh-cn</SelectItem>
+              <SelectSeparator />
+              <SelectLabel>繁中</SelectLabel>
+              <SelectItem value="hk">zh-hk</SelectItem>
+              <SelectItem value="tw">zh-tw</SelectItem>
+              <SelectItem value="twp">zh-tw+twprase</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
