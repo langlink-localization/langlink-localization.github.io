@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "./data-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 
 export type TableData = {
@@ -12,24 +11,24 @@ export type TableData = {
   convertResult: string;
 };
 export const xliffColumns: ColumnDef<TableData>[] = [
-  // {
-  //   accessorKey: "fileName",
-  //   header: () => <div className="w-20">文件名</div>,
-  //   cell: (info) => (
-  //     <div className="w-20 text-warp">{info.row.original.fileName}</div>
-  //   ),
-  // },
+  {
+    accessorKey: "fileName",
+    header: ({ column }) => (
+      <DataTableColumnHeader className="" column={column} title="文件名" />
+    ),
+    cell: (info) => <div className="w-15">{info.row.original.fileName}</div>,
+  },
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-10" column={column} title="ID" />
+      <DataTableColumnHeader className="w-15" column={column} title="ID" />
     ),
     cell: (info) => (
       <div className="max-h-fit w-10">{info.row.original.id}</div>
     ),
   },
   {
-    accessorKey: "原文",
+    accessorKey: "source",
     header: ({ column }) => (
       <DataTableColumnHeader className="" column={column} title="原文" />
     ),
@@ -40,7 +39,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     ),
   },
   {
-    accessorKey: "译文",
+    accessorKey: "target",
     header: ({ column }) => (
       <DataTableColumnHeader className="" column={column} title="译文" />
     ),
@@ -51,7 +50,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     ),
   },
   {
-    accessorKey: "转换结果",
+    accessorKey: "convertResult",
     header: ({ column }) => (
       <DataTableColumnHeader className="" column={column} title="转换结果" />
     ),

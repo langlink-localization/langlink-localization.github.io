@@ -21,9 +21,9 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { DataTableViewOptions } from "@/components/data-table-column-toggle";
+import { DataTableViewOptions } from "@/components/data-table-column-visibility-toggle";
+import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -51,9 +51,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-
     onColumnFiltersChange: setColumnFilters,
-
     onColumnVisibilityChange: setColumnVisibility,
 
     state: {
@@ -70,26 +68,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="mt-4 flex items-center gap-2">
-        <Input
-          placeholder="过滤原文"
-          value={table.getColumn("原文")?.getFilterValue() as string}
-          onChange={(event) =>
-            table.getColumn("原文")?.setFilterValue(event.target.value)
-          }
-          className="w-auto"
-        />
-        <Input
-          placeholder="过滤译文"
-          value={table.getColumn("译文")?.getFilterValue() as string}
-          onChange={(event) =>
-            table.getColumn("译文")?.setFilterValue(event.target.value)
-          }
-          className="w-auto"
-        />
-        <DataTableViewOptions table={table} />
-      </div>
       <div className="mt-5 rounded-md border">
+        <DataTableViewOptions table={table} />
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -103,6 +83,21 @@ export function DataTable<TData, TValue>({
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
+                      {header.column.getCanFilter() ? (
+                        <div>
+                          <Input
+                            type="text"
+                            value={
+                              (header.column.getFilterValue() ?? "") as string
+                            }
+                            onChange={(event) =>
+                              header.column.setFilterValue(event.target.value)
+                            }
+                            placeholder="搜索..."
+                            className="border-none text-xs"
+                          />
+                        </div>
+                      ) : null}
                     </TableHead>
                   );
                 })}
