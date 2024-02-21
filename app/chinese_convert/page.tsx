@@ -77,7 +77,7 @@ export default function App() {
         </Button>
       </div>
 
-      <div className="">
+      <div className="container">
         <DataTable columns={xliffColumns} data={xliffData} />
       </div>
     </NextThemesProvider>

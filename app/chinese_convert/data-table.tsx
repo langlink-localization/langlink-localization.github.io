@@ -1,10 +1,16 @@
 "use client";
 
+import * as React from "react";
 import {
   ColumnDef,
+  SortingState,
+  ColumnFiltersState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -15,8 +21,9 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { TableData } from "./columns";
+import { DataTableViewOptions } from "@/components/data-table-column-toggle";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,21 +34,62 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    defaultColumn: {
-      size: 50,
-      minSize: 20,
-      maxSize: 200,
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+
+    onColumnFiltersChange: setColumnFilters,
+
+    onColumnVisibilityChange: setColumnVisibility,
+
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 200,
+      },
     },
   });
 
   return (
     <div>
-      <div className="mt-5">
+      <div className="mt-4 flex items-center gap-2">
+        <Input
+          placeholder="过滤原文"
+          value={table.getColumn("原文")?.getFilterValue() as string}
+          onChange={(event) =>
+            table.getColumn("原文")?.setFilterValue(event.target.value)
+          }
+          className="w-auto"
+        />
+        <Input
+          placeholder="过滤译文"
+          value={table.getColumn("译文")?.getFilterValue() as string}
+          onChange={(event) =>
+            table.getColumn("译文")?.setFilterValue(event.target.value)
+          }
+          className="w-auto"
+        />
+        <DataTableViewOptions table={table} />
+      </div>
+      <div className="mt-5 rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

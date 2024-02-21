@@ -3,6 +3,7 @@ interface XliffData {
   id: number;
   source: string;
   target: string;
+  convertResult: string;
 }
 
 export const processXliffString = async (
