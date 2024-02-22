@@ -25,7 +25,7 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   }, [origLanguage, targetLanguage, onOptionChange]);
 
   return (
-    <div className="col-span-4 col-start-1 grid grid-cols-8 grid-rows-1 gap-2">
+    <div className="col-span-4 col-start-1 grid grid-cols-6 grid-rows-1 gap-2">
       <div className="col-span-3 col-start-1">
         <Select
           value={origLanguage}
