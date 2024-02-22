@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface UploadManagerProps {
   onFilesUploaded: (filesData: { name: string; content: string }[]) => void; // 用于处理上传文件

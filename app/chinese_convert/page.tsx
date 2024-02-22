@@ -52,7 +52,7 @@ export default function App() {
         <DownloadManager downloadItems={[]} />
       </div>
       <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
-        <ConvertOption onOptionChange={() => console.log(``)} />
+        <ConvertOption onOptionChange={(config) => console.log(config)} />
         <div className="col-start-5 flex gap-3">
           <Button
             className=" place-self-center text-sm"
@@ -66,15 +66,11 @@ export default function App() {
         </div>
       </div>
       <div className="grid-rows-auto mt-4 grid grid-cols-12 gap-2">
-        <Input
-          placeholder="查找内容"
-          className="col-span-2 col-start-8 row-span-1"
-        />
-        <Input
-          placeholder="替换内容"
-          className="col-span-2 col-start-10 row-span-1"
-        />
-        <Button className="col-span-1 col-start-12 row-span-1 self-center justify-self-start">
+        <div className="col-span-1 col-span-2 col-start-10 row-span-1 flex-col ">
+          <Input placeholder="查找内容" className="mb-2" />
+          <Input placeholder="替换内容" className="mt-2" />
+        </div>
+        <Button className="col-span-1 col-start-12 self-center justify-self-start">
           查找替换
         </Button>
       </div>
