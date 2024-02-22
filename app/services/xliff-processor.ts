@@ -20,7 +20,13 @@ export const processXliffString = async (
       const source = unit.getElementsByTagName("source")[0]?.textContent ?? "";
       const target = unit.getElementsByTagName("target")[0]?.textContent ?? "";
       if (id) {
-        data.push({ fileName, id: Number(id), source, target });
+        data.push({
+          fileName,
+          id: Number(id),
+          source,
+          target,
+          convertResult: "",
+        });
       }
     });
     return data;

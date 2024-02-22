@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -18,10 +17,9 @@ interface ConvertOptionProps {
 
 const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   // 状态管理原文和目标语言的选择
-  const [origLanguage, setOrigLanguage] = useState("");
-  const [targetLanguage, setTargetLanguage] = useState("");
+  const [origLanguage, setOrigLanguage] = useState<string>("");
+  const [targetLanguage, setTargetLanguage] = useState<string>("");
 
-  // 获取转换选项
   useEffect(() => {
     onOptionChange([origLanguage, targetLanguage]);
   }, [origLanguage, targetLanguage, onOptionChange]);

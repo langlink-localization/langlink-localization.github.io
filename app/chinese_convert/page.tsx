@@ -13,10 +13,12 @@ import { DataTable } from "./data-table";
 import { TableData, xliffColumns } from "./columns";
 
 export default function App() {
+  // 状态管理上传的文件数据
   const [filesData, setFilesData] = useState<
     { name: string; content: string }[]
   >([]);
 
+  // 状态管理转换后的数据
   const [xliffData, setXliffData] = useState<TableData[]>([]);
 
   const handleFileUpload = (
@@ -50,7 +52,7 @@ export default function App() {
         <DownloadManager downloadItems={[]} />
       </div>
       <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
-        <ConvertOption onOptionChange={(languages) => console.log(languages)} />
+        <ConvertOption onOptionChange={() => console.log(``)} />
         <div className="col-start-5 flex gap-3">
           <Button
             className=" place-self-center text-sm"
