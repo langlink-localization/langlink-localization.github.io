@@ -1,12 +1,12 @@
-import { OpenCC } from "opencc";
+import * as OpenCC from "opencc-js";
 
-export const openCCConverter = async (
+export const openCCConverter = (
   text: string,
-  config: string,
-): Promise<string> => {
-  const opencc = new OpenCC(config);
+  config: { from: string; to: string },
+): string => {
+  const converter = OpenCC.Converter(config as OpenCC.ConverterOptions);
   try {
-    const convertedText = await opencc.convertPromise(text);
+    const convertedText = converter(text);
     return convertedText;
   } catch (error) {
     console.error(`转换文本时出错: ${error}`);

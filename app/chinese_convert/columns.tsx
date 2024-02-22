@@ -10,6 +10,7 @@ export type TableData = {
   target: string;
   convertResult: string;
 };
+
 export const xliffColumns: ColumnDef<TableData>[] = [
   {
     accessorKey: "fileName",

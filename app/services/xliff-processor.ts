@@ -25,7 +25,6 @@ export const processXliffString = async (
           id: Number(id),
           source,
           target,
-          convertResult: "",
         });
       }
     });

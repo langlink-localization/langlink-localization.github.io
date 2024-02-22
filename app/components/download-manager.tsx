@@ -21,7 +21,7 @@ interface DownloadManagerProps {
 
 const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
   return (
-    <div className="col-span-1 col-start-2 mb-2 overflow-auto">
+    <div className="col-span-1 col-start-2 mb-8 overflow-auto">
       <div className="text-center">
         <TooltipProvider>
           <Tooltip>
