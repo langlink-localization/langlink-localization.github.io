@@ -72,9 +72,10 @@ export default function App() {
   };
 
   const handleOptionChange = (config: { from: string; to: string }) => {
+    console.log(`选项：${config}`);
     if (config.from && config.to) {
       setConfig(config);
-      console.log(config);
+      console.log(`选项：${config}`);
     }
   };
 
