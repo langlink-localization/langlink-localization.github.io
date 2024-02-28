@@ -350,12 +350,14 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
         let transUnit1 = transUnits1[i];
         let transUnit2 = transUnits2[i];
         let id = transUnit1.getAttribute("id");
+        let percent = transUnit1.getAttribute("mq:percent") || transUnit1.getAttribute("percent");
         let source = transUnit1.getElementsByTagName("source")[0].innerHTML;
         let target1 = transUnit1.getElementsByTagName("target")[0].innerHTML;
         let target2 = transUnit2.getElementsByTagName("target")[0].innerHTML;
-        if (target1 && target2) {
+        if (target1 || target2) {
           json[id] = {
             number: i + 1,
+            percent, percent,
             source: source,
             target1: target1,
             target2: target2,
@@ -391,7 +393,7 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
       });
 
       // Create the table headers
-      let headers = ["序号", "原文", locale1, locale2];
+      let headers = ["序号", "百分比", "原文", locale1, locale2];
       let headerRow = document.createElement("tr");
       diffResultTable.appendChild(headerRow);
       headers.forEach((header) => {
@@ -434,18 +436,18 @@ import diff_match_patch from "./modules/diff_match_patch/diff_match_patch.js";
       let row = $(this);
       if (
         row.find("td:eq(1)").text() == "原文" ||
-        row.find("td:eq(2)").text() == ""
+        row.find("td:eq(3)").text() == ""
       ) {
         return true;
       } else {
         let diffs = dmp.diff_main(
-          row.find("td:eq(2)").html(),
-          row.find("td:eq(3)").html()
+          row.find("td:eq(3)").html(),
+          row.find("td:eq(4)").html()
         );
         let html1 = dmp.diff_prettyHtml1(diffs);
         let html2 = dmp.diff_prettyHtml2(diffs);
-        row.find("td:eq(2)").html(html1);
-        row.find("td:eq(3)").html(html2);
+        row.find("td:eq(3)").html(html1);
+        row.find("td:eq(4)").html(html2);
       }
     });
   }
