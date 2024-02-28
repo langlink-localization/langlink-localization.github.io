@@ -101,11 +101,11 @@ body{
     overflow: hidden;
 }
 
-#diff-result-table td:nth-of-type(2) {
+#diff-result-table td:nth-of-type(2), td:nth-of-type(3) {
     text-align: center;
 }
 
-#diff-result-table td:nth-of-type(3), td:nth-of-type(4), td:nth-of-type(5) {
+#diff-result-table td:nth-of-type(4), td:nth-of-type(5), td:nth-of-type(6) {
     min-width: 2.4rem;
     max-width: 30rem;
     padding: 0.5rem;
