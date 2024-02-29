@@ -22,7 +22,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { DataTableViewOptions } from "@/components/data-table-column-visibility-toggle";
+import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="mt-5 rounded-md border">
-        <DataTableViewOptions table={table} />
+        <DataTableColsVisibility table={table} />
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

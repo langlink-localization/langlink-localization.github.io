@@ -1,7 +1,10 @@
 "use client";
 
+import React from "react";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
+import { diff2Html } from "@/services/diff2html";
 
 export type TableData = {
   fileName: string;
@@ -66,11 +69,18 @@ export const xliffColumns: ColumnDef<TableData>[] = [
         title="译文"
       />
     ),
-    cell: (info) => (
-      <div className="w-80 overflow-auto text-balance pl-3">
-        {info.row.original.target}
-      </div>
-    ),
+    cell: (info) => {
+      const diffResult = diff2Html(
+        info.row.original.target,
+        info.row.original.convertResult,
+        "chars",
+      );
+      return (
+        <div className="w-80 overflow-auto text-balance pl-3">
+          {diffResult.original}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "convertResult",
@@ -81,10 +91,17 @@ export const xliffColumns: ColumnDef<TableData>[] = [
         title="转换结果"
       />
     ),
-    cell: (info) => (
-      <div className="w-80 overflow-auto text-balance pl-3">
-        {info.row.original.convertResult}
-      </div>
-    ),
+    cell: (info) => {
+      const diffResult = diff2Html(
+        info.row.original.target,
+        info.row.original.convertResult,
+        "chars",
+      );
+      return (
+        <div className="w-80 overflow-auto text-balance pl-3">
+          {diffResult.modified}
+        </div>
+      );
+    },
   },
 ];
