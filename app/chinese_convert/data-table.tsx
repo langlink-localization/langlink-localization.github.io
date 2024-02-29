@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useState, useMemo } from "react";
 import {
   ColumnDef,
   SortingState,
@@ -24,6 +24,7 @@ import {
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,14 +35,11 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
@@ -69,7 +67,15 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="mt-5 rounded-md border">
-        <DataTableColsVisibility table={table} />
+        <div className="flex justify-between">
+          <Button variant="outline" size="sm" className="  h-8 ">
+            展开/折叠Tag
+          </Button>
+          <Button variant="outline" size="sm" className="  h-8 ">
+            显示/隐藏未更改句段
+          </Button>
+          <DataTableColsVisibility table={table} />
+        </div>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

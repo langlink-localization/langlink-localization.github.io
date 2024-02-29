@@ -6,7 +6,7 @@ interface XliffData {
   target: string;
 }
 
-export const processXliffString = async (
+export const xliffProcessor = async (
   fileName: string,
   content: string,
 ): Promise<XliffData[]> => {

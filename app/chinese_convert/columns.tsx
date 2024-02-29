@@ -41,9 +41,15 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   {
     accessorKey: "percent",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-12" column={column} title="百分比" />
+      <DataTableColumnHeader
+        className="w-14 pl-3"
+        column={column}
+        title="百分比"
+      />
     ),
-    cell: (info) => <div className="w-12">{info.row.original.percent}</div>,
+    cell: (info) => (
+      <div className="w-14 pl-3">{info.row.original.percent}</div>
+    ),
   },
   {
     accessorKey: "source",

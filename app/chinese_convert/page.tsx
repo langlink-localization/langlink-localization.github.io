@@ -2,14 +2,15 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import UploadManager from "@/components/upload-manager";
 import ConvertOption from "@/app/chinese_convert/convert-option";
+import UploadManager from "@/components/upload-manager";
 import DownloadManager from "@/components/download-manager";
 import { openCCConverter } from "@/services/opencc-converter";
-import { processXliffString } from "@/services/xliff-processor";
+import { xliffProcessor } from "@/services/xliff-processor";
+import { diff2Html } from "@/services/diff2html";
 import { DataTable } from "./data-table";
 import { TableData, xliffColumns } from "./columns";
 
@@ -66,21 +67,30 @@ export default function App() {
     // 处理Xliff文件
     const allFilesXliffData = await Promise.all(
       convertedFilesData.map(async (fileData) => {
-        const originalXliffData = await processXliffString(
+        const originalXliffData = await xliffProcessor(
           fileData.name,
           fileData.originalContent,
         );
-        const convertedXliffData = await processXliffString(
+        const convertedXliffData = await xliffProcessor(
           fileData.name,
           fileData.convertedContent,
         );
 
-        const mergedXliffData = originalXliffData.map((item, index) => ({
-          ...item,
-          convertResult: convertedXliffData[index]
-            ? convertedXliffData[index].target
-            : "",
-        }));
+        const mergedXliffData = originalXliffData.map((item, index) => {
+          const diffResult = diff2Html(
+            item.target,
+            convertedXliffData[index]?.target,
+            "chars",
+          );
+
+          return {
+            ...item,
+            convertResult: convertedXliffData[index]?.target,
+            diffOriginal: diffResult.original,
+            diffModified: diffResult.modified,
+            isSame: diffResult.isSame,
+          };
+        });
 
         return mergedXliffData;
       }),

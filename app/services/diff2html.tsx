@@ -8,6 +8,7 @@ type DiffMethod = "chars" | "words" | "lines";
 interface DiffResult {
   original: JSX.Element[];
   modified: JSX.Element[];
+  isSame: boolean;
 }
 
 export const diff2Html = (
@@ -34,19 +35,25 @@ export const diff2Html = (
   const original: JSX.Element[] = [];
   const modified: JSX.Element[] = [];
 
+  let isSame = true;
+
   diffResult.forEach((part, index) => {
     if (part.removed) {
       original.push(
-        <span key={index} className="bg-red-200 line-through">
+        <span key={index} className="bg-red-300 line-through">
           {part.value}
         </span>,
       );
+
+      isSame = false;
     } else if (part.added) {
       modified.push(
-        <span key={index} className="bg-green-200 underline">
+        <span key={index} className="bg-green-300 underline">
           {part.value}
         </span>,
       );
+
+      isSame = false;
     } else {
       const element = <span key={index}>{part.value}</span>;
       original.push(element);
@@ -54,5 +61,5 @@ export const diff2Html = (
     }
   });
 
-  return { original, modified };
+  return { original, modified, isSame };
 };
