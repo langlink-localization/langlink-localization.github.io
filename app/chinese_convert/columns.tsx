@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header";
 export type TableData = {
   fileName: string;
   id: number;
+  percent: string;
   source: string;
   target: string;
   convertResult: string;
@@ -33,6 +34,13 @@ export const xliffColumns: ColumnDef<TableData>[] = [
       <DataTableColumnHeader className="w-12 pl-3" column={column} title="ID" />
     ),
     cell: (info) => <div className="w-12 pl-3">{info.row.original.id}</div>,
+  },
+  {
+    accessorKey: "percent",
+    header: ({ column }) => (
+      <DataTableColumnHeader className="w-12" column={column} title="百分比" />
+    ),
+    cell: (info) => <div className="w-12">{info.row.original.percent}</div>,
   },
   {
     accessorKey: "source",
@@ -75,7 +83,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     ),
     cell: (info) => (
       <div className="w-80 overflow-auto text-balance pl-3">
-        {info.row.original.target}
+        {info.row.original.convertResult}
       </div>
     ),
   },

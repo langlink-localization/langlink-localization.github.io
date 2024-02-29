@@ -25,62 +25,14 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
   const [origLanguage, setOrigLanguage] = useState<string>("");
   const [targetLanguage, setTargetLanguage] = useState<string>("");
 
-  // useEffect(() => {
-  //   const defaultConfig = [
-  //     "s2tw.json",
-  //     "tw2s.json",
-  //     "s2hk.json",
-  //     "hk2s.json",
-  //     "s2twp.json",
-  //     "tw2sp.json",
-  //   ];
-  //   const generateConfig = (): string => {
-  //     let config = "";
-  //     if (origLanguage && targetLanguage) {
-  //       config = `${origLanguage}2${targetLanguage}.json`;
-  //       if (!defaultConfig.includes(config)) {
-  //         if (origLanguage === "twp" && targetLanguage === "s") {
-  //           config = "tw2sp.json";
-  //         } else if (origLanguage === "hk" && targetLanguage === "twp") {
-  //           config = "s2twp.json";
-  //         } else if (origLanguage === "hk" && targetLanguage === "tw") {
-  //           config = "s2tw.json";
-  //         } else if (
-  //           origLanguage === "tw" ||
-  //           ("twp" && targetLanguage === "hk")
-  //         ) {
-  //           config = "s2hk.json";
-  //         }
-  //       }
-  //     }
-  //     return config;
-  //   };
-  //   onOptionChange(generateConfig());
-  // }, [origLanguage, targetLanguage, onOptionChange]);
-
-  useCallback(() => {
-    const defaultConfig = [
-      { from: "cn", to: "hk" },
-      { from: "hk", to: "cn" },
-      { from: "cn", to: "tw" },
-      { from: "tw", to: "cn" },
-      { from: "cn", to: "twp" },
-      { from: "twp", to: "cn" },
-    ];
-
+  useEffect(() => {
     const generateConfig = (): { from: string; to: string } => {
       if (origLanguage && targetLanguage) {
         const config = { from: origLanguage, to: targetLanguage };
-        if (
-          !defaultConfig.some(
-            (item) => item.from === config.from && item.to === config.to,
-          )
-        ) {
-          return { from: "cn", to: "hk" };
-        }
         return config;
+      } else {
+        return { from: "", to: "" };
       }
-      return { from: "", to: "" };
     };
     onOptionChange(generateConfig());
   }, [origLanguage, targetLanguage, onOptionChange]);

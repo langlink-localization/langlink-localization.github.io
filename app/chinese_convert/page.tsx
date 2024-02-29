@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +12,6 @@ import { openCCConverter } from "@/services/opencc-converter";
 import { processXliffString } from "@/services/xliff-processor";
 import { DataTable } from "./data-table";
 import { TableData, xliffColumns } from "./columns";
-import * as OpenCC from "opencc-js";
 
 export default function App() {
   // 状态管理上传的文件数据
@@ -23,17 +22,35 @@ export default function App() {
   // 状态管理转换后的数据
   const [xliffData, setXliffData] = useState<TableData[]>([]);
 
+  // 状态管理转换选项
   const [config, setConfig] = useState<{
     from: string;
     to: string;
   }>({ from: "", to: "" });
 
+  // 处理转换选项变化
+  const handleOptionChange = useCallback(
+    (newConfig: { from: string; to: string }) => {
+      setConfig(newConfig);
+    },
+    [],
+  );
+
+  // 监听转换选项变化
+  useEffect(() => {
+    if (config.from && config.to) {
+      console.log(`config: ${config.from}2${config.to}`);
+    }
+  }, [config]);
+
+  // 处理文件上传
   const handleFileUpload = (
     uploadedFilesData: { name: string; content: string }[],
   ) => {
     setFilesData(uploadedFilesData);
   };
 
+  // 处理文件转换
   const handFileConvert = async () => {
     const convertedFilesData = await Promise.all(
       filesData.map(async (fileData) => {
@@ -46,6 +63,7 @@ export default function App() {
       }),
     );
 
+    // 处理Xliff文件
     const allFilesXliffData = await Promise.all(
       convertedFilesData.map(async (fileData) => {
         const originalXliffData = await processXliffString(
@@ -69,14 +87,6 @@ export default function App() {
     );
 
     setXliffData(allFilesXliffData.flat());
-  };
-
-  const handleOptionChange = (config: { from: string; to: string }) => {
-    console.log(`选项：${config}`);
-    if (config.from && config.to) {
-      setConfig(config);
-      console.log(`选项：${config}`);
-    }
   };
 
   return (
