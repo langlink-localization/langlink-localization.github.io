@@ -19,11 +19,13 @@ export function DataTableColumnHeader<TData, TValue>({
       <Button
         variant="ghost"
         size="sm"
-        className="-ml-3 h-8 data-[state=open]:bg-accent"
-        onClick={() => column.toggleVisibility(false)}
+        className="text-md -ml-3 h-8 hover:bg-transparent"
       >
         <span>{title}</span>
-        <EyeOff className="ml-2 h-3.5 w-3.5" />
+        <EyeOff
+          className="ml-2 h-3.5 w-3.5 hover:scale-125"
+          onClick={() => column.toggleVisibility(false)}
+        />
       </Button>
     </div>
   );

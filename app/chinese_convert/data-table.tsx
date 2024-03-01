@@ -59,20 +59,45 @@ export function DataTable<TData, TValue>({
     },
     initialState: {
       pagination: {
-        pageSize: 200,
+        pageSize: 500,
       },
     },
   });
+
+  const isFilteringIsSameColumn = columnFilters.some(
+    (filter) => filter.id === "isSame" && filter.value,
+  );
+
+  const toggleIsSameColumnFilter = () => {
+    if (isFilteringIsSameColumn) {
+      setColumnFilters(
+        columnFilters.filter((filter) => filter.value !== "不同"),
+      );
+    } else {
+      setColumnFilters([
+        ...columnFilters,
+        {
+          id: "isSame",
+          value: "不同",
+        },
+      ]);
+    }
+  };
 
   return (
     <div>
       <div className="mt-5 rounded-md border">
         <div className="flex justify-between">
-          <Button variant="outline" size="sm" className="  h-8 ">
+          <Button variant="outline" size="sm" className="text-md h-8">
             展开/折叠Tag
           </Button>
-          <Button variant="outline" size="sm" className="  h-8 ">
-            显示/隐藏未更改句段
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-md h-8"
+            onClick={toggleIsSameColumnFilter}
+          >
+            {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
           </Button>
           <DataTableColsVisibility table={table} />
         </div>
@@ -99,8 +124,8 @@ export function DataTable<TData, TValue>({
                             onChange={(event) =>
                               header.column.setFilterValue(event.target.value)
                             }
-                            placeholder="搜索..."
-                            className="border-none text-xs"
+                            placeholder="搜索"
+                            className="border-none text-sm"
                           />
                         </div>
                       ) : null}

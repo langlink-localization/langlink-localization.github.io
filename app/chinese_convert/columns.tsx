@@ -22,13 +22,13 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     accessorKey: "fileName",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-24 pl-3"
+        className="w-2/21 pl-3 text-sm"
         column={column}
         title="文件名"
       />
     ),
     cell: (info) => (
-      <div className="w-24 overflow-auto pl-3">
+      <div className="w-2/21 text-md overflow-auto pl-3">
         {info.row.original.fileName}
       </div>
     ),
@@ -36,45 +36,53 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-12 pl-3" column={column} title="ID" />
+      <DataTableColumnHeader
+        className="w-1/21 pl-3 text-sm"
+        column={column}
+        title="ID"
+      />
     ),
-    cell: (info) => <div className="w-12 pl-3">{info.row.original.id}</div>,
+    cell: (info) => (
+      <div className="w-1/21 text-md pl-3">{info.row.original.id}</div>
+    ),
   },
   {
     accessorKey: "percent",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-14 pl-3"
+        className="w-1/21 pl-3 text-sm"
         column={column}
         title="百分比"
       />
     ),
     cell: (info) => (
-      <div className="w-14 pl-3">{info.row.original.percent}</div>
+      <div className="w-1/21 text-md pl-3">{info.row.original.percent}</div>
     ),
   },
   {
     accessorKey: "isSame",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-14 pl-3"
+        className="w-1/21 pl-3 text-sm"
         column={column}
-        title="是否相同"
+        title="前后相同？"
       />
     ),
-    cell: (info) => <div className="w-14 pl-3">{info.row.original.isSame}</div>,
+    cell: (info) => (
+      <div className="w-1/21 text-md pl-3">{info.row.original.isSame}</div>
+    ),
   },
   {
     accessorKey: "source",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-80 pl-3"
+        className="w-4/21 pl-3 text-sm"
         column={column}
         title="原文"
       />
     ),
     cell: (info) => (
-      <div className="w-80 overflow-auto text-balance pl-3">
+      <div className="w-4/21 overflow-auto text-balance pl-3 text-sm">
         {info.row.original.source}
       </div>
     ),
@@ -83,24 +91,14 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     accessorKey: "target",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-80 pl-3"
+        className="w-6/21 pl-3 text-sm"
         column={column}
         title="译文"
       />
     ),
     cell: (info) => {
-      // const diffResult = diff2Html(
-      //   info.row.original.target,
-      //   info.row.original.convertResult,
-      //   "chars",
-      // );
-      // return (
-      //   <div className="w-80 overflow-auto text-balance pl-3">
-      //     {diffResult.original}
-      //   </div>
-      // );
       return (
-        <div className="w-80 overflow-auto text-balance pl-3">
+        <div className="w-6/21 text-md overflow-auto text-balance pl-3 hover:scale-125">
           {info.row.original.diffOriginal}
         </div>
       );
@@ -110,24 +108,14 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     accessorKey: "convertResult",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-80 pl-3"
+        className="w-6/21 pl-3 text-sm"
         column={column}
         title="转换结果"
       />
     ),
     cell: (info) => {
-      // const diffResult = diff2Html(
-      //   info.row.original.target,
-      //   info.row.original.convertResult,
-      //   "chars",
-      // );
-      // return (
-      //   <div className="w-80 overflow-auto text-balance pl-3">
-      //     {diffResult.modified}
-      //   </div>
-      // );
       return (
-        <div className="w-80 overflow-auto text-balance pl-3">
+        <div className="w-6/21 text-md overflow-auto text-balance pl-3 hover:scale-125">
           {info.row.original.diffModified}
         </div>
       );

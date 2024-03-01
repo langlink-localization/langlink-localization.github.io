@@ -137,7 +137,7 @@ export default function App() {
         </Button>
       </div>
 
-      <div className="container">
+      <div className="container w-screen pr-4">
         <DataTable columns={xliffColumns} data={xliffData} />
       </div>
     </NextThemesProvider>

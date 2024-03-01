@@ -40,7 +40,7 @@ export const diff2Html = (
   diffResult.forEach((part, index) => {
     if (part.removed) {
       original.push(
-        <span key={index} className="bg-red-300 line-through">
+        <span key={index} className="bg-red-200 dark:bg-red-600">
           {part.value}
         </span>,
       );
@@ -48,7 +48,7 @@ export const diff2Html = (
       isSame = "不同";
     } else if (part.added) {
       modified.push(
-        <span key={index} className="bg-green-300 underline">
+        <span key={index} className="bg-green-200 dark:bg-green-600">
           {part.value}
         </span>,
       );
