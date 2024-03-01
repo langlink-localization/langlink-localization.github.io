@@ -2,8 +2,7 @@
 
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { Table } from "@tanstack/react-table";
-
+import { Table, ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,6 +12,9 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
+type MyColumnDef<TData> = ColumnDef<TData> & {
+  columnTitle?: string;
+};
 interface DataTableColsVisibilityProps<TData> {
   table: Table<TData>;
 }
@@ -42,14 +44,16 @@ export function DataTableColsVisibility<TData>({
               typeof column.accessorFn !== "undefined" && column.getCanHide(),
           )
           .map((column) => {
+            const title =
+              (column.columnDef as MyColumnDef<TData>).columnTitle || column.id;
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className="lowercase"
+                className="noraml-case"
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {title}
               </DropdownMenuCheckboxItem>
             );
           })}

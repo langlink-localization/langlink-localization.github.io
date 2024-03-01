@@ -136,7 +136,6 @@ export default function App() {
           查找替换
         </Button>
       </div>
-
       <div className="container w-screen pr-4">
         <DataTable columns={xliffColumns} data={xliffData} />
       </div>

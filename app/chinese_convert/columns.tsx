@@ -5,6 +5,11 @@ import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 
+// 扩展 ColumnDef 来添加自定义属性
+type MyColumnDef<TData> = ColumnDef<TData> & {
+  columnTitle?: string;
+};
+
 export type TableData = {
   fileName: string;
   id: number;
@@ -17,7 +22,7 @@ export type TableData = {
   isSame: string;
 };
 
-export const xliffColumns: ColumnDef<TableData>[] = [
+export const xliffColumns: MyColumnDef<TableData>[] = [
   {
     accessorKey: "fileName",
     header: ({ column }) => (
@@ -27,6 +32,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
         title="文件名"
       />
     ),
+    columnTitle: "文件名",
     cell: (info) => (
       <div className="w-2/21 text-md overflow-auto pl-3">
         {info.row.original.fileName}
@@ -35,6 +41,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   },
   {
     accessorKey: "id",
+    columnTitle: "ID",
     header: ({ column }) => (
       <DataTableColumnHeader
         className="w-1/21 pl-3 text-sm"
@@ -48,6 +55,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   },
   {
     accessorKey: "percent",
+    columnTitle: "百分比",
     header: ({ column }) => (
       <DataTableColumnHeader
         className="w-1/21 pl-3 text-sm"
@@ -61,6 +69,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   },
   {
     accessorKey: "isSame",
+    columnTitle: "前后相同？",
     header: ({ column }) => (
       <DataTableColumnHeader
         className="w-1/21 pl-3 text-sm"
@@ -74,6 +83,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   },
   {
     accessorKey: "source",
+    columnTitle: "原文",
     header: ({ column }) => (
       <DataTableColumnHeader
         className="w-4/21 pl-3 text-sm"
@@ -89,6 +99,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   },
   {
     accessorKey: "target",
+    columnTitle: "译文",
     header: ({ column }) => (
       <DataTableColumnHeader
         className="w-6/21 pl-3 text-sm"
@@ -106,6 +117,7 @@ export const xliffColumns: ColumnDef<TableData>[] = [
   },
   {
     accessorKey: "convertResult",
+    columnTitle: "转换结果",
     header: ({ column }) => (
       <DataTableColumnHeader
         className="w-6/21 pl-3 text-sm"

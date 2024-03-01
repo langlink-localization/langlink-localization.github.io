@@ -106,7 +106,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
                   >
                     {item.name}
                     <X
-                      className="ml-2 h-4 w-4 text-red-500"
+                      className="ml-2 h-4 w-4 text-red-500 hover:scale-125"
                       onClick={() => handleCloseFileIcon(item.key)}
                     />
                   </Badge>
