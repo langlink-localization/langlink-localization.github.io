@@ -8,7 +8,7 @@ type DiffMethod = "chars" | "words" | "lines";
 interface DiffResult {
   original: JSX.Element[];
   modified: JSX.Element[];
-  isSame: boolean;
+  isSame: string;
 }
 
 export const diff2Html = (
@@ -35,7 +35,7 @@ export const diff2Html = (
   const original: JSX.Element[] = [];
   const modified: JSX.Element[] = [];
 
-  let isSame = true;
+  let isSame = "相同";
 
   diffResult.forEach((part, index) => {
     if (part.removed) {
@@ -45,7 +45,7 @@ export const diff2Html = (
         </span>,
       );
 
-      isSame = false;
+      isSame = "不同";
     } else if (part.added) {
       modified.push(
         <span key={index} className="bg-green-300 underline">
@@ -53,7 +53,7 @@ export const diff2Html = (
         </span>,
       );
 
-      isSame = false;
+      isSame = "不同";
     } else {
       const element = <span key={index}>{part.value}</span>;
       original.push(element);

@@ -4,7 +4,6 @@ import React from "react";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
-import { diff2Html } from "@/services/diff2html";
 
 export type TableData = {
   fileName: string;
@@ -13,6 +12,9 @@ export type TableData = {
   source: string;
   target: string;
   convertResult: string;
+  diffOriginal: JSX.Element[];
+  diffModified: JSX.Element[];
+  isSame: string;
 };
 
 export const xliffColumns: ColumnDef<TableData>[] = [
@@ -52,6 +54,17 @@ export const xliffColumns: ColumnDef<TableData>[] = [
     ),
   },
   {
+    accessorKey: "isSame",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        className="w-14 pl-3"
+        column={column}
+        title="是否相同"
+      />
+    ),
+    cell: (info) => <div className="w-14 pl-3">{info.row.original.isSame}</div>,
+  },
+  {
     accessorKey: "source",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -76,14 +89,19 @@ export const xliffColumns: ColumnDef<TableData>[] = [
       />
     ),
     cell: (info) => {
-      const diffResult = diff2Html(
-        info.row.original.target,
-        info.row.original.convertResult,
-        "chars",
-      );
+      // const diffResult = diff2Html(
+      //   info.row.original.target,
+      //   info.row.original.convertResult,
+      //   "chars",
+      // );
+      // return (
+      //   <div className="w-80 overflow-auto text-balance pl-3">
+      //     {diffResult.original}
+      //   </div>
+      // );
       return (
         <div className="w-80 overflow-auto text-balance pl-3">
-          {diffResult.original}
+          {info.row.original.diffOriginal}
         </div>
       );
     },
@@ -98,14 +116,19 @@ export const xliffColumns: ColumnDef<TableData>[] = [
       />
     ),
     cell: (info) => {
-      const diffResult = diff2Html(
-        info.row.original.target,
-        info.row.original.convertResult,
-        "chars",
-      );
+      // const diffResult = diff2Html(
+      //   info.row.original.target,
+      //   info.row.original.convertResult,
+      //   "chars",
+      // );
+      // return (
+      //   <div className="w-80 overflow-auto text-balance pl-3">
+      //     {diffResult.modified}
+      //   </div>
+      // );
       return (
         <div className="w-80 overflow-auto text-balance pl-3">
-          {diffResult.modified}
+          {info.row.original.diffModified}
         </div>
       );
     },
