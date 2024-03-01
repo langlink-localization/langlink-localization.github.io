@@ -102,14 +102,14 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "译文",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-6/21 pl-3 text-sm"
+        className="w-auto pl-3 text-sm"
         column={column}
         title="译文"
       />
     ),
     cell: (info) => {
       return (
-        <div className="w-6/21 text-md overflow-auto text-balance pl-3 hover:scale-125">
+        <div className="text-md w-auto overflow-auto text-balance pl-3 delay-150 hover:scale-125">
           {info.row.original.diffOriginal}
         </div>
       );
@@ -120,14 +120,14 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "转换结果",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-6/21 pl-3 text-sm"
+        className="w-auto pl-3 text-sm"
         column={column}
         title="转换结果"
       />
     ),
     cell: (info) => {
       return (
-        <div className="w-6/21 text-md overflow-auto text-balance pl-3 hover:scale-125">
+        <div className="text-md w-auto overflow-auto text-balance pl-3 delay-150 hover:scale-125">
           {info.row.original.diffModified}
         </div>
       );
