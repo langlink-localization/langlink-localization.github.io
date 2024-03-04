@@ -136,7 +136,7 @@ export default function App() {
           查找替换
         </Button>
       </div>
-      <div className="container w-screen pr-4">
+      <div className="max-h-screen w-screen pr-5">
         <DataTable columns={xliffColumns} data={xliffData} />
       </div>
     </NextThemesProvider>

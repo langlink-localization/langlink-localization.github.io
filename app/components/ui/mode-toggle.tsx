@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,15 @@ import {
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
     <div className="flex justify-end p-4">
@@ -23,9 +32,11 @@ export function ModeToggle() {
               variant="outline"
               size="icon"
               className="border-transparent"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={toggleTheme}
             >
-              {theme === "dark" ? (
+              {!ready ? (
+                <span className="h-[1.2rem] w-[1.2rem] animate-pulse bg-gray-300" />
+              ) : theme === "dark" ? (
                 <Sun className="h-[1.2rem] w-[1.2rem]" />
               ) : (
                 <Moon className="h-[1.2rem] w-[1.2rem]" />
