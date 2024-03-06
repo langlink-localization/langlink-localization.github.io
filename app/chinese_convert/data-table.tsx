@@ -87,8 +87,8 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="mt-5 rounded-md border">
-      <div className="sticky top-4 z-10 flex justify-between bg-white">
+    <div className="mt-2 w-auto rounded-md border">
+      <div className="sticky top-0 z-10 flex justify-between bg-white">
         <Button variant="outline" size="sm" className="text-md h-8">
           展开/折叠Tag
         </Button>
@@ -104,7 +104,7 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
       <Table>
-        <TableHeader>
+        <TableHeader className="sticky top-20 bg-white">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -117,7 +117,7 @@ export function DataTable<TData, TValue>({
                           header.getContext(),
                         )}
                     {header.column.getCanFilter() ? (
-                      <div>
+                      <div className="pt-2">
                         <Input
                           type="text"
                           value={
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
                             header.column.setFilterValue(event.target.value)
                           }
                           placeholder="搜索"
-                          className="border-none text-sm"
+                          className="border-none text-xs xl:text-sm"
                         />
                       </div>
                     ) : null}

@@ -15,7 +15,12 @@ export function DataTableColumnHeader<TData, TValue>({
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div
+      className={cn(
+        "sticky top-16 flex items-center space-x-2 bg-white",
+        className,
+      )}
+    >
       <Button
         variant="ghost"
         size="sm"

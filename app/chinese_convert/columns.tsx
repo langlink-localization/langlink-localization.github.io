@@ -27,14 +27,14 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     accessorKey: "fileName",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-32 pl-3 text-sm"
+        className="w-16 pl-3 text-xs xl:w-28 xl:text-sm"
         column={column}
         title="文件名"
       />
     ),
     columnTitle: "文件名",
     cell: (info) => (
-      <div className="text-md w-32 overflow-auto pl-3">
+      <div className="xl:text-md w-16 overflow-auto pl-3 text-sm xl:w-28">
         {info.row.original.fileName}
       </div>
     ),
@@ -44,13 +44,15 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "ID",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-14 pl-3 text-sm"
+        className="w-12 pl-3 text-xs xl:w-14 xl:text-sm"
         column={column}
         title="ID"
       />
     ),
     cell: (info) => (
-      <div className="text-md w-14 pl-3">{info.row.original.id}</div>
+      <div className="xl:text-md w-12 pl-3 text-sm xl:w-14">
+        {info.row.original.id}
+      </div>
     ),
   },
   {
@@ -58,13 +60,15 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "百分比",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-16 pl-3 text-sm"
+        className="w-14 pl-3 text-xs xl:w-16 xl:text-sm"
         column={column}
         title="百分比"
       />
     ),
     cell: (info) => (
-      <div className="text-md w-16 pl-3">{info.row.original.percent}</div>
+      <div className="xl:text-md w-14 pl-3 text-sm xl:w-16">
+        {info.row.original.percent}
+      </div>
     ),
   },
   {
@@ -72,13 +76,15 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "前后相同？",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-12 pl-3 text-sm"
+        className="w-10 pl-3 text-xs xl:w-12 xl:text-sm"
         column={column}
         title="前后相同？"
       />
     ),
     cell: (info) => (
-      <div className="text-md w-12 pl-3">{info.row.original.isSame}</div>
+      <div className="xl:text-md w-10 pl-3 text-sm xl:w-12">
+        {info.row.original.isSame}
+      </div>
     ),
   },
   {
@@ -86,13 +92,13 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "原文",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-96 pl-3 text-sm"
+        className="xl:wl-80 w-40 pl-3 text-xs xl:text-sm"
         column={column}
         title="原文"
       />
     ),
     cell: (info) => (
-      <div className="w-96 overflow-auto text-balance pl-3 text-sm">
+      <div className="xl:wl-80 xl:text-md w-40 overflow-auto text-balance pl-3 text-sm">
         {info.row.original.source}
       </div>
     ),
@@ -102,14 +108,14 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "译文",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-[32rem] pl-3 text-sm"
+        className="w-[15rem] pl-3 text-xs xl:w-[30rem] xl:text-sm"
         column={column}
         title="译文"
       />
     ),
     cell: (info) => {
       return (
-        <div className="text-md w-[32rem] overflow-auto text-balance pl-3 delay-150 hover:scale-125 hover:bg-[#f8fafc]">
+        <div className="xl:text-md w-[15rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 xl:w-[30rem]">
           {info.row.original.diffOriginal}
         </div>
       );
@@ -120,14 +126,14 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     columnTitle: "转换结果",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="w-[32rem] pl-3 text-sm"
+        className="w-[15rem] pl-3 text-xs xl:w-[30rem] xl:text-sm"
         column={column}
         title="转换结果"
       />
     ),
     cell: (info) => {
       return (
-        <div className="text-md w-[32rem] overflow-auto text-balance pl-3 delay-150 hover:scale-125 hover:bg-[#f8fafc]">
+        <div className="xl:text-md w-[15rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 xl:w-[30rem]">
           {info.row.original.diffModified}
         </div>
       );
