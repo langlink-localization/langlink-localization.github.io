@@ -89,13 +89,13 @@ export function DataTable<TData, TValue>({
   return (
     <div className="mt-2 w-auto rounded-md border">
       <div className="sticky top-0 z-10 flex justify-between bg-white">
-        <Button variant="outline" size="sm" className="text-md h-8">
+        <Button variant="outline" size="sm" className="h-8 text-xs md:text-sm">
           展开/折叠Tag
         </Button>
         <Button
           variant="outline"
           size="sm"
-          className="text-md h-8"
+          className="h-8 text-xs md:text-sm"
           onClick={toggleIsSameColumnFilter}
         >
           {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
                             header.column.setFilterValue(event.target.value)
                           }
                           placeholder="搜索"
-                          className="border-none text-xs xl:text-sm"
+                          className="hidden border-none text-xs sm:inline xl:text-sm"
                         />
                       </div>
                     ) : null}

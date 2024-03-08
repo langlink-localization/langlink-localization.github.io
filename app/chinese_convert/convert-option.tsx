@@ -45,7 +45,9 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
           onValueChange={(newValue) => setOrigLanguage(newValue)}
         >
           <SelectTrigger>
-            <Label className="absolute -top-6 text-sm">原文语言</Label>
+            <Label className="absolute -top-6 text-xs md:text-sm">
+              原文语言
+            </Label>
             <SelectValue placeholder="请选择一个选项" />
           </SelectTrigger>
           <SelectContent>
@@ -53,19 +55,19 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
               {languageOptions.map((option) =>
                 targetLanguage === option.value ? (
                   <SelectItem
-                    className="text-sm"
+                    className="text-xs md:text-sm"
                     key={option.value}
                     value={option.value}
                     disabled
                   >
                     {option.label}
-                    <p className="text-sm">前后语言不能相同</p>
+                    <p className="text-xs md:text-sm">前后语言不能相同</p>
                   </SelectItem>
                 ) : (
                   <SelectItem
                     key={option.value}
                     value={option.value}
-                    className="text-sm"
+                    className="text-xs md:text-sm"
                   >
                     {option.label}
                   </SelectItem>
@@ -81,7 +83,9 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
           onValueChange={(newValue) => setTargetLanguage(newValue)}
         >
           <SelectTrigger>
-            <Label className="absolute -top-6 text-sm">目标语言</Label>
+            <Label className="absolute -top-6 text-xs md:text-sm">
+              目标语言
+            </Label>
             <SelectValue placeholder="请选择一个选项" />
           </SelectTrigger>
           <SelectContent>
@@ -92,7 +96,7 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
                     key={option.value}
                     value={option.value}
                     disabled
-                    className="text-sm"
+                    className="text-xs md:text-sm"
                   >
                     {option.label}
                     <p>前后语言不能相同</p>
@@ -101,7 +105,7 @@ const ConvertOption: React.FC<ConvertOptionProps> = ({ onOptionChange }) => {
                   <SelectItem
                     key={option.value}
                     value={option.value}
-                    className="text-sm"
+                    className="text-xs md:text-sm"
                   >
                     {option.label}
                   </SelectItem>

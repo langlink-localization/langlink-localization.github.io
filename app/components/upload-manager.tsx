@@ -82,7 +82,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button className="rounded-lg" onClick={triggerFileInputClick}>
+              <Button
+                className="rounded-lg text-xs md:text-sm"
+                onClick={triggerFileInputClick}
+              >
                 上传文件
               </Button>
             </TooltipTrigger>
@@ -92,7 +95,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 h-40">
         {upldFilesData.length === 0 ? (
           <Skeleton className="h-40 bg-transparent" />
         ) : (
@@ -101,7 +104,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
               <Tooltip>
                 <TooltipTrigger>
                   <Badge
-                    className="border-transparent text-left text-xs"
+                    className="border-transparent text-left text-xs md:text-sm"
                     variant="outline"
                   >
                     {item.name}
