@@ -117,12 +117,12 @@ export default function App() {
         <ConvertOption onOptionChange={handleOptionChange} />
         <div className="col-start-5 flex gap-3">
           <Button
-            className=" md:text:sm place-self-center text-xs"
+            className="md:text:sm place-self-center text-xs"
             onClick={handFileConvert}
           >
             转换并展示表格
           </Button>
-          <Button className=" md:text:sm place-self-center text-xs">
+          <Button className="md:text:sm place-self-center text-xs">
             直接创建下载链接
           </Button>
         </div>
@@ -131,11 +131,11 @@ export default function App() {
         <div className="col-span-1 col-span-2 col-start-11 row-span-1 flex-col">
           <Input
             placeholder="查找内容"
-            className="mb-2 w-[6rem] text-xs md:w-full md:text-sm"
+            className="mb-2 w-[8rem] text-xs md:w-full md:text-sm"
           />
           <Input
             placeholder="替换内容"
-            className="mt-2 w-[6rem] text-xs md:w-full md:text-sm"
+            className="mt-2 w-[8rem] text-xs md:w-full md:text-sm"
           />
         </div>
         <Button className="col-span-1 col-start-13 self-center justify-self-start text-xs md:text-sm">
