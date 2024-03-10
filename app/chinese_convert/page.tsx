@@ -128,7 +128,7 @@ export default function App() {
         </div>
       </div>
       <div className="grid-rows-auto grid-cols-14 mt-4 grid gap-2">
-        <div className="col-span-1 col-span-2 col-start-11 row-span-1 flex-col">
+        <div className="col-span-2 col-start-11 row-span-1 flex-col">
           <Input
             placeholder="查找内容"
             className="mb-2 w-[8rem] text-xs md:w-full md:text-sm"
