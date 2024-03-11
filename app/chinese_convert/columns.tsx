@@ -17,8 +17,12 @@ export type TableData = {
   source: string;
   target: string;
   convertResult: string;
-  diffOriginal: JSX.Element[];
-  diffModified: JSX.Element[];
+  grayedSource: string;
+  shortenedSource: string;
+  grayedMarkedTarget: string;
+  grayedMarkedConverted: string;
+  shortenedMarkedTarget: string;
+  shortenedMarkedConverted: string;
   isSame: string;
 };
 
@@ -98,9 +102,10 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
       />
     ),
     cell: (info) => (
-      <div className="xl:text-md w-[6.5rem] overflow-auto text-balance pl-3 text-sm md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[24rem] ">
-        {info.row.original.source}
-      </div>
+      <div
+        className="xl:text-md w-[6.5rem] overflow-auto text-balance pl-3 text-sm md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[24rem]"
+        dangerouslySetInnerHTML={{ __html: info.row.original.grayedSource }}
+      ></div>
     ),
   },
   {
@@ -115,9 +120,12 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     ),
     cell: (info) => {
       return (
-        <div className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem] ">
-          {info.row.original.diffOriginal}
-        </div>
+        <div
+          className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem]"
+          dangerouslySetInnerHTML={{
+            __html: info.row.original.grayedMarkedTarget,
+          }}
+        ></div>
       );
     },
   },
@@ -133,9 +141,12 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     ),
     cell: (info) => {
       return (
-        <div className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem] ">
-          {info.row.original.diffModified}
-        </div>
+        <div
+          className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem]"
+          dangerouslySetInnerHTML={{
+            __html: info.row.original.grayedMarkedConverted,
+          }}
+        ></div>
       );
     },
   },

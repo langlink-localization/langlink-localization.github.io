@@ -15,7 +15,7 @@ export const xliffProcessor = async (
     const xmlDoc = parser.parseFromString(content, "text/xml");
     const transUnits = xmlDoc.querySelectorAll("unit, trans-unit");
     const data: XliffData[] = [];
-    transUnits.forEach((unit) => {
+    transUnits.forEach((unit, index) => {
       const id = unit.getAttribute("id");
       const percent =
         unit.getAttribute("percent") ||
@@ -26,7 +26,7 @@ export const xliffProcessor = async (
       if (id) {
         data.push({
           fileName,
-          id: Number(id),
+          id: Number(index + 1),
           percent,
           source,
           target,

@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Link from "next/link";
+import parse from "html-react-parser";
+import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ConvertOption from "@/app/chinese_convert/convert-option";
@@ -11,6 +13,7 @@ import DownloadManager from "@/components/download-manager";
 import { openCCConverter } from "@/services/opencc-converter";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
+import { tagProcessor } from "@/services/tag-processor";
 import { DataTable } from "./data-table";
 import { TableData, xliffColumns } from "./columns";
 
@@ -77,17 +80,37 @@ export default function App() {
         );
 
         const mergedXliffData = originalXliffData.map((item, index) => {
-          const diffResult = diff2Html(
-            item.target,
-            convertedXliffData[index]?.target,
-            "chars",
-          );
+          const grayedSource = tagProcessor(item.source).grayedString;
+          const shortenedSource = tagProcessor(item.source).shortenedString;
+          const convertResult = convertedXliffData[index]?.target;
 
+          const diffResult = diff2Html(item.target, convertResult, "chars");
+
+          const grayedMarkedTarget = tagProcessor(
+            diffResult.oldHtml,
+          ).grayedString;
+          const grayedMarkedConverted = tagProcessor(
+            diffResult.newHtml,
+          ).grayedString;
+          const shortenedMarkedTarget = tagProcessor(
+            diffResult.oldHtml,
+          ).shortenedString;
+          const shortenedMarkedConverted = tagProcessor(
+            diffResult.newHtml,
+          ).shortenedString;
+
+          console.log(
+            `grayedMarkedTarget: ${grayedMarkedTarget}\ngrayedSource: ${grayedSource}\n`,
+          );
           return {
             ...item,
-            convertResult: convertedXliffData[index]?.target,
-            diffOriginal: diffResult.original,
-            diffModified: diffResult.modified,
+            convertResult: convertResult,
+            grayedSource,
+            shortenedSource,
+            grayedMarkedTarget,
+            grayedMarkedConverted,
+            shortenedMarkedTarget,
+            shortenedMarkedConverted,
             isSame: diffResult.isSame,
           };
         });
