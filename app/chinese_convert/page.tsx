@@ -23,9 +23,6 @@ export default function App() {
     { name: string; content: string }[]
   >([]);
 
-  // 状态管理转换后的数据
-  const [xliffData, setXliffData] = useState<TableData[]>([]);
-
   // 状态管理转换选项
   const [config, setConfig] = useState<{
     from: string;
@@ -40,13 +37,6 @@ export default function App() {
     [],
   );
 
-  // 监听转换选项变化
-  useEffect(() => {
-    if (config.from && config.to) {
-      console.log(`config: ${config.from}2${config.to}`);
-    }
-  }, [config]);
-
   // 处理文件上传
   const handleFileUpload = (
     uploadedFilesData: { name: string; content: string }[],
@@ -54,72 +44,67 @@ export default function App() {
     setFilesData(uploadedFilesData);
   };
 
-  // 处理文件转换
+  // 状态管理转换后的数据
+  const [xliffData, setXliffData] = useState<TableData[]>([]);
+  const [shortenedXliffData, setShortenedXliffData] = useState<TableData[]>([]);
+  const [grayedXliffData, setGrayedXliffData] = useState<TableData[]>([]);
+  const [currentDataForm, setCurrentDataForm] = useState<
+    "grayed" | "shortened"
+  >("grayed");
+
   const handFileConvert = async () => {
-    const convertedFilesData = await Promise.all(
+    const processedData = await Promise.all(
       filesData.map(async (fileData) => {
         const convertedContent = openCCConverter(fileData.content, config);
-        return {
-          name: fileData.name,
-          originalContent: fileData.content,
-          convertedContent,
-        };
-      }),
-    );
-
-    // 处理Xliff文件
-    const allFilesXliffData = await Promise.all(
-      convertedFilesData.map(async (fileData) => {
         const originalXliffData = await xliffProcessor(
           fileData.name,
-          fileData.originalContent,
+          fileData.content,
         );
         const convertedXliffData = await xliffProcessor(
           fileData.name,
-          fileData.convertedContent,
+          convertedContent,
         );
 
-        const mergedXliffData = originalXliffData.map((item, index) => {
-          const grayedSource = tagProcessor(item.source).grayedString;
-          const shortenedSource = tagProcessor(item.source).shortenedString;
+        return originalXliffData.map((item, index) => {
           const convertResult = convertedXliffData[index]?.target;
-
           const diffResult = diff2Html(item.target, convertResult, "chars");
 
-          const grayedMarkedTarget = tagProcessor(
-            diffResult.oldHtml,
-          ).grayedString;
-          const grayedMarkedConverted = tagProcessor(
-            diffResult.newHtml,
-          ).grayedString;
-          const shortenedMarkedTarget = tagProcessor(
-            diffResult.oldHtml,
-          ).shortenedString;
-          const shortenedMarkedConverted = tagProcessor(
-            diffResult.newHtml,
-          ).shortenedString;
-
-          console.log(
-            `grayedMarkedTarget: ${grayedMarkedTarget}\ngrayedSource: ${grayedSource}\n`,
-          );
-          return {
+          const grayedData = {
             ...item,
+            source: item.source,
+            target: item.target,
             convertResult: convertResult,
-            grayedSource,
-            shortenedSource,
-            grayedMarkedTarget,
-            grayedMarkedConverted,
-            shortenedMarkedTarget,
-            shortenedMarkedConverted,
+            finalSource: tagProcessor(item.source).grayedString,
+            finalTarget: tagProcessor(item.target).grayedString,
+            finalConvertResult: tagProcessor(convertResult).grayedString,
             isSame: diffResult.isSame,
           };
-        });
 
-        return mergedXliffData;
+          const shortenedData = {
+            ...item,
+            source: item.source,
+            target: item.target,
+            convertResult: convertResult,
+            finalSource: tagProcessor(item.source).shortenedString,
+            finalTarget: tagProcessor(item.target).shortenedString,
+            finalConvertResult: tagProcessor(convertResult).shortenedString,
+            isSame: diffResult.isSame,
+          };
+
+          return { grayedData, shortenedData };
+        });
       }),
     );
 
-    setXliffData(allFilesXliffData.flat());
+    let grayed = processedData.flat().map((item) => item.grayedData);
+    let shortened = processedData.flat().map((item) => item.shortenedData);
+
+    setGrayedXliffData(grayed);
+    setShortenedXliffData(shortened);
+  };
+
+  const toggleDataForm = () => {
+    setCurrentDataForm(currentDataForm === "grayed" ? "shortened" : "grayed");
   };
 
   return (
@@ -166,7 +151,14 @@ export default function App() {
         </Button>
       </div>
       <div className="max-h-lvh">
-        <DataTable columns={xliffColumns} data={xliffData} />
+        <DataTable
+          columns={xliffColumns}
+          data={
+            currentDataForm === "grayed" ? grayedXliffData : shortenedXliffData
+          }
+          currentDataForm={currentDataForm}
+          toggleDataForm={toggleDataForm}
+        />
       </div>
     </NextThemesProvider>
   );

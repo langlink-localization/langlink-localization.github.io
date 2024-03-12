@@ -29,11 +29,15 @@ import { Button } from "@/components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  currentDataForm: "grayed" | "shortened";
+  toggleDataForm: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  currentDataForm,
+  toggleDataForm,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -89,8 +93,13 @@ export function DataTable<TData, TValue>({
   return (
     <div className="mt-2 w-auto rounded-md border">
       <div className="sticky top-0 z-10 flex justify-between bg-white">
-        <Button variant="outline" size="sm" className="h-8 text-xs md:text-sm">
-          展开/折叠Tag
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 text-xs md:text-sm"
+          onClick={toggleDataForm}
+        >
+          {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
         </Button>
         <Button
           variant="outline"

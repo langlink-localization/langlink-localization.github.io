@@ -4,16 +4,17 @@ interface tagConvertedResult {
 }
 
 export const tagProcessor = (oldText: string): tagConvertedResult => {
-  const tagRegex = /<(\/?)(?:ph|bpt|ept|it|mrk|a)([^>]*)>/gm;
+  const tagRegex =
+    /<(\/?)(g|x|bx|ex|bpt|ept|ph|it|mrk|cp|pc|sc|ec|sm|em|a|br)([^>]*)>/gm;
 
   let grayedString = oldText.replace(
     tagRegex,
-    `<span class="bg-gray-200">$1</span>`,
+    `<span class="text-gray-600">&lt;$1$2$3&gt;</span>`,
   );
 
   let shortenedString = oldText.replace(
     tagRegex,
-    `<span class="bg-gray-200">⬣</span>`,
+    `<span class="text-gray-600">⬣</span>`,
   );
 
   return { grayedString, shortenedString };
