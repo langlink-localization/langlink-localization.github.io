@@ -45,7 +45,8 @@ export default function App() {
   };
 
   // 状态管理转换后的数据
-  const [xliffData, setXliffData] = useState<TableData[]>([]);
+  const [downloadItems, setDownloadItems] = useState<
+    { key: string; text: string; href: string; download: string}[]>([]);
   const [shortenedXliffData, setShortenedXliffData] = useState<TableData[]>([]);
   const [grayedXliffData, setGrayedXliffData] = useState<TableData[]>([]);
   const [currentDataForm, setCurrentDataForm] = useState<
@@ -96,11 +97,31 @@ export default function App() {
       }),
     );
 
+    const downloadItems = filesData.map((fileData, index) => {
+      const convertedContent = openCCConverter(fileData.content, config);
+      const blob = new Blob([convertedContent], {
+        type: "text/plain;charset=utf-8",
+      });
+      const downloadUrl = URL.createObjectURL(blob);
+      const lastIndex = fileData.name.lastIndexOf(".");
+      const baseName = lastIndex > 0 ? fileData.name.slice(0, lastIndex) : fileData.name;
+      const extension = lastIndex > 0 ? fileData.name.slice(lastIndex) : "";
+      const downloadFileName = `${baseName}_${config.from}2${config.to}${extension}`;
+      return {
+        key: String(index),
+        content: convertedContent,
+        text: downloadFileName,
+        href: downloadUrl,
+        download: downloadFileName,
+      };
+    });
+
     let grayed = processedData.flat().map((item) => item.grayedData);
     let shortened = processedData.flat().map((item) => item.shortenedData);
 
     setGrayedXliffData(grayed);
     setShortenedXliffData(shortened);
+    setDownloadItems(downloadItems);
   };
 
   const toggleDataForm = () => {
@@ -119,7 +140,7 @@ export default function App() {
       </div>
       <div className="grid-rows-auto grid grid-cols-2 overflow-auto pt-8">
         <UploadManager onFilesUploaded={handleFileUpload} />
-        <DownloadManager downloadItems={[]} />
+        <DownloadManager downloadItems={downloadItems} />
       </div>
       <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
         <ConvertOption onOptionChange={handleOptionChange} />
