@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Link from "next/link";
-import parse from "html-react-parser";
-import DOMPurify from "dompurify";
+// import parse from "html-react-parser";
+// import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ConvertOption from "@/app/chinese_convert/convert-option";
@@ -16,7 +16,6 @@ import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
 import { DataTable } from "./data-table";
 import { TableData, xliffColumns } from "./columns";
-import { file } from "jszip";
 
 export default function App() {
   // 状态管理上传的文件数据
@@ -70,9 +69,6 @@ export default function App() {
   const processFilesForDownload = async () => {
     return filesData.map((fileData, index) => {
       const convertedContent = openCCConverter(fileData.content, config);
-      const blob = new Blob([convertedContent], {
-        type: "text/plain;charset=utf-8",
-      });
       const downloadFileName = generateFileName(
         fileData.name,
         config.from,
