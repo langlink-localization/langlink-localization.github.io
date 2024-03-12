@@ -18,8 +18,6 @@ interface DownloadManagerProps {
     key: string;
     content: string;
     text: string;
-    href: string;
-    download: string;
   }[];
 }
 
@@ -27,12 +25,17 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
   const downloadAll = () => {
     const zip = new JSZip();
     downloadItems.forEach((item) => {
-      zip.file(item.text, item.content)
+      zip.file(item.text, item.content);
     });
 
     zip.generateAsync({ type: "blob" }).then((content) => {
       saveAs(content, "allFiles.zip");
     });
+  };
+
+  const downloadOne = (item: { content: string; text: string }) => {
+    const blob = new Blob([item.content], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, item.text);
   };
 
   return (
@@ -41,7 +44,10 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button className="rounded-lg text-xs md:text-sm" onClick={downloadAll}>
+              <Button
+                className="rounded-lg text-xs md:text-sm"
+                onClick={downloadAll}
+              >
                 下载所有文件
               </Button>
             </TooltipTrigger>
@@ -51,7 +57,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
           </Tooltip>
         </TooltipProvider>
       </div>
-       <div className="mt-4 h-40 md:h-56">
+      <div className="mt-4 h-40 md:h-56">
         {downloadItems.length === 0 ? (
           <Skeleton className="h-40 bg-transparent md:h-56" />
         ) : (
@@ -60,16 +66,11 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
               <Tooltip>
                 <TooltipTrigger>
                   <Badge
-                    className="text-tiny border-transparent text-left underline lg:text-xs"
+                    className="text-tiny border-transparent text-left underline hover:text-blue-500 lg:text-xs"
                     variant="outline"
+                    onClick={() => downloadOne(item)}
                   >
-                    <Link
-                      href={item.href}
-                      className="text-tiny lg:text-xs hover:text-blue-600"
-                      download={item.download}
-                    >
-                      {item.text}
-                    </Link>
+                    {item.text}
                   </Badge>
                 </TooltipTrigger>
                 <TooltipContent>

@@ -16,6 +16,7 @@ import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
 import { DataTable } from "./data-table";
 import { TableData, xliffColumns } from "./columns";
+import { file } from "jszip";
 
 export default function App() {
   // 状态管理上传的文件数据
@@ -46,12 +47,44 @@ export default function App() {
 
   // 状态管理转换后的数据
   const [downloadItems, setDownloadItems] = useState<
-    { key: string; text: string; href: string; download: string}[]>([]);
+    {
+      key: string;
+      content: string;
+      text: string;
+    }[]
+  >([]);
   const [shortenedXliffData, setShortenedXliffData] = useState<TableData[]>([]);
   const [grayedXliffData, setGrayedXliffData] = useState<TableData[]>([]);
   const [currentDataForm, setCurrentDataForm] = useState<
     "grayed" | "shortened"
   >("grayed");
+
+  const generateFileName = (originalName: string, from: string, to: string) => {
+    const lastIndex = originalName.lastIndexOf(".");
+    const baseName =
+      lastIndex > 0 ? originalName.slice(0, lastIndex) : originalName;
+    const extension = lastIndex > 0 ? originalName.slice(lastIndex) : "";
+    return `${baseName}_${from}2${to}${extension}`;
+  };
+
+  const processFilesForDownload = async () => {
+    return filesData.map((fileData, index) => {
+      const convertedContent = openCCConverter(fileData.content, config);
+      const blob = new Blob([convertedContent], {
+        type: "text/plain;charset=utf-8",
+      });
+      const downloadFileName = generateFileName(
+        fileData.name,
+        config.from,
+        config.to,
+      );
+      return {
+        key: String(index),
+        content: convertedContent,
+        text: downloadFileName,
+      };
+    });
+  };
 
   const handFileConvert = async () => {
     const processedData = await Promise.all(
@@ -88,7 +121,8 @@ export default function App() {
             convertResult: convertResult,
             finalSource: tagProcessor(item.source).shortenedString,
             finalTarget: tagProcessor(diffResult.oldHtml).shortenedString,
-            finalConvertResult: tagProcessor(diffResult.newHtml).shortenedString,
+            finalConvertResult: tagProcessor(diffResult.newHtml)
+              .shortenedString,
             isSame: diffResult.isSame,
           };
 
@@ -97,30 +131,18 @@ export default function App() {
       }),
     );
 
-    const downloadItems = filesData.map((fileData, index) => {
-      const convertedContent = openCCConverter(fileData.content, config);
-      const blob = new Blob([convertedContent], {
-        type: "text/plain;charset=utf-8",
-      });
-      const downloadUrl = URL.createObjectURL(blob);
-      const lastIndex = fileData.name.lastIndexOf(".");
-      const baseName = lastIndex > 0 ? fileData.name.slice(0, lastIndex) : fileData.name;
-      const extension = lastIndex > 0 ? fileData.name.slice(lastIndex) : "";
-      const downloadFileName = `${baseName}_${config.from}2${config.to}${extension}`;
-      return {
-        key: String(index),
-        content: convertedContent,
-        text: downloadFileName,
-        href: downloadUrl,
-        download: downloadFileName,
-      };
-    });
+    const downloadItems = await processFilesForDownload();
 
     let grayed = processedData.flat().map((item) => item.grayedData);
     let shortened = processedData.flat().map((item) => item.shortenedData);
 
     setGrayedXliffData(grayed);
     setShortenedXliffData(shortened);
+    setDownloadItems(downloadItems);
+  };
+
+  const handleDirectDownload = async () => {
+    const downloadItems = await processFilesForDownload();
     setDownloadItems(downloadItems);
   };
 
@@ -151,7 +173,10 @@ export default function App() {
           >
             转换并展示表格
           </Button>
-          <Button className="md:text:sm place-self-center text-xs">
+          <Button
+            className="md:text:sm place-self-center text-xs"
+            onClick={handleDirectDownload}
+          >
             直接创建下载链接
           </Button>
         </div>
