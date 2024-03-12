@@ -75,8 +75,8 @@ export default function App() {
             target: item.target,
             convertResult: convertResult,
             finalSource: tagProcessor(item.source).grayedString,
-            finalTarget: tagProcessor(item.target).grayedString,
-            finalConvertResult: tagProcessor(convertResult).grayedString,
+            finalTarget: tagProcessor(diffResult.oldHtml).grayedString,
+            finalConvertResult: tagProcessor(diffResult.newHtml).grayedString,
             isSame: diffResult.isSame,
           };
 
@@ -86,8 +86,8 @@ export default function App() {
             target: item.target,
             convertResult: convertResult,
             finalSource: tagProcessor(item.source).shortenedString,
-            finalTarget: tagProcessor(item.target).shortenedString,
-            finalConvertResult: tagProcessor(convertResult).shortenedString,
+            finalTarget: tagProcessor(diffResult.oldHtml).shortenedString,
+            finalConvertResult: tagProcessor(diffResult.newHtml).shortenedString,
             isSame: diffResult.isSame,
           };
 

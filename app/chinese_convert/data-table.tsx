@@ -109,6 +109,22 @@ export function DataTable<TData, TValue>({
         >
           {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 text-xs md:text-sm"
+          onClick={() => window.scrollTo({ top: 0 })}
+        >
+          跳到页面顶部
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 text-xs md:text-sm"
+          onClick={() => window.scrollTo({ top: document.body.scrollHeight })}
+        >
+          跳到页面底部
+        </Button>
         <DataTableColsVisibility table={table} />
       </div>
       <DataTablePagination table={table} />
