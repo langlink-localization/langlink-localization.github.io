@@ -9,12 +9,12 @@ export const tagProcessor = (oldText: string): tagConvertedResult => {
 
   let grayedString = oldText.replace(
     tagRegex,
-    `<span class="bg-gray-300">&lt;$1$2$3&gt;</span>`,
+    `<span class="bg-gray-300 dark:bg-[#020817] dark:text-violet-400">&lt;$1$2$3&gt;</span>`,
   );
 
   let shortenedString = oldText.replace(
     tagRegex,
-    `<span class="text-gray-800">⬣</span>`,
+    `<span class="text-gray-800 dark:text-violet-400">⬣</span>`,
   );
 
   return { grayedString, shortenedString };

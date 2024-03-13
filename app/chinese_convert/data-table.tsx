@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="mt-2 w-auto rounded-md border">
-      <div className="sticky top-0 z-10 flex justify-between bg-white">
+      <div className="sticky top-0 z-10 flex justify-between bg-white dark:bg-[#020817]">
         <Button
           variant="outline"
           size="sm"
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
       <Table>
-        <TableHeader className="sticky top-20 bg-white">
+        <TableHeader className="sticky top-20 bg-white dark:bg-[#020817]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {

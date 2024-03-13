@@ -17,7 +17,7 @@ export function DataTableColumnHeader<TData, TValue>({
   return (
     <div
       className={cn(
-        "sticky top-16 flex items-center space-x-2 bg-white",
+        "sticky top-16 flex items-center space-x-2 bg-white dark:bg-[#020817]",
         className,
       )}
     >
