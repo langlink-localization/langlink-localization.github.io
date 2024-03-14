@@ -23,7 +23,7 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="sticky top-[5.4rem] z-40 flex items-center justify-end bg-white px-2 sm:top-[2.6rem] dark:bg-[#020817]">
+    <div className="sticky top-[5.1rem] z-40 mt-[0.1rem] flex items-center justify-end bg-white px-2 sm:top-[2.55rem] dark:bg-[#020817]">
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-xs font-medium md:text-sm">每页显示行数</p>
