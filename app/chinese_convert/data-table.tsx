@@ -95,7 +95,6 @@ export function DataTable<TData, TValue>({
       <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid bg-white dark:bg-[#020817]">
         <div className="col-start-1 row-start-1 flex gap-x-1 bg-white dark:bg-[#020817]">
           <Button
-            variant="outline"
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={toggleDataForm}
@@ -103,7 +102,6 @@ export function DataTable<TData, TValue>({
             {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
           </Button>
           <Button
-            variant="outline"
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={toggleIsSameColumnFilter}
@@ -111,7 +109,6 @@ export function DataTable<TData, TValue>({
             {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
           </Button>
           <Button
-            variant="outline"
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={() => window.scrollTo({ top: 0 })}
@@ -119,7 +116,6 @@ export function DataTable<TData, TValue>({
             跳到页面顶部
           </Button>
           <Button
-            variant="outline"
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={() => window.scrollTo({ top: document.body.scrollHeight })}
@@ -138,7 +134,6 @@ export function DataTable<TData, TValue>({
             className="w-[7rem] text-xs sm:w-full sm:text-sm"
           />
           <Button
-            variant="outline"
             size="lg"
             className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
           >
@@ -171,7 +166,7 @@ export function DataTable<TData, TValue>({
                             header.column.setFilterValue(event.target.value)
                           }
                           placeholder="搜索"
-                          className="hidden border-none text-xs sm:inline xl:text-sm"
+                          className="hidden h-8 border-none text-xs sm:inline xl:text-sm"
                         />
                       </div>
                     ) : null}
