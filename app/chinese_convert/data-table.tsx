@@ -118,7 +118,11 @@ export function DataTable<TData, TValue>({
           <Button
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"
-            onClick={() => window.scrollTo({ top: document.body.scrollHeight })}
+            onClick={() =>
+              window.scrollTo({
+                top: document.body.scrollHeight,
+              })
+            }
           >
             跳到页面底部
           </Button>

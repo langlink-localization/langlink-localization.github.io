@@ -34,12 +34,12 @@ export const diff2Html = (
   let newHtml = "";
   let isSame = "相同";
 
-  diffResult.forEach((part, index) => {
+  diffResult.forEach((part) => {
     if (part.removed) {
-      oldHtml += `<span class="bg-red-200 dark:bg-red-600">${part.value}</span>`;
+      oldHtml += `<span class="bg-red-400 dark:bg-red-600">${part.value}</span>`;
       isSame = "不同";
     } else if (part.added) {
-      newHtml += `<span class="bg-green-200 dark:bg-green-600">${part.value}</span>`;
+      newHtml += `<span class="bg-emerald-300 dark:bg-emerald-600">${part.value}</span>`;
 
       isSame = "不同";
     } else {

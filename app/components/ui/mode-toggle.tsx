@@ -24,7 +24,7 @@ export function ModeToggle() {
   };
 
   return (
-    <div className="flex justify-end p-4">
+    <div className="p-4">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
