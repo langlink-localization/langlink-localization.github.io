@@ -35,7 +35,6 @@ interface DataTableProps<TData, TValue> {
   onSearchTextChange: (text: string) => void;
   onReplaceTextChange: (text: string) => void;
   onFindAndReplace: () => void;
-  onDownloadReplacedFile: () => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,7 +45,6 @@ export function DataTable<TData, TValue>({
   onSearchTextChange,
   onReplaceTextChange,
   onFindAndReplace,
-  onDownloadReplacedFile,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -159,14 +157,6 @@ export function DataTable<TData, TValue>({
             disabled={data.length === 0}
           >
             查找替换
-          </Button>
-          <Button
-            size="lg"
-            className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
-            onClick={() => onDownloadReplacedFile()}
-            disabled={data.length === 0}
-          >
-            更新下载文件
           </Button>
         </div>
       </div>
