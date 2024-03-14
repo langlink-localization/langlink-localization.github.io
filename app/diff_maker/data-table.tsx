@@ -95,22 +95,20 @@ export function DataTable<TData, TValue>({
     <div className="mt-2 w-auto rounded-md border-none">
       <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid bg-white dark:bg-[#020817]">
         <div className="col-start-1 row-start-1 flex gap-x-1 bg-white dark:bg-[#020817]">
-          <div className="flex place-items-center px-1">
-            <Switch
-              checked={currentDataForm === "grayed"}
-              onCheckedChange={toggleDataForm}
-              disabled={data.length === 0}
-            />
-            <p className="text-xs sm:text-sm">完整Tag</p>
-          </div>
-          <div className="flex place-items-center px-1">
-            <Switch
-              checked={!isFilteringIsSameColumn}
-              onCheckedChange={toggleIsSameColumnFilter}
-              disabled={data.length === 0}
-            />
-            <p className="text-xs sm:text-sm">未更改句段</p>
-          </div>
+          <Button
+            size="lg"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
+            onClick={toggleDataForm}
+          >
+            {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
+          </Button>
+          <Button
+            size="lg"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
+            onClick={toggleIsSameColumnFilter}
+          >
+            {isFilteringIsSameColumn ? "显示未更改句段" : "隐藏未更改句段"}
+          </Button>
           <Button
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"

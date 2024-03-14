@@ -18,9 +18,15 @@ interface DownloadManagerProps {
     content: string;
     text: string;
   }[];
+  buttonText: string;
+  tooltipText: string;
 }
 
-const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
+const DownloadManager: React.FC<DownloadManagerProps> = ({
+  downloadItems,
+  buttonText,
+  tooltipText,
+}) => {
   const downloadAll = () => {
     const zip = new JSZip();
     downloadItems.forEach((item) => {
@@ -48,11 +54,11 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
                 onClick={downloadAll}
                 disabled={downloadItems.length === 0}
               >
-                下载所有文件
+                {buttonText}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>点击下载所有文件</p>
+              <p>{tooltipText}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

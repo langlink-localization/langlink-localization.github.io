@@ -12,10 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface UploadManagerProps {
-  onFilesUploaded: (filesData: { name: string; content: string }[]) => void; // 用于处理上传文件
+  onFilesUploaded: (filesData: { name: string; content: string }[]) => void;
+  buttonText: string;
+  tooltipText: string;
 }
 
-const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
+const UploadManager: React.FC<UploadManagerProps> = ({
+  onFilesUploaded,
+  buttonText,
+  tooltipText,
+}) => {
   const [upldFilesData, setUpldFilesData] = useState<
     { key: string; name: string; content?: string }[]
   >([]);
@@ -86,11 +92,11 @@ const UploadManager: React.FC<UploadManagerProps> = ({ onFilesUploaded }) => {
                 className="rounded-lg text-xs md:text-sm"
                 onClick={triggerFileInputClick}
               >
-                上传文件
+                {buttonText}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>点击上传文件</p>
+              <p>{tooltipText}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

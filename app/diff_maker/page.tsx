@@ -109,8 +109,16 @@ export default function App() {
         </Button>
       </div>
       <div className="grid-rows-auto grid grid-cols-2 overflow-auto px-1 pt-8">
-        <UploadManager onFilesUploaded={handleFileUpload1} />
-        <UploadManager onFilesUploaded={handleFileUpload2} />
+        <UploadManager
+          onFilesUploaded={handleFileUpload1}
+          buttonText="上传文件1"
+          tooltipText="点击上传文件1"
+        />
+        <UploadManager
+          onFilesUploaded={handleFileUpload2}
+          buttonText="上传文件2"
+          tooltipText="点击上传文件2"
+        />
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2">
         {filesData1.length == 0 ? (

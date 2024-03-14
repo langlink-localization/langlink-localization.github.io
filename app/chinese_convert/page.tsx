@@ -219,8 +219,16 @@ export default function App() {
         </Button>
       </div>
       <div className="grid-rows-auto grid grid-cols-3 overflow-auto px-1 pt-8">
-        <UploadManager onFilesUploaded={handleFileUpload} />
-        <DownloadManager downloadItems={downloadItems} />
+        <UploadManager
+          onFilesUploaded={handleFileUpload}
+          buttonText="上传文件"
+          tooltipText="点击上传文件"
+        />
+        <DownloadManager
+          downloadItems={downloadItems}
+          buttonText="下载文件"
+          tooltipText="下载所有文件"
+        />
         <div className="justify-items-center">
           <Label htmlFor="customDict" className="flex-col">
             <p className="text-sm">自定义字词转换</p>
