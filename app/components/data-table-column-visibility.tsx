@@ -27,8 +27,8 @@ export function DataTableColsVisibility<TData>({
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          size="sm"
-          className="ml-auto flex h-8 text-xs md:text-sm"
+          size="lg"
+          className="flex px-2 text-xs md:text-sm"
         >
           <MixerHorizontalIcon className="mr-2 h-4 w-4 " />
           展示/隐藏栏位

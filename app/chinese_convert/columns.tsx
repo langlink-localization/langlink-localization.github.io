@@ -118,7 +118,7 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     cell: (info) => {
       return (
         <div
-          className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem] dark:bg-[#020817]"
+          className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-110 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem] dark:bg-[#020817]"
           dangerouslySetInnerHTML={{
             __html: info.row.original.finalTarget,
           }}
@@ -139,7 +139,7 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
     cell: (info) => {
       return (
         <div
-          className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-125 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem] dark:bg-[#020817]"
+          className="xl:text-md w-[6.5rem] overflow-auto text-balance bg-white pl-3 text-sm delay-150 hover:scale-110 md:w-[10rem] lg:w-[14rem] xl:w-[18rem] 2xl:w-[26rem] dark:bg-[#020817]"
           dangerouslySetInnerHTML={{
             __html: info.row.original.finalConvertResult,
           }}

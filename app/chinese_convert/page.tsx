@@ -6,7 +6,6 @@ import Link from "next/link";
 // import parse from "html-react-parser";
 // import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import ConvertOption from "@/app/chinese_convert/convert-option";
 import UploadManager from "@/components/upload-manager";
 import DownloadManager from "@/components/download-manager";
@@ -176,21 +175,6 @@ export default function App() {
             直接创建下载链接
           </Button>
         </div>
-      </div>
-      <div className="grid-rows-auto grid-cols-14 mt-4 grid gap-2">
-        <div className="col-span-2 col-start-11 row-span-1 flex-col">
-          <Input
-            placeholder="查找内容"
-            className="mb-2 w-[8rem] text-xs md:w-full md:text-sm"
-          />
-          <Input
-            placeholder="替换内容"
-            className="mt-2 w-[8rem] text-xs md:w-full md:text-sm"
-          />
-        </div>
-        <Button className="col-span-1 col-start-13 self-center justify-self-start text-xs md:text-sm">
-          查找替换
-        </Button>
       </div>
       <div className="max-h-lvh">
         <DataTable

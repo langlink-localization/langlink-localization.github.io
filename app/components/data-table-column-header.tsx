@@ -17,14 +17,14 @@ export function DataTableColumnHeader<TData, TValue>({
   return (
     <div
       className={cn(
-        "sticky top-16 flex items-center space-x-2 bg-white dark:bg-[#020817]",
+        "sticky top-16 flex items-center space-x-2 bg-white sm:top-12 dark:bg-[#020817]",
         className,
       )}
     >
       <Button
         variant="ghost"
         size="sm"
-        className="text-md -ml-3 h-8 hover:bg-transparent"
+        className="text-md -ml-3 hover:bg-white dark:hover:bg-inherit"
       >
         <span>{title}</span>
         <EyeOff

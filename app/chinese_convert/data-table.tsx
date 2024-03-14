@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   ColumnDef,
   SortingState,
@@ -91,45 +91,64 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="mt-2 w-auto rounded-md border">
-      <div className="sticky top-0 z-10 flex justify-between bg-white dark:bg-[#020817]">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 text-xs md:text-sm"
-          onClick={toggleDataForm}
-        >
-          {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 text-xs md:text-sm"
-          onClick={toggleIsSameColumnFilter}
-        >
-          {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 text-xs md:text-sm"
-          onClick={() => window.scrollTo({ top: 0 })}
-        >
-          跳到页面顶部
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 text-xs md:text-sm"
-          onClick={() => window.scrollTo({ top: document.body.scrollHeight })}
-        >
-          跳到页面底部
-        </Button>
-        <DataTableColsVisibility table={table} />
+    <div className="mt-2 w-auto rounded-md border-none">
+      <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid gap-1 bg-white dark:bg-[#020817]">
+        <div className="col-start-1 row-start-1 flex gap-x-1 bg-white dark:bg-[#020817]">
+          <Button
+            variant="outline"
+            size="lg"
+            className="sm:text-md px-1 text-xs"
+            onClick={toggleDataForm}
+          >
+            {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="sm:text-md px-1 text-xs"
+            onClick={toggleIsSameColumnFilter}
+          >
+            {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="sm:text-md px-1 text-xs"
+            onClick={() => window.scrollTo({ top: 0 })}
+          >
+            跳到页面顶部
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="sm:text-md px-1 text-xs"
+            onClick={() => window.scrollTo({ top: document.body.scrollHeight })}
+          >
+            跳到页面底部
+          </Button>
+          <DataTableColsVisibility table={table} />
+        </div>
+        <div className="col-start-1 row-start-2 flex gap-x-1 sm:col-start-11 sm:row-start-1">
+          <Input
+            placeholder="查找内容"
+            className="w-[7rem] text-xs sm:w-full sm:text-sm"
+          />
+          <Input
+            placeholder="替换内容"
+            className="w-[7rem] text-xs sm:w-full sm:text-sm"
+          />
+          <Button
+            variant="outline"
+            size="lg"
+            className="justify-self-start text-xs sm:text-sm"
+          >
+            查找替换
+          </Button>
+        </div>
       </div>
       <DataTablePagination table={table} />
       <Table>
-        <TableHeader className="sticky top-20 bg-white dark:bg-[#020817]">
+        <TableHeader className="sticky top-[7.5rem] bg-white sm:top-20 dark:bg-[#020817]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
