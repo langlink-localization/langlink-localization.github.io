@@ -9,6 +9,12 @@ import { Button } from "@/components/ui/button";
 import ConvertOption from "@/app/chinese_convert/convert-option";
 import UploadManager from "@/components/upload-manager";
 import DownloadManager from "@/components/download-manager";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { openCCConverter } from "@/services/opencc-converter";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
@@ -28,6 +34,12 @@ export default function App() {
     to: string;
   }>({ from: "", to: "" });
 
+  // 存储用户在textarea中输入的原始文本
+  const [customDictInput, setCustomDictInput] = useState("");
+
+  // 存储处理过后的查找和替换词对
+  const [customDict, setCustomDict] = useState<Array<[string, string]>>([]);
+
   // 处理转换选项变化
   const handleOptionChange = useCallback(
     (newConfig: { from: string; to: string }) => {
@@ -35,6 +47,24 @@ export default function App() {
     },
     [],
   );
+
+  const handleProcessCustomDictInput = useCallback(() => {
+    // 通过换行符分隔输入，获取每一行
+    const lines = customDictInput.split("\n");
+    // 解析每行，并构建查找替换词对数组
+    const newCustomDict = lines
+      .map((line) => {
+        const parts = line.trim().split(","); // 假设查找和替换词汇通过逗号分隔
+        if (parts.length === 2) {
+          return [parts[0].trim(), parts[1].trim()] as [string, string];
+        }
+        return null;
+      })
+      .filter((pair) => pair !== null) as Array<[string, string]>;
+
+    // 更新处理过后的查找和替换词对状态
+    setCustomDict(newCustomDict);
+  }, [customDictInput]);
 
   // 处理文件上传
   const handleFileUpload = (
@@ -70,7 +100,7 @@ export default function App() {
 
   const processFilesForDownload = async () => {
     return filesData.map((fileData, index) => {
-      let convertedContent = openCCConverter(fileData.content, config);
+      let convertedContent = openCCConverter(fileData.content, config, []);
       if (searchText.trim() !== "" && replaceText.trim() !== "") {
         convertedContent = findAndReplace(
           convertedContent,
@@ -104,7 +134,7 @@ export default function App() {
   const handleFileConvert = async () => {
     const processedData = await Promise.all(
       filesData.map(async (fileData) => {
-        let convertedContent = openCCConverter(fileData.content, config);
+        let convertedContent = openCCConverter(fileData.content, config, []);
 
         if (searchText.trim() !== "" && replaceText.trim() !== "") {
           convertedContent = findAndReplace(
@@ -184,27 +214,59 @@ export default function App() {
           </Link>
         </Button>
       </div>
-      <div className="grid-rows-auto grid grid-cols-2 overflow-auto pt-8">
+      <div className="grid-rows-auto grid grid-cols-3 overflow-auto pt-8">
         <UploadManager onFilesUploaded={handleFileUpload} />
         <DownloadManager downloadItems={downloadItems} />
+        <div className="mt-2">
+          <textarea
+            placeholder={`请填写自定义转换字词，每行一对，逗号分隔。\n例如：\n原字词1,替换字词1\n原字词2,替换字词2`}
+            value={customDictInput}
+            onChange={(e) => setCustomDictInput(e.target.value)}
+            rows={5}
+            className="w-full rounded border p-2"
+          ></textarea>
+          <Button onClick={handleProcessCustomDictInput}>处理自定义词典</Button>
+        </div>
       </div>
       <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
         <ConvertOption onOptionChange={handleOptionChange} />
+
         <div className="col-start-5 flex gap-3">
-          <Button
-            size="lg"
-            className="sm:text:sm h-[95%] place-self-center text-xs"
-            onClick={() => handleFileConvert()}
-          >
-            转换并展示表格
-          </Button>
-          <Button
-            size="lg"
-            className="sm:text:sm h-[95%] place-self-center text-xs"
-            onClick={handleDirectDownload}
-          >
-            直接创建下载链接
-          </Button>
+          {filesData.length == 0 || config.from === "" || config.to === "" ? (
+            <div className="col-start-5 flex gap-3">
+              <Button
+                size="lg"
+                className="sm:text:sm h-[95%] place-self-center text-xs"
+                disabled
+              >
+                请上传文件并选择转换选项
+              </Button>
+              <Button
+                size="lg"
+                className="sm:text:sm h-[95%] place-self-center text-xs"
+                disabled
+              >
+                请上传文件并选择转换选项
+              </Button>
+            </div>
+          ) : (
+            <div className="col-start-5 flex gap-3">
+              <Button
+                size="lg"
+                className="sm:text:sm h-[95%] place-self-center text-xs"
+                onClick={() => handleFileConvert()}
+              >
+                转换并展示表格
+              </Button>
+              <Button
+                size="lg"
+                className="sm:text:sm h-[95%] place-self-center text-xs"
+                onClick={handleDirectDownload}
+              >
+                直接创建下载链接
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <div className="max-h-lvh">

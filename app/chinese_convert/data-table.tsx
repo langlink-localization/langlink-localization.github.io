@@ -25,6 +25,7 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -102,20 +103,22 @@ export function DataTable<TData, TValue>({
     <div className="mt-2 w-auto rounded-md border-none">
       <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid bg-white dark:bg-[#020817]">
         <div className="col-start-1 row-start-1 flex gap-x-1 bg-white dark:bg-[#020817]">
-          <Button
-            size="lg"
-            className="h-[95%] self-center px-1 text-xs sm:text-sm"
-            onClick={toggleDataForm}
-          >
-            {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
-          </Button>
-          <Button
-            size="lg"
-            className="h-[95%] self-center px-1 text-xs sm:text-sm"
-            onClick={toggleIsSameColumnFilter}
-          >
-            {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
-          </Button>
+          <div className="flex place-items-center px-1">
+            <Switch
+              checked={currentDataForm === "grayed"}
+              onCheckedChange={toggleDataForm}
+              disabled={data.length === 0}
+            />
+            <p className="text-xs sm:text-sm">完整Tag</p>
+          </div>
+          <div className="flex place-items-center px-1">
+            <Switch
+              checked={!isFilteringIsSameColumn}
+              onCheckedChange={toggleIsSameColumnFilter}
+              disabled={data.length === 0}
+            />
+            <p className="text-xs sm:text-sm">未更改句段</p>
+          </div>
           <Button
             size="lg"
             className="h-[95%] self-center px-1 text-xs sm:text-sm"
@@ -141,16 +144,19 @@ export function DataTable<TData, TValue>({
             placeholder="查找内容"
             className="w-[7rem] text-xs sm:w-full sm:text-sm"
             onChange={(event) => onSearchTextChange(event.target.value)}
+            disabled={data.length === 0}
           />
           <Input
             placeholder="替换内容"
             className="w-[7rem] text-xs sm:w-full sm:text-sm"
             onChange={(event) => onReplaceTextChange(event.target.value)}
+            disabled={data.length === 0}
           />
           <Button
             size="lg"
             className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
             onClick={() => onFindAndReplace()}
+            disabled={data.length === 0}
           >
             查找替换
           </Button>
@@ -158,6 +164,7 @@ export function DataTable<TData, TValue>({
             size="lg"
             className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
             onClick={() => onDownloadReplacedFile()}
+            disabled={data.length === 0}
           >
             更新下载文件
           </Button>
@@ -215,7 +222,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="">
-                No results.
+                没有内容
               </TableCell>
             </TableRow>
           )}

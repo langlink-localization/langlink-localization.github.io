@@ -47,6 +47,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ downloadItems }) => {
               <Button
                 className="rounded-lg text-xs md:text-sm"
                 onClick={downloadAll}
+                disabled={downloadItems.length === 0}
               >
                 下载所有文件
               </Button>
