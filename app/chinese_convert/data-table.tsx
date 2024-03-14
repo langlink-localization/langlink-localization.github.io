@@ -92,12 +92,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="mt-2 w-auto rounded-md border-none">
-      <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid gap-[0.05rem] bg-white dark:bg-[#020817]">
+      <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid bg-white dark:bg-[#020817]">
         <div className="col-start-1 row-start-1 flex gap-x-1 bg-white dark:bg-[#020817]">
           <Button
             variant="outline"
             size="lg"
-            className="px-1 text-xs sm:text-sm"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={toggleDataForm}
           >
             {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
@@ -105,7 +105,7 @@ export function DataTable<TData, TValue>({
           <Button
             variant="outline"
             size="lg"
-            className="px-1 text-xs sm:text-sm"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={toggleIsSameColumnFilter}
           >
             {isFilteringIsSameColumn ? "显示所有句段" : "隐藏未更改句段"}
@@ -113,7 +113,7 @@ export function DataTable<TData, TValue>({
           <Button
             variant="outline"
             size="lg"
-            className="px-1 text-xs sm:text-sm"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={() => window.scrollTo({ top: 0 })}
           >
             跳到页面顶部
@@ -121,14 +121,14 @@ export function DataTable<TData, TValue>({
           <Button
             variant="outline"
             size="lg"
-            className="px-1 text-xs sm:text-sm"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
             onClick={() => window.scrollTo({ top: document.body.scrollHeight })}
           >
             跳到页面底部
           </Button>
           <DataTableColsVisibility table={table} />
         </div>
-        <div className="col-start-1 row-start-2 flex gap-x-1 sm:col-start-11 sm:row-start-1">
+        <div className="col-start-1 row-start-2 flex h-8 gap-x-1 sm:col-start-11 sm:row-start-1 sm:h-full">
           <Input
             placeholder="查找内容"
             className="w-[7rem] text-xs sm:w-full sm:text-sm"
@@ -140,7 +140,7 @@ export function DataTable<TData, TValue>({
           <Button
             variant="outline"
             size="lg"
-            className="justify-self-start text-xs sm:text-sm"
+            className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
           >
             查找替换
           </Button>
@@ -148,7 +148,7 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
       <Table>
-        <TableHeader className="sticky top-28 bg-white sm:top-[4.7rem] dark:bg-[#020817]">
+        <TableHeader className="sticky top-[6.5rem] bg-white sm:top-[4.7rem] dark:bg-[#020817]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
