@@ -57,6 +57,9 @@ export default function App() {
     "grayed" | "shortened"
   >("grayed");
 
+  const [searchText, setSearchText] = useState<string>("");
+  const [replaceText, setReplaceText] = useState<string>("");
+
   const generateFileName = (originalName: string, from: string, to: string) => {
     const lastIndex = originalName.lastIndexOf(".");
     const baseName =
@@ -67,7 +70,15 @@ export default function App() {
 
   const processFilesForDownload = async () => {
     return filesData.map((fileData, index) => {
-      const convertedContent = openCCConverter(fileData.content, config);
+      let convertedContent = openCCConverter(fileData.content, config);
+      if (searchText.trim() !== "" && replaceText.trim() !== "") {
+        convertedContent = findAndReplace(
+          convertedContent,
+          searchText,
+          replaceText,
+        );
+      }
+
       const downloadFileName = generateFileName(
         fileData.name,
         config.from,
@@ -81,10 +92,28 @@ export default function App() {
     });
   };
 
-  const handFileConvert = async () => {
+  const findAndReplace = (
+    content: string,
+    findText: string,
+    replaceText: string,
+  ) => {
+    const regex = new RegExp(findText, "g");
+    return content.replace(regex, replaceText);
+  };
+
+  const handleFileConvert = async () => {
     const processedData = await Promise.all(
       filesData.map(async (fileData) => {
-        const convertedContent = openCCConverter(fileData.content, config);
+        let convertedContent = openCCConverter(fileData.content, config);
+
+        if (searchText.trim() !== "" && replaceText.trim() !== "") {
+          convertedContent = findAndReplace(
+            convertedContent,
+            searchText,
+            replaceText,
+          );
+        }
+
         const originalXliffData = await xliffProcessor(
           fileData.name,
           fileData.content,
@@ -163,13 +192,15 @@ export default function App() {
         <ConvertOption onOptionChange={handleOptionChange} />
         <div className="col-start-5 flex gap-3">
           <Button
-            className="md:text:sm place-self-center text-xs"
-            onClick={handFileConvert}
+            size="lg"
+            className="sm:text:sm h-[95%] place-self-center text-xs"
+            onClick={() => handleFileConvert()}
           >
             转换并展示表格
           </Button>
           <Button
-            className="md:text:sm place-self-center text-xs"
+            size="lg"
+            className="sm:text:sm h-[95%] place-self-center text-xs"
             onClick={handleDirectDownload}
           >
             直接创建下载链接
@@ -184,6 +215,10 @@ export default function App() {
           }
           currentDataForm={currentDataForm}
           toggleDataForm={toggleDataForm}
+          onSearchTextChange={setSearchText}
+          onReplaceTextChange={setReplaceText}
+          onFindAndReplace={handleFileConvert}
+          onDownloadReplacedFile={handleDirectDownload}
         />
       </div>
     </NextThemesProvider>

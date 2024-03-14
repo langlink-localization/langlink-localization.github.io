@@ -31,6 +31,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   currentDataForm: "grayed" | "shortened";
   toggleDataForm: () => void;
+  onSearchTextChange: (text: string) => void;
+  onReplaceTextChange: (text: string) => void;
+  onFindAndReplace: () => void;
+  onDownloadReplacedFile: () => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -38,6 +42,10 @@ export function DataTable<TData, TValue>({
   data,
   currentDataForm,
   toggleDataForm,
+  onSearchTextChange,
+  onReplaceTextChange,
+  onFindAndReplace,
+  onDownloadReplacedFile,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -128,20 +136,30 @@ export function DataTable<TData, TValue>({
           </Button>
           <DataTableColsVisibility table={table} />
         </div>
-        <div className="col-start-1 row-start-2 flex h-8 gap-x-1 sm:col-start-11 sm:row-start-1 sm:h-full">
+        <div className="col-start-1 row-start-2 ml-1 flex h-8 gap-x-1 sm:col-start-11 sm:row-start-1 sm:h-full">
           <Input
             placeholder="查找内容"
             className="w-[7rem] text-xs sm:w-full sm:text-sm"
+            onChange={(event) => onSearchTextChange(event.target.value)}
           />
           <Input
             placeholder="替换内容"
             className="w-[7rem] text-xs sm:w-full sm:text-sm"
+            onChange={(event) => onReplaceTextChange(event.target.value)}
           />
           <Button
             size="lg"
             className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
+            onClick={() => onFindAndReplace()}
           >
             查找替换
+          </Button>
+          <Button
+            size="lg"
+            className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
+            onClick={() => onDownloadReplacedFile()}
+          >
+            更新下载文件
           </Button>
         </div>
       </div>
