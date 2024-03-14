@@ -36,10 +36,12 @@ export const diff2Html = (
 
   diffResult.forEach((part) => {
     if (part.removed) {
-      oldHtml += `<span class="bg-red-400 dark:bg-red-600">${part.value}</span>`;
+      oldHtml += `<span class="text-red-600 underline underline-offset-[3px] decoration-dotted
+ dark:text-red-400">${part.value}</span>`;
       isSame = "不同";
     } else if (part.added) {
-      newHtml += `<span class="bg-emerald-300 dark:bg-emerald-600">${part.value}</span>`;
+      newHtml += `<span class="text-sky-600 underline underline-offset-[3px]
+ dark:text-sky-400">${part.value}</span>`;
 
       isSame = "不同";
     } else {

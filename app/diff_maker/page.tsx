@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Link from "next/link";
 // import parse from "html-react-parser";
@@ -41,6 +41,8 @@ export default function App() {
   const [currentDataForm, setCurrentDataForm] = useState<
     "grayed" | "shortened"
   >("grayed");
+
+  const [copiedData, setCopiedData] = useState<string>("");
 
   const handleFileConvert = async () => {
     const processedData = await Promise.all(
@@ -94,6 +96,19 @@ export default function App() {
     setShortenedXliffData(shortened);
   };
 
+  const copyTableData = async () => {
+    const table = document.querySelector("table");
+    const computedStyle = window.getComputedStyle(table as Element);
+
+    const htmlData = table?.outerHTML;
+    const htmlDataWithStyle = `<style>${computedStyle.cssText}</style>${htmlData}`;
+    const htmlBlob = new Blob([htmlDataWithStyle], { type: "text/html" });
+    const clipboardData = [new ClipboardItem({ "text/html": htmlBlob })];
+
+    await navigator.clipboard.write(clipboardData);
+    console.log(`${htmlDataWithStyle}`);
+  };
+
   const toggleDataForm = () => {
     setCurrentDataForm(currentDataForm === "grayed" ? "shortened" : "grayed");
   };
@@ -121,24 +136,38 @@ export default function App() {
         />
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2">
-        {filesData1.length == 0 ? (
-          <div className="col-start-2 flex h-8 gap-3 place-self-center">
+        {filesData1.length === 0 || filesData2.length === 0 ? (
+          <div className="col-start-2 flex h-9 gap-3 place-self-center">
             <Button
               size="lg"
-              className="sm:text:sm h-[95%] place-self-center text-xs"
+              className="h-[95%] place-self-center text-xs sm:text-sm"
               disabled
             >
-              上传并选择选项
+              先上传文件
+            </Button>
+            <Button
+              size="lg"
+              className="h-[95%] place-self-center text-xs sm:text-sm"
+              disabled
+            >
+              先上传文件
             </Button>
           </div>
         ) : (
-          <div className="col-start-2 flex h-8 gap-3 place-self-center">
+          <div className="col-start-2 flex h-9 gap-3 place-self-center">
             <Button
               size="lg"
-              className="sm:text:sm h-[95%] place-self-center text-xs"
+              className="h-[95%] place-self-center text-xs sm:text-sm"
               onClick={() => handleFileConvert()}
             >
-              转换并展示表格
+              展示表格
+            </Button>
+            <Button
+              size="lg"
+              className="h-[95%] place-self-center text-xs sm:text-sm"
+              onClick={() => copyTableData()}
+            >
+              复制对比结果
             </Button>
           </div>
         )}

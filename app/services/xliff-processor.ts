@@ -13,16 +13,16 @@ export const xliffProcessor = async (
   try {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(content, "text/xml");
-    const transUnits = xmlDoc.querySelectorAll("unit, trans-unit");
+    let transUnits = xmlDoc.querySelectorAll("unit, trans-unit");
     const data: XliffData[] = [];
     transUnits.forEach((unit, index) => {
-      const id = unit.getAttribute("id");
-      const percent =
+      let id = unit.getAttribute("id");
+      let percent =
         unit.getAttribute("percent") ||
         unit.getAttribute("mq:percent") ||
         "N/A";
-      const source = unit.getElementsByTagName("source")[0]?.textContent || "";
-      const target = unit.getElementsByTagName("target")[0]?.textContent || "";
+      let source = unit.getElementsByTagName("source")[0]?.textContent || "";
+      let target = unit.getElementsByTagName("target")[0]?.textContent || "";
       if (id) {
         data.push({
           fileName,

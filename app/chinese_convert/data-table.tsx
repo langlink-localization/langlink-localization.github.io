@@ -151,7 +151,7 @@ export function DataTable<TData, TValue>({
           />
           <Button
             size="lg"
-            className="h-[95%] self-center justify-self-start text-xs sm:text-sm"
+            className="mx-1 h-[95%] self-center justify-self-start text-xs sm:text-sm"
             onClick={() => onFindAndReplace()}
             disabled={data.length === 0}
           >
