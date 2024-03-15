@@ -28,6 +28,7 @@
     "@types/opencc-js": "^1.0.3",
     "@types/uuid": "^9.0.8",
     "@vercel/analytics": "^1.2.2",
+    "@vercel/speed-insights": "^1.0.10",
     "@vtabary/xliff2js": "^0.6.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
