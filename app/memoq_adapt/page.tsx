@@ -247,7 +247,7 @@ export default function App() {
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
       <div className="mb-4 flex flex-col justify-center">
-        <p className="mb-2 text-center text-3xl">memoQ Adapt转换</p>
+        <p className="mb-2 text-center text-3xl">memoQ Adapt 转换</p>
         <Button variant="link">
           <Link href="./" className="text-md text-center">
             返回主页
