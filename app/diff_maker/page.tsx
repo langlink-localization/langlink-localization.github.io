@@ -7,6 +7,13 @@ import Link from "next/link";
 // import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import UploadManager from "@/components/upload-manager";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
@@ -42,7 +49,7 @@ export default function App() {
     "grayed" | "shortened"
   >("grayed");
 
-  const [copiedData, setCopiedData] = useState<string>("");
+  // const [copiedData, setCopiedData] = useState<string>("");
 
   const handleFileConvert = async () => {
     const processedData = await Promise.all(
@@ -96,18 +103,18 @@ export default function App() {
     setShortenedXliffData(shortened);
   };
 
-  const copyTableData = async () => {
-    const table = document.querySelector("table");
-    const computedStyle = window.getComputedStyle(table as Element);
+  // const copyTableData = async () => {
+  //   const table = document.querySelector("table");
+  //   const computedStyle = window.getComputedStyle(table as Element);
 
-    const htmlData = table?.outerHTML;
-    const htmlDataWithStyle = `<style>${computedStyle.cssText}</style>${htmlData}`;
-    const htmlBlob = new Blob([htmlDataWithStyle], { type: "text/html" });
-    const clipboardData = [new ClipboardItem({ "text/html": htmlBlob })];
+  //   const htmlData = table?.outerHTML;
+  //   const htmlDataWithStyle = `<style>${computedStyle.cssText}</style>${htmlData}`;
+  //   const htmlBlob = new Blob([htmlDataWithStyle], { type: "text/html" });
+  //   const clipboardData = [new ClipboardItem({ "text/html": htmlBlob })];
 
-    await navigator.clipboard.write(clipboardData);
-    console.log(`${htmlDataWithStyle}`);
-  };
+  //   await navigator.clipboard.write(clipboardData);
+  //   console.log(`${htmlDataWithStyle}`);
+  // };
 
   const toggleDataForm = () => {
     setCurrentDataForm(currentDataForm === "grayed" ? "shortened" : "grayed");
@@ -162,13 +169,24 @@ export default function App() {
             >
               展示表格
             </Button>
-            <Button
-              size="lg"
-              className="h-[95%] place-self-center text-xs sm:text-sm"
-              onClick={() => copyTableData()}
-            >
-              复制对比结果
-            </Button>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  size="lg"
+                  className="h-[95%] place-self-center text-xs sm:text-sm"
+                >
+                  复制表格内容
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <Alert className="border-none">
+                  <AlertTitle>提示</AlertTitle>
+                  <Separator className="invisible my-2" />
+                  <AlertDescription>该功能暂时无法使用</AlertDescription>
+                </Alert>
+              </PopoverContent>
+            </Popover>
           </div>
         )}
       </div>
