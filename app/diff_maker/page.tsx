@@ -135,36 +135,38 @@ export default function App() {
           onFilesUploaded={handleFileUpload1}
           buttonText="上传文件1"
           tooltipText="点击上传文件1"
+          heightClass="h-40 md:h-56"
         />
         <UploadManager
           onFilesUploaded={handleFileUpload2}
           buttonText="上传文件2"
           tooltipText="点击上传文件2"
+          heightClass="h-40 md:h-56"
         />
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2">
         {filesData1.length === 0 || filesData2.length === 0 ? (
-          <div className="col-start-2 flex h-9 gap-3 place-self-center">
+          <div className="col-start-2 flex  gap-3 place-self-center">
             <Button
               size="lg"
-              className="h-[95%] place-self-center text-xs sm:text-sm"
+              className=" place-self-center text-xs sm:text-sm"
               disabled
             >
               先上传文件
             </Button>
             <Button
               size="lg"
-              className="h-[95%] place-self-center text-xs sm:text-sm"
+              className=" place-self-center text-xs sm:text-sm"
               disabled
             >
               先上传文件
             </Button>
           </div>
         ) : (
-          <div className="col-start-2 flex h-9 gap-3 place-self-center">
+          <div className="col-start-2 flex  gap-3 place-self-center">
             <Button
               size="lg"
-              className="h-[95%] place-self-center text-xs sm:text-sm"
+              className=" place-self-center text-xs sm:text-sm"
               onClick={() => handleFileConvert()}
             >
               展示表格
@@ -174,7 +176,7 @@ export default function App() {
               <PopoverTrigger asChild>
                 <Button
                   size="lg"
-                  className="h-[95%] place-self-center text-xs sm:text-sm"
+                  className=" place-self-center text-xs sm:text-sm"
                 >
                   复制表格内容
                 </Button>

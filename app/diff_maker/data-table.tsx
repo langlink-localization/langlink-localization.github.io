@@ -25,7 +25,6 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

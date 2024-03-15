@@ -20,12 +20,14 @@ interface DownloadManagerProps {
   }[];
   buttonText: string;
   tooltipText: string;
+  heightClass: string;
 }
 
 const DownloadManager: React.FC<DownloadManagerProps> = ({
   downloadItems,
   buttonText,
   tooltipText,
+  heightClass,
 }) => {
   const downloadAll = () => {
     const zip = new JSZip();
@@ -44,7 +46,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
   };
 
   return (
-    <div className="col-span-1 col-start-2 mb-8 overflow-auto">
+    <div className="col-span-1 mb-8 overflow-auto">
       <div className="text-center">
         <TooltipProvider>
           <Tooltip>
@@ -63,9 +65,9 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="mt-4 h-40 md:h-56">
+      <div className={`mt-4 text-center ${heightClass}`}>
         {downloadItems.length === 0 ? (
-          <Skeleton className="h-40 bg-transparent md:h-56" />
+          <Skeleton className={`${heightClass} bg-transparent`} />
         ) : (
           downloadItems.map((item) => (
             <TooltipProvider key={item.key}>

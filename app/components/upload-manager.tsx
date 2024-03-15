@@ -15,12 +15,14 @@ interface UploadManagerProps {
   onFilesUploaded: (filesData: { name: string; content: string }[]) => void;
   buttonText: string;
   tooltipText: string;
+  heightClass: string;
 }
 
 const UploadManager: React.FC<UploadManagerProps> = ({
   onFilesUploaded,
   buttonText,
   tooltipText,
+  heightClass,
 }) => {
   const [upldFilesData, setUpldFilesData] = useState<
     { key: string; name: string; content?: string }[]
@@ -101,9 +103,9 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="mt-4 h-40 md:h-56">
+      <div className={`mt-4 text-center ${heightClass}`}>
         {upldFilesData.length === 0 ? (
-          <Skeleton className="h-40 bg-transparent md:h-56" />
+          <Skeleton className={`bg-transparent ${heightClass}`} />
         ) : (
           upldFilesData.map((item) => (
             <TooltipProvider key={item.key}>

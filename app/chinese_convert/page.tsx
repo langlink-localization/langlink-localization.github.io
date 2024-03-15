@@ -223,11 +223,13 @@ export default function App() {
           onFilesUploaded={handleFileUpload}
           buttonText="上传文件"
           tooltipText="点击上传文件"
+          heightClass="h-40 md:h-56"
         />
         <DownloadManager
           downloadItems={downloadItems}
           buttonText="下载文件"
           tooltipText="下载所有文件"
+          heightClass="h-40 md:h-56"
         />
         <div className="justify-items-center">
           <Label htmlFor="customDict" className="flex-col">
