@@ -23,8 +23,6 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { SearchCode, Minimize } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,6 +39,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   showFindAndReplace,
+  currentDataForm,
   toggleDataForm = () => {},
   onSearchTextChange = () => {},
   onReplaceTextChange = () => {},
@@ -96,24 +95,22 @@ export function DataTable<TData, TValue>({
     <div className="mt-2 w-auto rounded-md border-none">
       <div className="grid-rows-auto grid-cols-14 sticky top-0 z-40 grid bg-white dark:bg-[#020817]">
         <div className="col-start-1 row-start-1 flex max-h-10 gap-x-1 bg-white dark:bg-[#020817]">
-          <ToggleGroup type="multiple" className="pl-1">
-            <ToggleGroupItem
-              value="tag"
-              className="h-[95%] self-center px-1 text-xs data-[state=on]:bg-blue-500 sm:text-sm"
-              onClick={toggleDataForm}
-            >
-              <SearchCode className="h-5 w-5 pr-1" />
-              <p className="">折叠Tag</p>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="unchanged"
-              className="h-[95%] self-center px-1 text-xs data-[state=on]:bg-blue-500 sm:text-sm"
-              onClick={toggleIsSameColumnFilter}
-            >
-              <Minimize className="h-5 w-5 pr-1" />
-              <p className="">隐藏未更改句段</p>
-            </ToggleGroupItem>
-          </ToggleGroup>
+          <Button
+            size="lg"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
+            onClick={toggleDataForm}
+            disabled={data.length === 0}
+          >
+            {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"}
+          </Button>
+          <Button
+            size="lg"
+            className="h-[95%] self-center px-1 text-xs sm:text-sm"
+            onClick={toggleIsSameColumnFilter}
+            disabled={data.length === 0}
+          >
+            {isFilteringIsSameColumn ? "显示未更改句段" : "隐藏未更改句段"}
+          </Button>
           <Button
             size="lg"
             variant="outline"
