@@ -17,7 +17,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/components/data-table";
 import { TableData, xliffColumns } from "./columns";
 
 export default function App() {
@@ -198,6 +198,7 @@ export default function App() {
           data={
             currentDataForm === "grayed" ? grayedXliffData : shortenedXliffData
           }
+          showFindAndReplace={false}
           currentDataForm={currentDataForm}
           toggleDataForm={toggleDataForm}
         />

@@ -6,7 +6,7 @@ import Link from "next/link";
 // import parse from "html-react-parser";
 // import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
-import ConvertOption from "@/app/chinese_convert/convert-option";
+import ConvertOption from "@/components/convert-option";
 import UploadManager from "@/components/upload-manager";
 import DownloadManager from "@/components/download-manager";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +14,7 @@ import { openCCConverter } from "@/services/opencc-converter";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/components/data-table";
 import { TableData, xliffColumns } from "./columns";
 import { Label } from "../components/ui/label";
 
@@ -348,6 +348,7 @@ export default function App() {
           data={
             currentDataForm === "grayed" ? grayedXliffData : shortenedXliffData
           }
+          showFindAndReplace={true}
           currentDataForm={currentDataForm}
           toggleDataForm={toggleDataForm}
           onSearchTextChange={setSearchText}

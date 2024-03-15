@@ -3,14 +3,12 @@
 import React, { useState } from "react";
 import {
   ColumnDef,
-  SortingState,
   ColumnFiltersState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -29,24 +27,24 @@ import { Button } from "@/components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  currentDataForm: "grayed" | "shortened";
-  toggleDataForm: () => void;
-  onSearchTextChange: (text: string) => void;
-  onReplaceTextChange: (text: string) => void;
-  onFindAndReplace: () => void;
+  showFindAndReplace?: boolean;
+  currentDataForm?: "grayed" | "shortened";
+  toggleDataForm?: () => void;
+  onSearchTextChange?: (text: string) => void;
+  onReplaceTextChange?: (text: string) => void;
+  onFindAndReplace?: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  showFindAndReplace,
   currentDataForm,
-  toggleDataForm,
-  onSearchTextChange,
-  onReplaceTextChange,
-  onFindAndReplace,
+  toggleDataForm = () => {},
+  onSearchTextChange = () => {},
+  onReplaceTextChange = () => {},
+  onFindAndReplace = () => {},
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -59,13 +57,10 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
 
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
     },
@@ -134,28 +129,30 @@ export function DataTable<TData, TValue>({
           </Button>
           <DataTableColsVisibility table={table} />
         </div>
-        <div className="col-start-1 row-start-2 ml-1 flex h-8 gap-x-1 sm:col-start-11 sm:row-start-1 sm:h-full">
-          <Input
-            placeholder="查找内容"
-            className="w-[7rem] text-xs sm:w-full sm:text-sm"
-            onChange={(event) => onSearchTextChange(event.target.value)}
-            disabled={data.length === 0}
-          />
-          <Input
-            placeholder="替换内容"
-            className="w-[7rem] text-xs sm:w-full sm:text-sm"
-            onChange={(event) => onReplaceTextChange(event.target.value)}
-            disabled={data.length === 0}
-          />
-          <Button
-            size="lg"
-            className="mx-1 h-[95%] self-center justify-self-start text-xs sm:text-sm"
-            onClick={() => onFindAndReplace()}
-            disabled={data.length === 0}
-          >
-            查找替换
-          </Button>
-        </div>
+        {showFindAndReplace && (
+          <div className="col-start-1 row-start-2 ml-1 flex h-8 gap-x-1 sm:col-start-11 sm:row-start-1 sm:h-full">
+            <Input
+              placeholder="查找内容"
+              className="w-[7rem] text-xs sm:w-full sm:text-sm"
+              onChange={(event) => onSearchTextChange(event.target.value)}
+              disabled={data.length === 0}
+            />
+            <Input
+              placeholder="替换内容"
+              className="w-[7rem] text-xs sm:w-full sm:text-sm"
+              onChange={(event) => onReplaceTextChange(event.target.value)}
+              disabled={data.length === 0}
+            />
+            <Button
+              size="lg"
+              className="mx-1 h-[95%] self-center justify-self-start text-xs sm:text-sm"
+              onClick={() => onFindAndReplace()}
+              disabled={data.length === 0}
+            >
+              查找替换
+            </Button>
+          </div>
+        )}
       </div>
       <DataTablePagination table={table} />
       <Table>
