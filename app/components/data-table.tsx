@@ -41,7 +41,6 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   showFindAndReplace,
-  currentDataForm = "grayed",
   toggleDataForm = () => {},
   onSearchTextChange = () => {},
   onReplaceTextChange = () => {},
@@ -104,7 +103,6 @@ export function DataTable<TData, TValue>({
               onClick={toggleDataForm}
             >
               <SearchCode className="h-5 w-5 pr-1" />
-              {/* {currentDataForm === "grayed" ? "折叠Tag" : "展开Tag"} */}
               <p className="">折叠Tag</p>
             </ToggleGroupItem>
             <ToggleGroupItem
@@ -113,7 +111,6 @@ export function DataTable<TData, TValue>({
               onClick={toggleIsSameColumnFilter}
             >
               <Minimize className="h-5 w-5 pr-1" />
-              {/* {isFilteringIsSameColumn ? "显示未更改句段" : "隐藏未更改句段"} */}
               <p className="">隐藏未更改句段</p>
             </ToggleGroupItem>
           </ToggleGroup>
