@@ -28,7 +28,8 @@ export default function App() {
               </CardHeader>
               <CardContent>
                 <p className="text-tiny sm:text-sm">
-                  支持的文件类型：xliff, mqxliff, sdlxliff, xlf, txlf...
+                  支持的文件类型：xliff, mqxlz, mqxliff, sdlxliff, xlf, txlf,
+                  tmx...
                 </p>
               </CardContent>
               <CardFooter className="justify-center">
@@ -50,7 +51,7 @@ export default function App() {
               </CardHeader>
               <CardContent>
                 <p className="text-tiny sm:text-sm">
-                  支持的文件类型：xliff, mqxliff, sdlxliff, xlf, txlf...
+                  支持的文件类型：xliff, mqxlz, mqxliff, sdlxliff, xlf, txlf...
                 </p>
               </CardContent>
               <CardFooter className="justify-center">
@@ -71,7 +72,9 @@ export default function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-tiny sm:text-sm">支持的文件类型：mqxliff</p>
+                <p className="text-tiny sm:text-sm">
+                  支持的文件类型：mqxlz, mqxliff
+                </p>
               </CardContent>
               <CardFooter className="justify-center">
                 <Button asChild className="size-14 rounded-full sm:size-20">
@@ -91,7 +94,9 @@ export default function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-tiny sm:text-sm">支持的文件类型：mqxliff</p>
+                <p className="text-tiny sm:text-sm">
+                  支持的文件类型：mqxlz, mqxliff
+                </p>
               </CardContent>
               <CardFooter className="justify-center">
                 <Button asChild className="size-14 rounded-full sm:size-20">

@@ -12,6 +12,7 @@ import DownloadManager from "@/components/download-manager";
 import { Textarea } from "@/components/ui/textarea";
 import { openCCConverter } from "@/services/opencc-converter";
 import { xliffProcessor } from "@/services/xliff-processor";
+import { tmxProcessor } from "@/services/tmx-processor";
 import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
 import { DataTable } from "@/components/data-table";
@@ -148,17 +149,15 @@ export default function App() {
           );
         }
 
-        const originalXliffData = await xliffProcessor(
-          fileData.name,
-          fileData.content,
-        );
-        const convertedXliffData = await xliffProcessor(
-          fileData.name,
-          convertedContent,
-        );
+        let originalData = fileData.name.endsWith(".tmx")
+          ? await tmxProcessor(fileData.name, fileData.content)
+          : await xliffProcessor(fileData.name, fileData.content);
+        let convertedData = fileData.name.endsWith(".tmx")
+          ? await tmxProcessor(fileData.name, convertedContent)
+          : await xliffProcessor(fileData.name, convertedContent);
 
-        return originalXliffData.map((item, index) => {
-          const convertResult = convertedXliffData[index]?.target;
+        return originalData.map((item, index) => {
+          const convertResult = convertedData[index]?.target;
           const diffResult = diff2Html(item.target, convertResult, "chars");
 
           const grayedData = {

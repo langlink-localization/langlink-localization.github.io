@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import JSZip from "jszip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -33,15 +34,34 @@ const UploadManager: React.FC<UploadManagerProps> = ({
     const fileReaders = files.map((file) => {
       return new Promise<{ name: string; content: string }>(
         (resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            resolve({
-              name: file.name,
-              content: event.target?.result as string,
-            });
-          };
-          reader.onerror = (error) => reject(error);
-          reader.readAsText(file);
+          if (file.name.endsWith(".mqxlz")) {
+            const zip = new JSZip();
+            zip
+              .loadAsync(file)
+              .then((zip) => {
+                zip
+                  .file("document.mqxliff")
+                  ?.async("string")
+                  .then((content) => {
+                    resolve({
+                      name: file.name.replace(".mqxlz", ".mqxliff"),
+                      content: content,
+                    });
+                  })
+                  .catch(reject);
+              })
+              .catch(reject);
+          } else {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              resolve({
+                name: file.name,
+                content: event.target?.result as string,
+              });
+            };
+            reader.onerror = (error) => reject(error);
+            reader.readAsText(file);
+          }
         },
       );
     });
