@@ -26,7 +26,7 @@ export function DataTableColumnHeader<TData, TValue>({
         size="sm"
         className="text-md -ml-3 hover:bg-white dark:hover:bg-inherit"
       >
-        <span>{title}</span>
+        <span onClick={() => column.toggleGrouping()}>{title}</span>
         <EyeOff
           className="ml-2 h-3.5 w-3.5 hover:scale-125"
           onClick={() => column.toggleVisibility(false)}

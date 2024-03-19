@@ -9,6 +9,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getGroupedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -46,10 +47,10 @@ export function DataTable<TData, TValue>({
   onFindAndReplace = () => {},
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     isSame: false,
   });
+  const [grouping, setGrouping] = useState<string[]>([]);
 
   const table = useReactTable({
     data,
@@ -57,12 +58,15 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onGroupingChange: setGrouping,
 
     state: {
       columnFilters,
       columnVisibility,
+      grouping,
     },
     initialState: {
       pagination: {
