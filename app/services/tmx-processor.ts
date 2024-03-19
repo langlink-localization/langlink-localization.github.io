@@ -6,17 +6,6 @@ interface TmxData {
   target: string;
 }
 
-const repalceHtmlEscapes = (str: string) => {
-  const escapeMap: { [key: string]: string } = {
-    "&amp;": "&",
-    "&lt;": "<",
-    "&gt;": ">",
-    "&quot;": '"',
-    "&apos;": "'",
-  };
-  return str.replace(/&amp;|&lt;|&gt;|&quot;|&apos;/g, (m) => escapeMap[m]);
-};
-
 export const tmxProcessor = async (
   fileName: string,
   content: string,
@@ -43,15 +32,14 @@ export const tmxProcessor = async (
       let target =
         unit.getElementsByTagName("tuv")[1]?.getElementsByTagName("seg")[0]
           ?.textContent || "N/A";
-      let replacedSource = repalceHtmlEscapes(source);
-      let replacedTarget = repalceHtmlEscapes(target);
+
       if (source) {
         data.push({
           fileName,
           id: Number(index + 1),
           percent: "N/A",
-          source: replacedSource,
-          target: replacedTarget,
+          source,
+          target,
         });
       }
     });
