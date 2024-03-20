@@ -23,7 +23,7 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="sticky top-[4.5rem] z-40 flex items-center justify-end bg-white px-2 sm:top-[2.5rem] dark:bg-[#020817]">
+    <div className="sticky top-[4.5rem] z-30 flex items-center justify-end bg-white px-2 sm:top-[2.5rem] dark:bg-[#020817]">
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-xs font-medium md:text-sm">每页显示行数</p>
@@ -37,7 +37,7 @@ export function DataTablePagination<TData>({
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[200, 100, 50, 40, 30, 20, 10].map((pageSize) => (
+              {[400, 200, 100, 50, 40, 30, 20, 10].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

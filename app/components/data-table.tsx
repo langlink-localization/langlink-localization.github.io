@@ -12,6 +12,7 @@ import {
   getGroupedRowModel,
   getExpandedRowModel,
   useReactTable,
+  RowPinningState,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -54,6 +55,11 @@ export function DataTable<TData, TValue>({
   });
   const [grouping, setGrouping] = useState<string[]>([]);
 
+  const [pinning, setPinning] = useState<RowPinningState>({
+    top: [],
+    bottom: [],
+  });
+
   const table = useReactTable({
     data,
     columns,
@@ -73,7 +79,7 @@ export function DataTable<TData, TValue>({
     },
     initialState: {
       pagination: {
-        pageSize: 200,
+        pageSize: 400,
       },
     },
   });
@@ -211,11 +217,7 @@ export function DataTable<TData, TValue>({
                   <TableCell
                     key={cell.id}
                     className={
-                      cell.getIsGrouped()
-                        ? "bg-teal-600"
-                        : cell.getIsPlaceholder()
-                          ? "bg-orange-500"
-                          : "bg-inherit"
+                      cell.getIsGrouped() ? "bg-teal-600" : "bg-inherit"
                     }
                   >
                     {cell.getIsGrouped() ? (
@@ -223,12 +225,16 @@ export function DataTable<TData, TValue>({
                         {row.getIsExpanded() ? (
                           <ArrowDown
                             className="h-4 w-4 hover:scale-125"
-                            onClick={row.getToggleExpandedHandler()}
+                            onClick={() => {
+                              row.getToggleExpandedHandler()();
+                            }}
                           />
                         ) : (
                           <ArrowRight
                             className="h-4 w-4 hover:scale-125"
-                            onClick={row.getToggleExpandedHandler()}
+                            onClick={() => {
+                              row.getToggleExpandedHandler()();
+                            }}
                           />
                         )}{" "}
                         {flexRender(

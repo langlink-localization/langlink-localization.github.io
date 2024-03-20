@@ -1,7 +1,13 @@
 import { EyeOff, Group, Ungroup } from "lucide-react";
-import { Column } from "@tanstack/react-table";
+import { Column, RowSelection } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "./ui/tooltip";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
