@@ -1,4 +1,4 @@
-import { EyeOff } from "lucide-react";
+import { EyeOff, Group, Ungroup } from "lucide-react";
 import { Column } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,21 +17,50 @@ export function DataTableColumnHeader<TData, TValue>({
   return (
     <div
       className={cn(
-        "sticky top-16 flex items-center space-x-2 bg-white sm:top-12 dark:bg-[#020817]",
+        "sticky top-16 inline-flex bg-white sm:top-12 dark:bg-[#020817] ",
         className,
       )}
     >
-      <Button
-        variant="ghost"
-        size="sm"
-        className="text-md -ml-3 hover:bg-white dark:hover:bg-inherit"
-      >
-        <span onClick={() => column.toggleGrouping()}>{title}</span>
-        <EyeOff
-          className="ml-2 h-3.5 w-3.5 hover:scale-125"
-          onClick={() => column.toggleVisibility(false)}
-        />
-      </Button>
+      {column.getCanGroup() ? (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-md w-full justify-start hover:bg-white dark:hover:bg-inherit"
+        >
+          {column.getIsGrouped() ? (
+            <Ungroup
+              className="h-4 w-4 hover:scale-125"
+              onClick={() => column.toggleGrouping()}
+            />
+          ) : (
+            <Group
+              className="h-4 w-4 hover:scale-125"
+              onClick={() => column.toggleGrouping()}
+            />
+          )}
+          <span onClick={() => column.toggleGrouping()} className="px-1">
+            {title}
+          </span>
+          <EyeOff
+            className="h-4 w-4 hover:scale-125"
+            onClick={() => column.toggleVisibility(false)}
+          />{" "}
+        </Button>
+      ) : (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-md w-full justify-start hover:bg-white dark:hover:bg-inherit"
+        >
+          <span onClick={() => column.toggleGrouping()} className="pr-1">
+            {title}
+          </span>
+          <EyeOff
+            className="h-4 w-4 hover:scale-125"
+            onClick={() => column.toggleVisibility(false)}
+          />
+        </Button>
+      )}
     </div>
   );
 }

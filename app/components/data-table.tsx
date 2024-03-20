@@ -10,6 +10,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getGroupedRowModel,
+  getExpandedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -24,6 +25,7 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, ArrowDown } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -59,6 +61,7 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onGroupingChange: setGrouping,
@@ -205,8 +208,42 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <TableCell
+                    key={cell.id}
+                    className={
+                      cell.getIsGrouped()
+                        ? "bg-green-200"
+                        : cell.getIsPlaceholder()
+                          ? "bg-yellow-200"
+                          : "bg-inherit"
+                    }
+                  >
+                    {cell.getIsGrouped() ? (
+                      <div className="flex">
+                        {row.getIsExpanded() ? (
+                          <ArrowDown
+                            className="h-4 w-4 hover:scale-125"
+                            onClick={row.getToggleExpandedHandler()}
+                          />
+                        ) : (
+                          <ArrowRight
+                            className="h-4 w-4 hover:scale-125"
+                            onClick={row.getToggleExpandedHandler()}
+                          />
+                        )}{" "}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </div>
+                    ) : cell.getIsPlaceholder() ? null : (
+                      <>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
