@@ -55,6 +55,7 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         {info.row.original.id}
       </div>
     ),
+    enableGrouping: false,
   },
   {
     accessorKey: "percent",
@@ -104,6 +105,7 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         dangerouslySetInnerHTML={{ __html: info.row.original.finalSource }}
       ></div>
     ),
+    enableGrouping: false,
   },
   {
     accessorKey: "target",
@@ -125,6 +127,7 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         ></div>
       );
     },
+    enableGrouping: false,
   },
   {
     accessorKey: "convertResult",
@@ -146,5 +149,6 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         ></div>
       );
     },
+    enableGrouping: false,
   },
 ];

@@ -39,7 +39,6 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         {info.row.original.fileName}
       </div>
     ),
-    enableGrouping: true,
   },
   {
     accessorKey: "id",
@@ -73,7 +72,6 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         {info.row.original.percent}
       </div>
     ),
-    enableGrouping: true,
   },
   {
     accessorKey: "isSame",
@@ -90,7 +88,6 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         {info.row.original.isSame}
       </div>
     ),
-    enableGrouping: true,
   },
   {
     accessorKey: "source",
