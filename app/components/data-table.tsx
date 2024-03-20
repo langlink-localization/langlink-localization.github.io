@@ -212,9 +212,9 @@ export function DataTable<TData, TValue>({
                     key={cell.id}
                     className={
                       cell.getIsGrouped()
-                        ? "bg-green-200"
+                        ? "bg-teal-600"
                         : cell.getIsPlaceholder()
-                          ? "bg-yellow-200"
+                          ? "bg-orange-500"
                           : "bg-inherit"
                     }
                   >

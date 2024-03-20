@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import JSZip from "jszip";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import {
@@ -9,6 +8,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+} from "@/components/ui/context-menu";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -131,7 +138,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-4 text-center ${heightClass}`}>
+      <div className={`mt-4 text-pretty ${heightClass}`}>
         {upldFilesData.length === 0 ? (
           <Skeleton className={`bg-transparent ${heightClass}`} />
         ) : (
@@ -139,16 +146,25 @@ const UploadManager: React.FC<UploadManagerProps> = ({
             <TooltipProvider key={item.key}>
               <Tooltip>
                 <TooltipTrigger>
-                  <Badge
-                    className="text-tiny border-transparent text-left lg:text-xs"
-                    variant="outline"
-                  >
-                    {item.name}
-                    <X
-                      className="ml-2 h-4 w-4 text-red-500 hover:scale-125"
-                      onClick={() => handleCloseFileIcon(item.key)}
-                    />
-                  </Badge>
+                  <ContextMenu>
+                    <ContextMenuTrigger>
+                      <li className="text-tiny border-transparent text-left lg:text-xs">
+                        {item.name}{" "}
+                        <span className="text-tiny text-gray-600">
+                          右键删除
+                        </span>{" "}
+                      </li>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      <ContextMenuItem
+                        inset
+                        className="justify-items-center"
+                        onClick={() => handleCloseFileIcon(item.key)}
+                      >
+                        <span className="text-xs lg:text-sm">删除</span>
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.name}</p>

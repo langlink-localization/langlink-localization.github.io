@@ -8,7 +8,6 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -65,7 +64,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-4 text-center ${heightClass}`}>
+      <div className={`mt-4 text-pretty ${heightClass}`}>
         {downloadItems.length === 0 ? (
           <Skeleton className={`${heightClass} bg-transparent`} />
         ) : (
@@ -73,13 +72,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
             <TooltipProvider key={item.key}>
               <Tooltip>
                 <TooltipTrigger>
-                  <Badge
+                  <li
                     className="text-tiny border-transparent text-left underline hover:text-blue-500 lg:text-xs"
-                    variant="outline"
                     onClick={() => downloadOne(item)}
                   >
                     {item.text}
-                  </Badge>
+                  </li>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.text}</p>
