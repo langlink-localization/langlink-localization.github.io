@@ -94,7 +94,15 @@ const UploadManager: React.FC<UploadManagerProps> = ({
   };
 
   const handleCloseFileIcon = (key: string) => {
-    setUpldFilesData((prev) => prev.filter((item) => item.key !== key));
+    setUpldFilesData((prev) => {
+      const updatedFiles = prev.filter((item) => item.key !== key);
+      const filesWithContent = updatedFiles
+        .filter((file) => file.content !== undefined)
+        .map((file) => ({ name: file.name, content: file.content || "" }));
+
+      onFilesUploaded(filesWithContent);
+      return updatedFiles;
+    });
   };
 
   return (
