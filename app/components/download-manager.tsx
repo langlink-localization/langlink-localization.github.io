@@ -69,21 +69,23 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
           <Skeleton className={`${heightClass} bg-transparent`} />
         ) : (
           downloadItems.map((item) => (
-            <TooltipProvider key={item.key}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <li
-                    className="text-tiny border-transparent text-left underline hover:text-blue-500 lg:text-xs"
-                    onClick={() => downloadOne(item)}
-                  >
-                    {item.text}
-                  </li>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{item.text}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <ul key={item.key}>
+              <TooltipProvider key={item.key}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <li
+                      className="text-tiny border-transparent text-left underline hover:text-blue-500 lg:text-xs"
+                      onClick={() => downloadOne(item)}
+                    >
+                      {item.text}
+                    </li>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{item.text}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </ul>
           ))
         )}
       </div>

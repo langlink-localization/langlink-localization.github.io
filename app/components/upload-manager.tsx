@@ -143,34 +143,36 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           <Skeleton className={`bg-transparent ${heightClass}`} />
         ) : (
           upldFilesData.map((item) => (
-            <TooltipProvider key={item.key}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <ContextMenu>
-                    <ContextMenuTrigger>
-                      <li className="text-tiny border-transparent text-left lg:text-xs">
-                        {item.name}{" "}
-                        <span className="text-tiny text-gray-600">
-                          右键删除
-                        </span>{" "}
-                      </li>
-                    </ContextMenuTrigger>
-                    <ContextMenuContent>
-                      <ContextMenuItem
-                        inset
-                        className="justify-items-center"
-                        onClick={() => handleCloseFileIcon(item.key)}
-                      >
-                        <span className="text-xs lg:text-sm">删除</span>
-                      </ContextMenuItem>
-                    </ContextMenuContent>
-                  </ContextMenu>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{item.name}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <ul key={item.key}>
+              <TooltipProvider key={item.key}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <ContextMenu>
+                      <ContextMenuTrigger>
+                        <li className="text-tiny border-transparent text-left lg:text-xs">
+                          {item.name}{" "}
+                          <span className="text-tiny text-gray-600">
+                            右键删除
+                          </span>{" "}
+                        </li>
+                      </ContextMenuTrigger>
+                      <ContextMenuContent>
+                        <ContextMenuItem
+                          inset
+                          className="justify-items-center"
+                          onClick={() => handleCloseFileIcon(item.key)}
+                        >
+                          <span className="text-xs lg:text-sm">删除</span>
+                        </ContextMenuItem>
+                      </ContextMenuContent>
+                    </ContextMenu>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{item.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </ul>
           ))
         )}
       </div>
