@@ -37,7 +37,7 @@ export const tmxProcessor = async (
         data.push({
           fileName,
           id: Number(index + 1),
-          percent: "N/A",
+          percent: -1,
           source,
           target,
         });
