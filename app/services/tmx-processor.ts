@@ -1,7 +1,7 @@
 interface TmxData {
   fileName: string;
   id: number;
-  percent: string;
+  percent: number;
   source: string;
   target: string;
 }
