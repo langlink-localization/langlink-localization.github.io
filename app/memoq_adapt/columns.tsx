@@ -13,7 +13,7 @@ type MyColumnDef<TData> = ColumnDef<TData> & {
 export type TableData = {
   fileName: string;
   id: number;
-  percent: string;
+  percent: number;
   source: string;
   target: string;
   convertResult: string;
