@@ -1,7 +1,7 @@
 interface XliffData {
   fileName: string;
   id: number;
-  percent: string;
+  percent: number;
   source: string;
   target: string;
 }
@@ -18,16 +18,14 @@ export const xliffProcessor = async (
     transUnits.forEach((unit, index) => {
       let id = unit.getAttribute("id");
       let percent =
-        unit.getAttribute("percent") ||
-        unit.getAttribute("mq:percent") ||
-        "N/A";
+        unit.getAttribute("percent") || unit.getAttribute("mq:percent") || -1;
       let source = unit.getElementsByTagName("source")[0]?.textContent || "";
       let target = unit.getElementsByTagName("target")[0]?.textContent || "";
       if (id) {
         data.push({
           fileName,
           id: Number(index + 1),
-          percent,
+          percent: Number(percent),
           source,
           target,
         });

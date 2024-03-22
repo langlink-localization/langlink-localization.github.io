@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 
 // 扩展 ColumnDef 来添加自定义属性
@@ -13,7 +13,7 @@ type MyColumnDef<TData> = ColumnDef<TData> & {
 export type TableData = {
   fileName: string;
   id: number;
-  percent: string;
+  percent: number;
   source: string;
   target: string;
   convertResult: string;
@@ -72,6 +72,12 @@ export const xliffColumns: MyColumnDef<TableData>[] = [
         {info.row.original.percent}
       </div>
     ),
+    filterFn: (rows, id, filterValue) => {
+      return (
+        rows.original.percent >= filterValue[0] &&
+        rows.original.percent <= filterValue[1]
+      );
+    },
   },
   {
     accessorKey: "isSame",

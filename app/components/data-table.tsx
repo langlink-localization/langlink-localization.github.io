@@ -11,8 +11,8 @@ import {
   getPaginationRowModel,
   getGroupedRowModel,
   getExpandedRowModel,
+  getFacetedRowModel,
   useReactTable,
-  RowPinningState,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -26,7 +26,7 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { DataTableColsVisibility } from "@/components/data-table-column-visibility";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight, ArrowDown, X } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,11 +54,8 @@ export function DataTable<TData, TValue>({
     isSame: false,
   });
   const [grouping, setGrouping] = useState<string[]>([]);
-
-  const [pinning, setPinning] = useState<RowPinningState>({
-    top: [],
-    bottom: [],
-  });
+  const [minValue, setMinValue] = useState(-1);
+  const [maxValue, setMaxValue] = useState(101);
 
   const table = useReactTable({
     data,
@@ -68,6 +65,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onGroupingChange: setGrouping,
@@ -102,6 +100,40 @@ export function DataTable<TData, TValue>({
         },
       ]);
     }
+  };
+
+  const setMinAndPercentFilter = (minValue: number) => {
+    setMinValue(minValue);
+    setColumnFilters([
+      ...columnFilters,
+      {
+        id: "percent",
+        value: [minValue, maxValue],
+      },
+    ]);
+  };
+
+  const setMaxAndPercentFilter = (maxValue: number) => {
+    setMaxValue(maxValue);
+    setColumnFilters([
+      ...columnFilters,
+      {
+        id: "percent",
+        value: [minValue, maxValue],
+      },
+    ]);
+  };
+
+  const resetPercentFilter = () => {
+    setMinValue(-1);
+    setMaxValue(101);
+    setColumnFilters([
+      ...columnFilters,
+      {
+        id: "percent",
+        value: [-1, 101],
+      },
+    ]);
   };
 
   return (
@@ -185,21 +217,57 @@ export function DataTable<TData, TValue>({
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                    {header.column.getCanFilter() ? (
+                    {header.column.getCanFilter() && (
                       <div className="pt-2">
-                        <Input
-                          type="text"
-                          value={
-                            (header.column.getFilterValue() ?? "") as string
-                          }
-                          onChange={(event) =>
-                            header.column.setFilterValue(event.target.value)
-                          }
-                          placeholder="搜索"
-                          className="hidden h-8 border-none text-xs sm:inline xl:text-sm"
-                        />
+                        {header.column.id === "percent" ? (
+                          <div className="inline-flex">
+                            <Input
+                              type="text"
+                              value={minValue}
+                              onChange={(e) => {
+                                setMinAndPercentFilter(Number(e.target.value));
+                              }}
+                              placeholder={`Max`}
+                              className="text-tiny h-8 border-none sm:inline xl:text-xs"
+                            ></Input>
+                            <p className="self-center px-1 text-sm">~</p>
+                            <Input
+                              type="text"
+                              value={maxValue}
+                              onChange={(e) => {
+                                setMaxAndPercentFilter(Number(e.target.value));
+                              }}
+                              placeholder={`Min`}
+                              className="text-tiny h-8 border-none sm:inline xl:text-xs"
+                            ></Input>
+                            <X
+                              className="min-w-5 self-center justify-self-start text-red-400"
+                              onClick={resetPercentFilter}
+                            ></X>
+                          </div>
+                        ) : (
+                          <div className="inline-flex">
+                            <Input
+                              type="text"
+                              value={
+                                (header.column.getFilterValue() ?? "") as string
+                              }
+                              onChange={(event) =>
+                                header.column.setFilterValue(event.target.value)
+                              }
+                              placeholder="搜索"
+                              className="hidden h-8 border-none text-xs sm:inline xl:text-sm"
+                            />
+                            <X
+                              className="min-w-5 place-self-center text-red-400"
+                              onClick={() =>
+                                header.column.setFilterValue(undefined)
+                              }
+                            ></X>
+                          </div>
+                        )}
                       </div>
-                    ) : null}
+                    )}
                   </TableHead>
                 );
               })}
