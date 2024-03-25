@@ -136,6 +136,14 @@ export default function App() {
         config,
         customDict,
       );
+
+      let regex =
+        /(?<=target-language\=\"zh\-)[a-zA-Z]{2}|(?<=trgLang\=\"zh\_)[a-zA-Z]{2}/gm;
+
+      let langCode =
+        config.to === "cn" ? "CN" : config.to === "hk" ? "HK" : "TW";
+      convertedContent.replace(regex, langCode);
+
       if (searchText.trim() !== "" && replaceText.trim() !== "") {
         convertedContent = findAndReplace(
           convertedContent,
