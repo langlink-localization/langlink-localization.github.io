@@ -230,7 +230,6 @@ export function DataTable<TData, TValue>({
                               placeholder={`Max`}
                               className="text-tiny h-8 border-none sm:inline xl:text-xs"
                             ></Input>
-                            <p className="self-center px-1 text-sm">~</p>
                             <Input
                               type="text"
                               value={maxValue}

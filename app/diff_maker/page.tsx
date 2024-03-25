@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Link from "next/link";
+import * as XLSX from "xlsx";
 // import parse from "html-react-parser";
 // import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
+import { string2RichTextCell } from "./string2richtextcell";
 import { DataTable } from "@/components/data-table";
 import { TableData, xliffColumns } from "./columns";
 
@@ -103,21 +105,21 @@ export default function App() {
     setShortenedXliffData(shortened);
   };
 
-  // const copyTableData = async () => {
-  //   const table = document.querySelector("table");
-  //   const computedStyle = window.getComputedStyle(table as Element);
-
-  //   const htmlData = table?.outerHTML;
-  //   const htmlDataWithStyle = `<style>${computedStyle.cssText}</style>${htmlData}`;
-  //   const htmlBlob = new Blob([htmlDataWithStyle], { type: "text/html" });
-  //   const clipboardData = [new ClipboardItem({ "text/html": htmlBlob })];
-
-  //   await navigator.clipboard.write(clipboardData);
-  //   console.log(`${htmlDataWithStyle}`);
-  // };
-
   const toggleDataForm = () => {
     setCurrentDataForm(currentDataForm === "grayed" ? "shortened" : "grayed");
+  };
+
+  const writeDataToXlsx = () => {
+    // let wb = XLSX.utils.book_new();
+    const processedData = grayedXliffData.map((item) => {
+      return {
+        ...item,
+        finalTarget1: string2RichTextCell(item.finalTarget1),
+        finalTarget2: string2RichTextCell(item.finalTarget2),
+      };
+    });
+
+    console.log(`processedData: ${JSON.stringify(processedData)}`);
   };
 
   return (
@@ -189,6 +191,13 @@ export default function App() {
                 </Alert>
               </PopoverContent>
             </Popover>
+            {/* <Button
+              size="lg"
+              className=" place-self-center text-xs sm:text-sm"
+              onClick={() => writeDataToXlsx()}
+            >
+              复制表格内容
+            </Button> */}
           </div>
         )}
       </div>
