@@ -66,7 +66,9 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
       </div>
       <div className={`mt-4 text-pretty ${heightClass}`}>
         {downloadItems.length === 0 ? (
-          <Skeleton className={`${heightClass} bg-transparent`} />
+          <Skeleton
+            className={`${heightClass} border-2  border-dashed bg-transparent hover:shadow-lg`}
+          />
         ) : (
           downloadItems.map((item) => (
             <ul key={item.key}>

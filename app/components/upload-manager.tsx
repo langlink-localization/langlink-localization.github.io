@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import JSZip from "jszip";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -13,8 +12,6 @@ import {
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
 } from "@/components/ui/context-menu";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,6 +33,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
     { key: string; name: string; content?: string }[]
   >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const readFilesContent = (files: File[]) => {
     const fileReaders = files.map((file) => {
@@ -112,6 +110,22 @@ const UploadManager: React.FC<UploadManagerProps> = ({
     });
   };
 
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragging(false);
+    const files = event.dataTransfer.files;
+    if (!files || files.length === 0) return;
+
+    readFilesContent(Array.from(files));
+  };
+
   return (
     <div className="col-span-1 mb-8 overflow-auto">
       <div className="text-center">
@@ -140,7 +154,19 @@ const UploadManager: React.FC<UploadManagerProps> = ({
       </div>
       <div className={`mt-4 text-pretty ${heightClass}`}>
         {upldFilesData.length === 0 ? (
-          <Skeleton className={`bg-transparent ${heightClass}`} />
+          <Skeleton
+            className={`bg-transparent ${heightClass} place-content-center border-2 border-dashed hover:shadow-lg`}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={triggerFileInputClick}
+          >
+            <div className="text-center">
+              <span>将文件拖放到此处，或者</span>
+              <span className="text-primary cursor-pointer underline">
+                点击上传
+              </span>
+            </div>
+          </Skeleton>
         ) : (
           upldFilesData.map((item) => (
             <ul key={item.key}>
