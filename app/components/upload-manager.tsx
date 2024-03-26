@@ -14,7 +14,6 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface UploadManagerProps {
   onFilesUploaded: (filesData: { name: string; content: string }[]) => void;
@@ -33,7 +32,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({
     { key: string; name: string; content?: string }[]
   >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
 
   const readFilesContent = (files: File[]) => {
     const fileReaders = files.map((file) => {
@@ -86,7 +84,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target?.files as FileList; // 结合使用可选链和类型断言
+    const files = event.target?.files as FileList;
     if (!files || files.length === 0) return;
 
     readFilesContent(Array.from(files));
