@@ -5,7 +5,7 @@ interface tagConvertedResult {
 
 export const tagProcessor = (oldText: string): tagConvertedResult => {
   const tagRegex =
-    /<(\/?)(g|x|bx|ex|bpt|ept|ph|it|mrk|cp|pc|sc|ec|sm|em|a|br|mq:[a-z\-]+|key|span (?!class))([^>]*)>/gm;
+    /<(\/?)(g|x|bx|ex|bpt|ept|ph|it|mrk|cp|pc|sc|ec|sm|em|a|strong|code|br|mq:[a-z\-]+|key|span (?!class))([^>]*)>/gm;
 
   let grayedString = oldText.replace(
     tagRegex,

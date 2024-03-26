@@ -113,13 +113,11 @@ const UploadManager: React.FC<UploadManagerProps> = ({
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsDragging(true);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsDragging(false);
     const files = event.dataTransfer.files;
     if (!files || files.length === 0) return;
 
@@ -127,7 +125,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
   };
 
   return (
-    <div className="col-span-1 mb-8 overflow-auto">
+    <div className="col-span-1 mb-8">
       <div className="text-center">
         <Input
           type="file"
@@ -152,10 +150,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-4 text-pretty ${heightClass}`}>
+      <div className={`mt-2 text-pretty ${heightClass} border-2 border-dotted`}>
         {upldFilesData.length === 0 ? (
-          <Skeleton
-            className={`bg-transparent ${heightClass} place-content-center border-2 border-dashed hover:shadow-lg`}
+          <div
+            className={`bg-transparent ${heightClass} place-content-center`}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
             onClick={triggerFileInputClick}
@@ -166,7 +164,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
                 点击上传
               </span>
             </div>
-          </Skeleton>
+          </div>
         ) : (
           upldFilesData.map((item) => (
             <ul key={item.key}>
