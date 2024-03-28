@@ -45,13 +45,13 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
   };
 
   return (
-    <div className="col-span-1 mb-8 overflow-auto">
-      <div className="text-center">
+    <div className='col-span-1 mb-8'>
+      <div className='text-center'>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className="rounded-lg text-xs md:text-sm"
+                className='rounded-lg text-xs md:text-sm'
                 onClick={downloadAll}
                 disabled={downloadItems.length === 0}
               >
@@ -64,10 +64,10 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-4 text-pretty ${heightClass}`}>
+      <div className={`mt-2 text-pretty ${heightClass} border mx-1`}>
         {downloadItems.length === 0 ? (
-          <Skeleton
-            className={`${heightClass} border-2  border-dashed bg-transparent hover:shadow-lg`}
+          <div
+            className={`${heightClass} place-content-center bg-transparent`}
           />
         ) : (
           downloadItems.map((item) => (
@@ -76,7 +76,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
                 <Tooltip>
                   <TooltipTrigger>
                     <li
-                      className="text-tiny border-transparent text-left underline hover:text-blue-500 lg:text-xs"
+                      className='text-tiny border-transparent text-left underline hover:text-blue-500 lg:text-xs'
                       onClick={() => downloadOne(item)}
                     >
                       {item.text}

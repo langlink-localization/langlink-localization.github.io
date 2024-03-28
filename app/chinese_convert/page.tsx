@@ -39,7 +39,7 @@ export default function App() {
 
   // 处理文件上传
   const handleFileUpload = (
-    uploadedFilesData: { name: string; content: string }[],
+    uploadedFilesData: { name: string; content: string }[]
   ) => {
     setFilesData(uploadedFilesData);
   };
@@ -74,7 +74,7 @@ export default function App() {
     (newConfig: { from: string; to: string }) => {
       setConfig(newConfig);
     },
-    [],
+    []
   );
 
   const handleProcessCustomDictInput = useCallback(() => {
@@ -100,7 +100,7 @@ export default function App() {
       let convertedContent = openCCConverter(
         fileData.content,
         config,
-        customDict,
+        customDict
       );
 
       let regex =
@@ -114,14 +114,14 @@ export default function App() {
         convertedContent = findAndReplace(
           convertedContent,
           searchText,
-          replaceText,
+          replaceText
         );
       }
 
       const downloadFileName = generateFileName(
         fileData.name,
         config.from,
-        config.to,
+        config.to
       );
       return {
         key: String(index),
@@ -134,7 +134,7 @@ export default function App() {
   const findAndReplace = (
     content: string,
     findText: string,
-    replaceText: string,
+    replaceText: string
   ) => {
     const regex = new RegExp(findText, "g");
     return content.replace(regex, replaceText);
@@ -146,14 +146,14 @@ export default function App() {
         let convertedContent = openCCConverter(
           fileData.content,
           config,
-          customDict,
+          customDict
         );
 
         if (searchText.trim() !== "" && replaceText.trim() !== "") {
           convertedContent = findAndReplace(
             convertedContent,
             searchText,
-            replaceText,
+            replaceText
           );
         }
 
@@ -193,7 +193,7 @@ export default function App() {
 
           return { grayedData, shortenedData };
         });
-      }),
+      })
     );
 
     const downloadItems = await processFilesForDownload();
@@ -216,49 +216,58 @@ export default function App() {
   };
 
   return (
-    <NextThemesProvider attribute="class" defaultTheme="light">
-      <div className="mb-4 flex flex-col justify-center">
-        <p className="mb-2 text-center text-3xl">简繁转换</p>
-        <Button variant="link">
-          <Link href="./" className="text-md text-center">
+    <NextThemesProvider
+      attribute='class'
+      defaultTheme='light'
+    >
+      <div className='mb-4 flex flex-col justify-center'>
+        <p className='mb-2 text-center text-3xl'>简繁转换</p>
+        <Button variant='link'>
+          <Link
+            href='./'
+            className='text-md text-center'
+          >
             返回主页
           </Link>
         </Button>
       </div>
-      <div className="grid-rows-auto grid grid-cols-3 overflow-auto px-1 pt-8">
+      <div className='grid-rows-auto grid grid-cols-3 overflow-auto px-1 pt-8'>
         <UploadManager
           onFilesUploaded={handleFileUpload}
-          buttonText="上传文件"
-          tooltipText="点击上传文件"
-          heightClass="h-40 md:h-56"
+          buttonText='上传文件'
+          tooltipText='点击上传文件'
+          heightClass='h-40 md:h-56'
         />
         <DownloadManager
           downloadItems={downloadItems}
-          buttonText="下载文件"
-          tooltipText="下载所有文件"
-          heightClass="h-40 md:h-56"
+          buttonText='下载文件'
+          tooltipText='下载所有文件'
+          heightClass='h-40 md:h-56'
         />
-        <div className="justify-items-center">
-          <Label htmlFor="customDict" className="flex-col">
-            <p className="text-sm">自定义字词转换</p>
-            <p className="text-muted-foreground text-xs">
+        <div className='justify-items-center mx-1'>
+          <Label
+            htmlFor='customDict'
+            className='flex-col'
+          >
+            <p className='text-sm'>自定义字词转换</p>
+            <p className='text-muted-foreground text-xs'>
               每行一对，中文逗号分隔
             </p>
           </Label>
           <Textarea
-            id="customDict"
+            id='customDict'
             placeholder={`例如：\n原字词1，替换字词1\n原字词2，替换字词2`}
             value={customDictInput}
             onChange={(e) => setCustomDictInput(e.target.value)}
             rows={8}
-            className="w-full rounded border p-2 text-xs"
+            className='w-full rounded border p-2 text-xs'
           ></Textarea>
-          <p className="text-muted-foreground text-xs">
+          <p className='text-muted-foreground text-xs'>
             输入完后，按确认按钮，然后按转换按钮
           </p>
           <Button
-            size="lg"
-            className="sm:text:sm text-xs"
+            size='lg'
+            className='sm:text:sm text-xs'
             onClick={handleProcessCustomDictInput}
             disabled={customDictInput.trim() === ""}
           >
@@ -266,39 +275,39 @@ export default function App() {
           </Button>
         </div>
       </div>
-      <div className="mt-2 grid grid-cols-9 grid-rows-1 gap-2">
+      <div className='mt-2 grid grid-cols-9 grid-rows-1 gap-2'>
         <ConvertOption onOptionChange={handleOptionChange} />
 
-        <div className="col-start-5 flex gap-3">
+        <div className='col-start-5 flex gap-3'>
           {filesData.length == 0 || config.from === "" || config.to === "" ? (
-            <div className="col-start-5 flex gap-3">
+            <div className='col-start-5 flex gap-3'>
               <Button
-                size="lg"
-                className="sm:text:sm h-[95%] place-self-center text-xs"
+                size='lg'
+                className='sm:text:sm h-[95%] place-self-center text-xs'
                 disabled
               >
                 上传并选择选项
               </Button>
               <Button
-                size="lg"
-                className="sm:text:sm h-[95%] place-self-center text-xs"
+                size='lg'
+                className='sm:text:sm h-[95%] place-self-center text-xs'
                 disabled
               >
                 上传并选择选项
               </Button>
             </div>
           ) : (
-            <div className="col-start-5 flex gap-3">
+            <div className='col-start-5 flex gap-3'>
               <Button
-                size="lg"
-                className="sm:text:sm h-[95%] place-self-center text-xs"
+                size='lg'
+                className='sm:text:sm h-[95%] place-self-center text-xs'
                 onClick={() => handleFileConvert()}
               >
                 转换并展示表格
               </Button>
               <Button
-                size="lg"
-                className="sm:text:sm h-[95%] place-self-center text-xs"
+                size='lg'
+                className='sm:text:sm h-[95%] place-self-center text-xs'
                 onClick={handleDirectDownload}
               >
                 直接创建下载链接
@@ -307,7 +316,7 @@ export default function App() {
           )}
         </div>
       </div>
-      <div className="max-h-lvh">
+      <div className='max-h-lvh'>
         <DataTable
           columns={xliffColumns}
           data={

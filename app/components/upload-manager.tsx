@@ -65,7 +65,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
             reader.onerror = (error) => reject(error);
             reader.readAsText(file);
           }
-        },
+        }
       );
     });
 
@@ -76,7 +76,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
             key: file.name,
             name: file.name,
             content: file.content,
-          })),
+          }))
         );
         onFilesUploaded(filesData);
       })
@@ -123,10 +123,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({
   };
 
   return (
-    <div className="col-span-1 mb-8">
-      <div className="text-center">
+    <div className='col-span-1 mb-8'>
+      <div className='text-center'>
         <Input
-          type="file"
+          type='file'
           ref={fileInputRef}
           onChange={handleFileChange}
           style={{ display: "none" }}
@@ -136,7 +136,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className="rounded-lg text-xs md:text-sm"
+                className='rounded-lg text-xs md:text-sm'
                 onClick={triggerFileInputClick}
               >
                 {buttonText}
@@ -148,7 +148,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-2 text-pretty ${heightClass} border-2 border-dotted`}>
+      <div className={`mt-2 text-pretty ${heightClass} border mx-1`}>
         {upldFilesData.length === 0 ? (
           <div
             className={`bg-transparent ${heightClass} place-content-center`}
@@ -156,9 +156,9 @@ const UploadManager: React.FC<UploadManagerProps> = ({
             onDrop={handleDrop}
             onClick={triggerFileInputClick}
           >
-            <div className="text-center">
+            <div className='text-center'>
               <span>将文件拖放到此处，或者</span>
-              <span className="text-primary cursor-pointer underline">
+              <span className='text-primary cursor-pointer underline'>
                 点击上传
               </span>
             </div>
@@ -171,9 +171,9 @@ const UploadManager: React.FC<UploadManagerProps> = ({
                   <TooltipTrigger>
                     <ContextMenu>
                       <ContextMenuTrigger>
-                        <li className="text-tiny border-transparent text-left lg:text-xs">
+                        <li className='text-tiny border-transparent text-left lg:text-xs'>
                           {item.name}{" "}
-                          <span className="text-tiny text-gray-600">
+                          <span className='text-tiny text-gray-600'>
                             右键删除
                           </span>{" "}
                         </li>
@@ -181,10 +181,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({
                       <ContextMenuContent>
                         <ContextMenuItem
                           inset
-                          className="justify-items-center"
+                          className='justify-items-center'
                           onClick={() => handleCloseFileIcon(item.key)}
                         >
-                          <span className="text-xs lg:text-sm">删除</span>
+                          <span className='text-xs lg:text-sm'>删除</span>
                         </ContextMenuItem>
                       </ContextMenuContent>
                     </ContextMenu>
