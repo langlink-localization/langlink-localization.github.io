@@ -3,22 +3,13 @@
 import React, { useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Link from "next/link";
-import * as XLSX from "xlsx";
 // import parse from "html-react-parser";
 // import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import UploadManager from "@/components/upload-manager";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { xliffProcessor } from "@/services/xliff-processor";
 import { diff2Html } from "@/services/diff2html";
 import { tagProcessor } from "@/services/tag-processor";
-import { string2RichTextCell } from "./string2richtextcell";
 import { DataTable } from "@/components/data-table";
 import { TableData, xliffColumns } from "./columns";
 
@@ -34,13 +25,13 @@ export default function App() {
 
   // 处理文件上传
   const handleFileUpload1 = (
-    uploadedFilesData: { name: string; content: string }[],
+    uploadedFilesData: { name: string; content: string }[]
   ) => {
     setFilesData1(uploadedFilesData);
   };
 
   const handleFileUpload2 = (
-    uploadedFilesData: { name: string; content: string }[],
+    uploadedFilesData: { name: string; content: string }[]
   ) => {
     setFilesData2(uploadedFilesData);
   };
@@ -51,8 +42,6 @@ export default function App() {
     "grayed" | "shortened"
   >("grayed");
 
-  // const [copiedData, setCopiedData] = useState<string>("");
-
   const handleFileConvert = async () => {
     const processedData = await Promise.all(
       filesData1.map(async (fileData1, index) => {
@@ -60,11 +49,11 @@ export default function App() {
 
         const xliffData1 = await xliffProcessor(
           fileData1.name,
-          fileData1.content,
+          fileData1.content
         );
         const xliffData2 = await xliffProcessor(
           fileData2.name,
-          fileData2.content,
+          fileData2.content
         );
 
         return xliffData1.map((item1, index) => {
@@ -95,7 +84,7 @@ export default function App() {
 
           return { grayedData, shortenedData };
         });
-      }),
+      })
     );
 
     let grayed = processedData.flat().map((item) => item.grayedData);
@@ -103,105 +92,87 @@ export default function App() {
 
     setGrayedXliffData(grayed);
     setShortenedXliffData(shortened);
+    localStorage.setItem("grayedXliffData", JSON.stringify(grayed));
   };
 
   const toggleDataForm = () => {
     setCurrentDataForm(currentDataForm === "grayed" ? "shortened" : "grayed");
   };
 
-  const writeDataToXlsx = () => {
-    // let wb = XLSX.utils.book_new();
-    const processedData = grayedXliffData.map((item) => {
-      return {
-        ...item,
-        finalTarget1: string2RichTextCell(item.finalTarget1),
-        finalTarget2: string2RichTextCell(item.finalTarget2),
-      };
-    });
-
-    console.log(`processedData: ${JSON.stringify(processedData)}`);
-  };
-
   return (
-    <NextThemesProvider attribute="class" defaultTheme="light">
-      <div className="mb-4 flex flex-col justify-center">
-        <p className="mb-2 text-center text-3xl">制作对比报告</p>
-        <Button variant="link">
-          <Link href="./" className="text-md text-center">
+    <NextThemesProvider
+      attribute='class'
+      defaultTheme='light'
+    >
+      <div className='mb-4 flex flex-col justify-center'>
+        <p className='mb-2 text-center text-3xl'>制作对比报告</p>
+        <Button variant='link'>
+          <Link
+            href='./'
+            className='text-md text-center'
+          >
             返回主页
           </Link>
         </Button>
       </div>
-      <div className="grid-rows-auto grid grid-cols-2 overflow-auto px-1 pt-8">
+      <div className='grid-rows-auto grid grid-cols-2 overflow-auto px-1 pt-8'>
         <UploadManager
           onFilesUploaded={handleFileUpload1}
-          buttonText="上传文件1"
-          tooltipText="点击上传文件1"
-          heightClass="h-40 md:h-56"
+          buttonText='上传文件1'
+          tooltipText='点击上传文件1'
+          heightClass='h-40 md:h-56'
         />
         <UploadManager
           onFilesUploaded={handleFileUpload2}
-          buttonText="上传文件2"
-          tooltipText="点击上传文件2"
-          heightClass="h-40 md:h-56"
+          buttonText='上传文件2'
+          tooltipText='点击上传文件2'
+          heightClass='h-40 md:h-56'
         />
       </div>
-      <div className="mt-2 grid grid-cols-3 gap-2">
+      <div className='mt-2 grid grid-cols-3 gap-2'>
         {filesData1.length === 0 || filesData2.length === 0 ? (
-          <div className="col-start-2 flex  gap-3 place-self-center">
+          <div className='col-start-2 flex  gap-3 place-self-center'>
             <Button
-              size="lg"
-              className=" place-self-center text-xs sm:text-sm"
+              size='lg'
+              className=' place-self-center text-xs sm:text-sm'
               disabled
             >
               先上传文件
             </Button>
             <Button
-              size="lg"
-              className=" place-self-center text-xs sm:text-sm"
+              size='lg'
+              className=' place-self-center text-xs sm:text-sm'
               disabled
             >
               先上传文件
             </Button>
           </div>
         ) : (
-          <div className="col-start-2 flex  gap-3 place-self-center">
+          <div className='col-start-2 flex  gap-3 place-self-center'>
             <Button
-              size="lg"
-              className=" place-self-center text-xs sm:text-sm"
+              size='lg'
+              className=' place-self-center text-xs sm:text-sm'
               onClick={() => handleFileConvert()}
             >
               展示表格
             </Button>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  size="lg"
-                  className=" place-self-center text-xs sm:text-sm"
-                >
-                  复制表格内容
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <Alert className="border-none">
-                  <AlertTitle>提示</AlertTitle>
-                  <Separator className="invisible my-2" />
-                  <AlertDescription>该功能暂时无法使用</AlertDescription>
-                </Alert>
-              </PopoverContent>
-            </Popover>
-            {/* <Button
-              size="lg"
-              className=" place-self-center text-xs sm:text-sm"
-              onClick={() => writeDataToXlsx()}
+            <Button
+              size='lg'
+              className=' place-self-center text-xs sm:text-sm'
+              asChild
             >
-              复制表格内容
-            </Button> */}
+              <Link
+                href='/diff_maker/diff_result_table'
+                className=''
+              >
+                跳转表格复制页面
+              </Link>
+            </Button>
           </div>
         )}
       </div>
-      <div className="max-h-lvh">
+      <div className='max-h-lvh'>
         <DataTable
           columns={xliffColumns}
           data={
