@@ -148,7 +148,9 @@ const UploadManager: React.FC<UploadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-2 text-pretty ${heightClass} border mx-1`}>
+      <div
+        className={`mt-2 text-pretty ${heightClass} border mx-1 rounded border-input`}
+      >
         {upldFilesData.length === 0 ? (
           <div
             className={`bg-transparent ${heightClass} place-content-center`}

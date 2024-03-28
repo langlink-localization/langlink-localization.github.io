@@ -64,7 +64,9 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={`mt-2 text-pretty ${heightClass} border mx-1`}>
+      <div
+        className={`mt-2 text-pretty ${heightClass} border mx-1 rounded border-input`}
+      >
         {downloadItems.length === 0 ? (
           <div
             className={`${heightClass} place-content-center bg-transparent`}

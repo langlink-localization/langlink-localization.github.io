@@ -251,7 +251,7 @@ export default function App() {
           >
             <p className='text-sm'>自定义字词转换</p>
             <p className='text-muted-foreground text-xs'>
-              每行一对，中文逗号分隔
+              每行一对，用中文逗号分隔
             </p>
           </Label>
           <Textarea
